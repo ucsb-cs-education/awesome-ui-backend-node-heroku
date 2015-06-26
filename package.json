@@ -1,0 +1,26 @@
+{
+  "name": "Project-Awesome",
+  "version": "0.1.4",
+  "description": "A framework for practice problems in computer science.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ejs": "^2.3.1",
+    "express": "~4.9.x"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pconrad/awesome-ui-backend-node-heroku.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

@@ -20,3 +20,9 @@ Project Awesome UI and Backend based on node.js on Heroku
 * http://unitjs.com/
 * http://mochajs.org/
 * others?
+
+
+
+# Contributors
+* Phil Conrad
+* Martin Wolfenbarger

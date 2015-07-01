@@ -1,3 +1,9 @@
+# emacs backup files
+*~
+
+# Mac stuff
+.DS_Store
+
 # Logs
 logs
 *.log

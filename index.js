@@ -20,6 +20,23 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+
+app.use(bodyParser.urlencoded({'extended':'true'}));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+
+
+// passport initialization
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+
+
+
+
 app.get('/', function(request, response) {
   response.render('pages/index')
 });

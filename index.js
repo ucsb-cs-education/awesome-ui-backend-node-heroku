@@ -1,5 +1,16 @@
 var express = require('express');
 var app = express();
+var passport = require('passport');
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var models = require("./models");
+
+models.sequelize.sync({ force: true }).then(function () {
+  
+});
+
+// Refreshing the page sometimes rendered an empty html page. app.disable('etag'); fixes it.
+app.disable('etag');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -12,6 +23,7 @@ app.set('view engine', 'ejs');
 app.get('/', function(request, response) {
   response.render('pages/index')
 });
+
 
 app.get('/student', function(request, response) {
   response.render('pages/student')

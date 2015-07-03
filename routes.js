@@ -1,23 +1,23 @@
 module.exports = function(app, passport, models) {
 
 	app.get('/', function(request, response) {
-		response.render('pages/index')
+		response.render('pages/index', { user : request.user })
 	});
 
 	app.get('/student', function(request, response) {
-		response.render('pages/student')
+		response.render('pages/student', { user : request.user })
 	});
 
 	app.get('/instructor', function(request, response) {
-		response.render('pages/instructor')
+		response.render('pages/instructor', { user : request.user } )
 	});
 
 	app.get('/author', function(request, response) {
-		response.render('pages/author')
+		response.render('pages/author', { user : request.user })
 	});
 
 	app.get('/developer', function(request, response) {
-		response.render('pages/developer')
+		response.render('pages/developer', { user : request.user })
 	});
 
 

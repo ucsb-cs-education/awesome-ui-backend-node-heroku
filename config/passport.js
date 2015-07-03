@@ -1,6 +1,13 @@
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var configAuth = require('./auth');
+var configAuth;
+
+// FOR DEVELOPMENT (check if we are on localhost)
+var os = require('os');
+if(os.hostname().indexOf("local") > -1)
+    configAuth = require('./localhost_auth');
+else
+    configAuth = require('./auth');
 
 module.exports = function(passport, models) {
 

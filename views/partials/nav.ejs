@@ -31,7 +31,11 @@
 
     <ul class="nav navbar-nav navbar-right">
       <li class="active">
+        <% if (user) { %>
+        <a><%= user.name %></a>
+        <% } else { %>
         <a href="/auth/google">Google</a>
+        <% } %>
       </li>
    </ul>
 

@@ -1,18 +1,56 @@
-<nav class="navbar navbar-default navbar-static-top navbar-inverse">
+<style>
+/* icon */ .custom-navbar .fa {font-size:25px}
+
+@media (max-width:767px) { 
+  .custom-navbar .navbar-right {
+    float: right;
+    padding-right: 15px;
+  }
+  .custom-navbar .nav.navbar-nav.navbar-right li {
+    float: right;
+  }
+  .custom-navbar .nav.navbar-nav.navbar-right li > a {
+    padding:8px 5px;
+  }
+  .custom-navbar .navbar-toggle {
+    float: left
+  }
+  .custom-navbar .navbar-header {
+    float: left;
+    width: auto!important;
+  }
+  .custom-navbar {
+    clear: both;
+    float: none;
+  }
+}
+</style>
+
+<nav class="navbar navbar-default navbar-static-top navbar-inverse custom-navbar">
   <div class="container">
+
+    <ul class="nav navbar-nav navbar-right">
+      <li class="active">
+        <a href="/auth/google">Google</a>
+      </li>
+   </ul>
+
+
+   <div class="navbar-left">
     <ul class="nav navbar-nav">
       <li class="active">
         <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
       </li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Choose Your Role <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="/student">Student</a></li>
-            <li><a href="/instructor">Instructor</a></li>
-            <li><a href="/author">Author</a></li>
-            <li><a href="/developer">Developer</a></li>
-          </ul>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="/student">Student</a></li>
+          <li><a href="/instructor">Instructor</a></li>
+          <li><a href="/author">Author</a></li>
+          <li><a href="/developer">Developer</a></li>
+        </ul>
       </li>
     </ul>
   </div>
+</div>
 </nav>

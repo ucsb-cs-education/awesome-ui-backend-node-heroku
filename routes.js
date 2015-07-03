@@ -20,9 +20,10 @@ module.exports = function(app, passport, models) {
 		response.render('pages/developer', { user : request.user })
 	});
 
-
-
-
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
 
 	app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 

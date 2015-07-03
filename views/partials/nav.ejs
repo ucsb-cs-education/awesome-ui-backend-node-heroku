@@ -32,7 +32,7 @@
     <ul class="nav navbar-nav navbar-right">
       <li class="active">
         <% if (user) { %>
-        <a><%= user.name %></a>
+        <a href="/logout"><%= user.name %> <span class="glyphicon glyphicon-remove-circle"></span></a>
         <% } else { %>
         <a href="/auth/google">Google</a>
         <% } %>

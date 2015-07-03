@@ -30,13 +30,25 @@
   <div class="container">
 
     <ul class="nav navbar-nav navbar-right">
+
+      <% if (user) { %>
+
+      <!-- User is logged in so... display the user's name + logout link  -->
       <li class="active">
-        <% if (user) { %>
         <a href="/logout"><%= user.name %> <span class="glyphicon glyphicon-remove-circle"></span></a>
-        <% } else { %>
-        <a href="/auth/google">Google</a>
-        <% } %>
       </li>
+
+      <% } else { %>
+
+      <!-- User NOT logged in so... google and facebook login buttons  -->
+      <li class="active">
+      <a href="/auth/google">Google</a>
+      </li>
+      <li class="active">
+      <a href="/auth/facebook">Facebook</a>
+      </li>
+
+      <% } %>
    </ul>
 
 

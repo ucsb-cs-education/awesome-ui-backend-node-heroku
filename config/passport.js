@@ -24,7 +24,7 @@ module.exports = function(passport, models) {
     });
 
 
-
+    // Used by google and facebook authentication results
     function authResult(type, token, refreshToken, profile, done) {
         // try to find the user based on their id
         models.User.findOne({
@@ -48,28 +48,6 @@ module.exports = function(passport, models) {
         });
     }
 
-
-    // FACEBOOK ==========================================================
-    passport.use(new FacebookStrategy({
-
-        // pull in our app id and secret from our auth.js file
-        clientID        : configAuth.facebookAuth.clientID,
-        clientSecret    : configAuth.facebookAuth.clientSecret,
-        callbackURL     : configAuth.facebookAuth.callbackURL
-
-    },
-
-    // facebook will send back the token and profile
-    function(token, refreshToken, profile, done) {
-
-        // asynchronous
-        process.nextTick(function() {
-            profile.displayName = profile.name.givenName + " " + profile.name.familyName;
-            authResult("facebook", token, refreshToken, profile, done);
-        });
-
-    }));
-
     // GOOGLE ============================================================
     passport.use(new GoogleStrategy({
         clientID : configAuth.googleAuth.clientID,
@@ -77,11 +55,24 @@ module.exports = function(passport, models) {
         callbackURL : configAuth.googleAuth.callbackURL
     },
     function(token, refreshToken, profile, done) {
-
-        // make the code asynchronous
-        // Database query will wait until we have all our data back from Google
+        // asynchronous
         process.nextTick(function() {
             authResult("google", token, refreshToken, profile, done);
+        });
+
+    }));
+
+    // FACEBOOK ==========================================================
+    passport.use(new FacebookStrategy({
+        clientID        : configAuth.facebookAuth.clientID,
+        clientSecret    : configAuth.facebookAuth.clientSecret,
+        callbackURL     : configAuth.facebookAuth.callbackURL
+    },
+    function(token, refreshToken, profile, done) {
+        // asynchronous
+        process.nextTick(function() {
+            profile.displayName = profile.name.givenName + " " + profile.name.familyName;
+            authResult("facebook", token, refreshToken, profile, done);
         });
 
     }));

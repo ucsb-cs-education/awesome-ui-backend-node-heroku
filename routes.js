@@ -25,14 +25,27 @@ module.exports = function(app, passport, models) {
         res.redirect('/');
     });
 
+    // FACEBOOK authentication routes
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+    // after facebook authenticates
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/',
+            failureRedirect : '/fail'
+        }
+    ));
+
+    // GOOGLE authentication routes
 	app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
-    // the callback after google has authenticated the user
+    // after google authenticates
     app.get('/auth/google/callback',
-    	passport.authenticate('google', {
-    		successRedirect : '/',
-    		failureRedirect : '/fail'
-    	}));
+		passport.authenticate('google', {
+			successRedirect : '/',
+			failureRedirect : '/fail'
+		}
+	));
 
 
 }

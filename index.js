@@ -27,7 +27,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 
 // passport initialization
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' }));
+app.use(session( { secret: 'somesecretforprojectawesomechangethismaybe' } ));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -35,28 +35,13 @@ app.use(passport.session());
 
 
 
+require('./config/passport.js')(passport, models);
 
 
-app.get('/', function(request, response) {
-  response.render('pages/index')
-});
 
+// routes ======================================================================
+require('./routes.js')(app, passport, models);
 
-app.get('/student', function(request, response) {
-  response.render('pages/student')
-});
-
-app.get('/instructor', function(request, response) {
-  response.render('pages/instructor')
-});
-
-app.get('/author', function(request, response) {
-  response.render('pages/author')
-});
-
-app.get('/developer', function(request, response) {
-  response.render('pages/developer')
-});
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

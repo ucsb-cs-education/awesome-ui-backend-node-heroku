@@ -1,13 +1,15 @@
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var configAuth;
-
+var env;
 // FOR DEVELOPMENT (check if we are on localhost)
 var os = require('os');
 if(os.hostname().indexOf("local") > -1)
-    configAuth = require('./localhost_auth');
+    env = 'localhost';
 else
-    configAuth = require('./auth');
+    env = 'development';
+
+var configAuth    = require(__dirname + '/../config/authentication.json')[env];
+
 
 module.exports = function(passport, models) {
 

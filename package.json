@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "body-parser": "^1.13.1",
+    "chai": "^3.0.0",
     "ejs": "^2.3.1",
     "express": "~4.9.x",
     "express-session": "^1.11.3",
+    "mocha": "^2.2.5",
     "passport": "^0.2.2",
     "passport-facebook": "^2.0.0",
     "passport-google-oauth": "^0.2.0",

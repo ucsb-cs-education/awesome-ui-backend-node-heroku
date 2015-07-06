@@ -4,7 +4,8 @@
   "description": "A framework for practice problems in computer science.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha"
   },
   "dependencies": {
     "body-parser": "^1.13.1",

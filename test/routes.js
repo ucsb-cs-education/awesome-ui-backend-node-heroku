@@ -4,7 +4,7 @@ var request = require('supertest');
 
 
 describe('GET /', function(){
-  it('respond with plain text', function(){
+  it('should respond OK 200', function(){
     request(app)
     .get('/')
     .end(function(err, res) {

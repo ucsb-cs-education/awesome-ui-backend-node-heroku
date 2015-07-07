@@ -1,12 +1,57 @@
-var app = require('../index.js')
+var app = require('../index.js');
 var expect = require("chai").expect;
 var request = require('supertest');
-
+var models = require('../models');
 
 describe('GET /', function(){
   it('should respond OK 200', function(){
     request(app)
     .get('/')
+    .expect(200)
+    .end(function(err, res) {
+      res.status.should.equal(200);
+      done();
+    });
+  });
+});
+describe('GET /student', function(){
+  it('should respond OK 200', function(){
+    request(app)
+    .get('/student')
+    .expect(200)
+    .end(function(err, res) {
+      res.status.should.equal(200);
+      done();
+    });
+  });
+});
+describe('GET /instructor', function(){
+  it('should respond OK 200', function(){
+    request(app)
+    .get('/instructor')
+    .expect(200)
+    .end(function(err, res) {
+      res.status.should.equal(200);
+      done();
+    });
+  });
+});
+describe('GET /author', function(){
+  it('should respond OK 200', function(){
+    request(app)
+    .get('/author')
+    .expect(200)
+    .end(function(err, res) {
+      res.status.should.equal(200);
+      done();
+    });
+  });
+});
+describe('GET /developer', function(){
+  it('should respond OK 200', function(){
+    request(app)
+    .get('/developer')
+    .expect(200)
     .end(function(err, res) {
       res.status.should.equal(200);
       done();

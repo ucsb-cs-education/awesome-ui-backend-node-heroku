@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var models = require("./models");
 
 models.sequelize.sync({ force: true }).then(function () {
-  
+	console.log('Connected to database.');
 });
 
 // Refreshing the page sometimes rendered an empty html page. app.disable('etag'); fixes it.
@@ -44,7 +44,7 @@ require('./config/passport.js')(passport, models);
 
 
 // routes ======================================================================
-require('./routes.js')(app, passport, models);
+require('./routes.js')(app, passport);
 
 
 app.listen(app.get('port'), function() {

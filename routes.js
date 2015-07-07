@@ -1,4 +1,4 @@
-module.exports = function(app, passport, models) {
+module.exports = function(app, passport) {
 
 	app.get('/', function(request, response) {
 		response.render('pages/index', { user : request.user })

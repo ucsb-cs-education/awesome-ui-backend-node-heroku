@@ -40,8 +40,10 @@ module.exports = function(passport, models) {
           where: { id: profile.id, account_type: type }
         }).then(function(user) {
           if (user) {
+            console.log(user.name + " is already in the database.");
             return done(null, user);
           } else {
+            console.log(profile.id + " " + type + " is new, adding new user.");
             models.User.create({
                 account_type : type,
                 id: profile.id,

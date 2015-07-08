@@ -3,6 +3,18 @@ var config = require('../config/sauce.json');
 var chai = require("chai");
 var chaiAsPromised = require("chai-as-promised");
 
+
+
+var os = require('os');
+var seleniumURL;
+var isLocal = (os.hostname().indexOf("local") > -1);
+if(isLocal) {
+    URL = 'http://localhost:5000';
+} else {
+	URL = 'https://agile-thicket-8103.herokuapp.com';
+}
+
+
 chai.use(chaiAsPromised);
 chai.should();
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
@@ -18,16 +30,6 @@ if(!config.SAUCE_USERNAME || !config.SAUCE_ACCESS_KEY) {
 	throw new Error("Missing sauce credentials");
 }
 
-/*
-describe('Google Search', function() {
-	var browser = wd.promiseChainRemote("ondemand.saucelabs.com", 80, username, accessKey);
-	it('should fail please', function() {
-		expect(2).to.equal(3);
-	});
-});
-*/
-
-
 var desired = JSON.parse(config.DESIRED || '{"browserName": "chrome"}');
 desired.name = 'example with ' + desired.browserName;
 desired.tags = ['tutorial'];
@@ -39,14 +41,20 @@ desired.name = 'example with ' + desired.browserName;
 desired.tags = ['tutorial'];
 
 describe('Selenium Logging in and out (' + desired.browserName + ')', function() {
-	this.timeout(10000);
+	if (isLocal) {
+		this.timeout(100000);
+	} else {
+		this.timeout(10000);
+	}
     var browser;
     var allPassed = true;
 
     before(function(done) {
-        var username = config.SAUCE_USERNAME;
-        var accessKey = config.SAUCE_ACCESS_KEY;
-        browser = wd.promiseChainRemote("ondemand.saucelabs.com", 80, username, accessKey);
+    	if (isLocal) {
+	        browser = wd.promiseChainRemote("localhost", 4444);
+    	} else {
+	        browser = wd.promiseChainRemote("ondemand.saucelabs.com", 80, config.SAUCE_USERNAME, config.SAUCE_ACCESS_KEY);
+    	}
         browser
             .init(desired)
             .nodeify(done);
@@ -58,35 +66,63 @@ describe('Selenium Logging in and out (' + desired.browserName + ')', function()
     });
 
     after(function(done) {
-        browser
-            .quit()
-            .sauceJobStatus(allPassed)
-            .nodeify(done);
+    	if (isLocal) {
+	        browser
+	            .quit()
+	            .nodeify(done);
+    	} else {
+	        browser
+	            .quit()
+	            .sauceJobStatus(allPassed)
+	            .nodeify(done);
+    	}
     });
 
     it("should log in then out", function(done) {
         browser
-            .get("https://agile-thicket-8103.herokuapp.com")
+            .get(URL)
             .elementById('facebook-login')
             .click()
             .eval("window.location.href")
             .should.eventually.include("facebook.com")
-            /*.elementById("email")
-            .type("martintest_bdwqmyw_wolfenbargertest@tfbnw.net")
+            .elementById("email")
+            .type("khdrsbt_liangman_1436318828@tfbnw.net")
             .elementById("pass")
-            .type("projectawesometest")
+            .type("projectawesometestpassword")
             .elementById("u_0_2")
             .click()
+            .eval("window.location.href", function(err, href) {
+                console.log(href);
+                console.log(href.indexOf("facebook.com") > -1);
+                if(href.indexOf("facebook.com") > -1) {
+                    return browser
+                    .waitForElementById("platformDialogForm", wd.asserters.isDisplayed, 3000)
+                    .elementByName("__CONFIRM__")
+                    .click()
+                    .eval("window.location.href")
+                } else {
+                    return browser
+                    .eval("window.location.href")
+                }
+            })
+            .waitForElementById("logout", wd.asserters.isDisplayed, 3000)
+            .click()
             .eval("window.location.href")
-            .should.eventually.include("herokuapp.com")
+            .should.eventually.equal(URL + '/')
+            .elementById('facebook-login')
+            .nodeify(done)
+            
+            
+            /*
+            .should.eventually.include(URL)
             .elementById("logout")
             .click()
             .eval("window.location.href")
-            .should.eventually.include("herokuapp.com/logout")
-            .eval("window.location.href")
-            .should.eventually.not.include("logout")
-            .elementById('facebook-login')*/
+            .should.eventually.equal(URL + '/')
+            .elementById('facebook-login')
             .nodeify(done);
+            */
+            // #platformDialogForm
     });
 });
 

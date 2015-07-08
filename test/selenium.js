@@ -38,7 +38,7 @@ var desired = JSON.parse(process.env.DESIRED || '{"browserName": "chrome"}');
 desired.name = 'example with ' + desired.browserName;
 desired.tags = ['tutorial'];
 
-describe('{%= name %} (' + desired.browserName + ')', function() {
+describe('Selenium Logging in and out (' + desired.browserName + ')', function() {
 	this.timeout(10000);
     var browser;
     var allPassed = true;
@@ -64,11 +64,48 @@ describe('{%= name %} (' + desired.browserName + ')', function() {
             .nodeify(done);
     });
 
-    it("should get home page", function(done) {
+    it("should log in then out", function(done) {
         browser
-            .get("http://google.com/")
-            .title()
-            .should.become("Google")
+            .get("https://agile-thicket-8103.herokuapp.com")
+            .elementById('facebook-login')
+            .click()
+            .eval("window.location.href")
+            .should.eventually.include("facebook.com")
+            /*.elementById("email")
+            .type("martintest_bdwqmyw_wolfenbargertest@tfbnw.net")
+            .elementById("pass")
+            .type("projectawesometest")
+            .elementById("u_0_2")
+            .click()
+            .eval("window.location.href")
+            .should.eventually.include("herokuapp.com")
+            .elementById("logout")
+            .click()
+            .eval("window.location.href")
+            .should.eventually.include("herokuapp.com/logout")
+            .eval("window.location.href")
+            .should.eventually.not.include("logout")
+            .elementById('facebook-login')*/
             .nodeify(done);
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

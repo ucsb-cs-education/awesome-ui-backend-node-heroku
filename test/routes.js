@@ -3,62 +3,41 @@ var expect = require("chai").expect;
 var request = require('supertest');
 var models = require('../models');
 
-describe('GET /', function(){
-  it('should respond OK 200', function(){
-    request(app)
-    .get('/')
-    .expect(200)
-    .end(function(err, res) {
-      res.status.should.equal(200);
-      done();
-    });
-  });
-});
-describe('GET /student', function(){
-  it('should respond OK 200', function(){
-    request(app)
-    .get('/student')
-    .expect(200)
-    .end(function(err, res) {
-      res.status.should.equal(200);
-      done();
-    });
-  });
-});
-describe('GET /instructor', function(){
-  it('should respond OK 200', function(){
-    request(app)
-    .get('/instructor')
-    .expect(200)
-    .end(function(err, res) {
-      res.status.should.equal(200);
-      done();
-    });
-  });
-});
-describe('GET /author', function(){
-  it('should respond OK 200', function(){
-    request(app)
-    .get('/author')
-    .expect(200)
-    .end(function(err, res) {
-      res.status.should.equal(200);
-      done();
-    });
-  });
-});
-describe('GET /developer', function(){
-  it('should respond OK 200', function(){
-    request(app)
-    .get('/developer')
-    .expect(200)
-    .end(function(err, res) {
-      res.status.should.equal(200);
-      done();
-    });
-  });
-});
 
+
+
+// expectation helpers
+//function expectNavBar()
+
+
+// test construction helpers
+
+function makeBasicRouteTest(page) {
+  it('GET ' + page + ' should respond with OK 200', function(done){
+    request(app)
+      .get(page)
+      .expect('Content-Type', /html/)
+      .expect(200, done);
+  });
+}
+
+describe('Testing routes.', function(){
+
+  makeBasicRouteTest('/');
+  makeBasicRouteTest('/student');
+  makeBasicRouteTest('/instructor');
+  makeBasicRouteTest('/author');
+  makeBasicRouteTest('/developer');
+  makeBasicRouteTest('/developer');
+
+  it('GET /pagethatdoesntexist should respond with 404', function(done){
+    request(app)
+      .get('/pagethatdoesntexist')
+      .expect('Content-Type', /html/)
+      .expect(404, done);
+  });
+
+});
 
 // Mocha cheatsheet
 /*

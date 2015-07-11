@@ -6,10 +6,6 @@ var models = require('../models');
 
 
 
-// expectation helpers
-//function expectNavBar()
-
-
 // test construction helpers
 
 function makeBasicRouteTest(page) {
@@ -17,7 +13,11 @@ function makeBasicRouteTest(page) {
     request(app)
       .get(page)
       .expect('Content-Type', /html/)
-      .expect(200, done);
+      .expect(200)
+      .end(function(err, res){
+        if (err) return done(err);
+        done()
+      });
   });
 }
 
@@ -34,7 +34,11 @@ describe('Testing routes.', function(){
     request(app)
       .get('/pagethatdoesntexist')
       .expect('Content-Type', /html/)
-      .expect(404, done);
+      .expect(404)
+      .end(function(err, res){
+        if (err) return done(err);
+        done()
+      });
   });
 
 });

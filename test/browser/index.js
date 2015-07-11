@@ -10,9 +10,7 @@ describe('protractor library', function() {
     before(function() { 
         browser.ignoreSynchronization = true;
         server = http.createServer(app); 
-        server.listen(0); 
-        //browser.baseUrl = 'http://'+ server.address().address +':'+ server.address().port; 
-
+        server.listen(0);
         console.log(browser.baseUrl);
         console.log(app.get('port'));
     }); 

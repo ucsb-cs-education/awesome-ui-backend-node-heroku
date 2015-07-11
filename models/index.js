@@ -2,12 +2,12 @@
 
 var fs        = require('fs');
 var path      = require('path');
-var basename  = path.basename(module.filename);
-var env       = process.env.NODE_ENV || 'development';
-var config    = require(__dirname + '/../config/database.json')[env];
 
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize(config.database, config.username, config.password, config);
+var sequelize = new Sequelize(process.env.PG_DATABASE, process.env.PG_USERNAME, process.env.PG_PASSWORD, {
+    "protocol": "postgres", 
+    "dialect": "postgres"
+});
 
 // Loop through all files in /models and Sequelize import them
 fs

@@ -1,4 +1,4 @@
-exports.config ={
+exports.config = {
 	specs:['index.js'],
 	baseUrl: 'http://localhost:5000',
 	framework:'mocha',
@@ -21,6 +21,6 @@ if (process.env.TRAVIS_BUILD_NUMBER) {
         'accessKey': process.env.SAUCE_ACCESS_KEY,
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
         'build': process.env.TRAVIS_BUILD_NUMBER,
-        'tags': [process.env.TRAVIS_BRANCH, process.env.TRAVIS_BUILD_NUMBER, 'e2e']
+        'tags': [process.env.TRAVIS_BRANCH, process.env.TRAVIS_BUILD_NUMBER]
     };
 }

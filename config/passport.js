@@ -3,10 +3,11 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var env;
 // FOR DEVELOPMENT (check if we are on localhost)
 var os = require('os');
-if(os.hostname().indexOf("local") > -1)
+if(os.hostname().indexOf("local") > -1 || process.env.CI) {
     env = 'localhost';
-else
+} else {
     env = 'development';
+}
 
 var configAuth    = require(__dirname + '/../config/authentication.json')[env];
 

@@ -1,6 +1,6 @@
 exports.config ={
 	specs:['index.js'],
-	baseUrl: 'http://' + (process.env.CI ? 'ngadmin' : 'localhost') + ':5000',
+	baseUrl: 'http://' + (process.env.CI ? 'localhost' : 'localhost') + ':5000',
 	framework:'mocha',
 	mochaOpts: {
 		reporter:'spec',

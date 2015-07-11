@@ -1,15 +1,20 @@
-var expect = require("chai").expect;
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+var expect = chai.expect;
 var app = require('../../index.js');
 var http = require('http');
 var server; 
 
 describe('protractor library', function() {
     before(function() { 
+        browser.ignoreSynchronization = true;
         server = http.createServer(app); 
         server.listen(0); 
         //browser.baseUrl = 'http://'+ server.address().address +':'+ server.address().port; 
 
         console.log(browser.baseUrl);
+        console.log(app.get('port'));
     }); 
 
     after(function(){
@@ -27,29 +32,46 @@ describe('protractor library', function() {
         expect($).to.exist;
     });
     
+    it('should go to google.com and make sure the title is Google', function(done) {
+        //this.slow(4000);
+        /*
+        browser.driver.get("http://google.com");
+        browser.driver.sleep(2000);
+        console.log(browser.getTitle())
+        expect(browser.getTitle()).toEqual('Google');
+        done();
+        */
+
+
+        browser.get('http://google.com');
+        expect(browser.getTitle()).to.eventually.eq('Google');
+        done();
+    });
+    
     
     it('should login, logout, login, and logout with Facebook', function(done) {
+        
         this.slow(4000);
-        browser.driver.get(browser.baseUrl);
-        var fbLoginButton = browser.driver.findElement(by.id('facebook-login')).click()
 
-        browser.driver.findElement(by.id('email')).sendKeys("khdrsbt_liangman_1436318828@tfbnw.net");
-        browser.driver.findElement(by.id('pass')).sendKeys("martin");
-        browser.driver.findElement(by.id('u_0_2')).click();
+        browser.get('/');
+        browser.findElement(by.id('facebook-login')).click()
 
-        /*
+        browser.findElement(by.id('email')).sendKeys("khdrsbt_liangman_1436318828@tfbnw.net");
+        browser.findElement(by.id('pass')).sendKeys("martin");
+        browser.findElement(by.id('u_0_2')).click();
 
-        browser.driver.findElement(by.id('logout')).click();
 
-        browser.driver.findElement(by.id('facebook-login')).click();
+        browser.findElement(by.id('logout')).click();
 
-        browser.driver.findElement(by.id('logout')).click();
+        browser.findElement(by.id('facebook-login')).click();
+
+        browser.findElement(by.id('logout')).click();
 
 
         // we're about to authorize some permissions, but the button isn't enabled for a second
         //fbLoginButton.driver.sleep(1500);
         //console.log(fbLoginButton.getText());
-        */
+        
         done();
 
         //expect(browser.getTitle()).to.eventually.equal('My AngularJS App');

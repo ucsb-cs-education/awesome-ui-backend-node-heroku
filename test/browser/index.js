@@ -6,11 +6,12 @@ var app = require('../../index.js');
 var http = require('http');
 var server; 
 
-describe('protractor library', function() {
+describe('Protractor + Selenium Browser Tests', function() {
     before(function() { 
         browser.ignoreSynchronization = true;
         server = http.createServer(app); 
         server.listen(0);
+        //browser.baseUrl = browser.baseUrl.slice(0,-1);
         console.log(browser.baseUrl);
         console.log(app.get('port'));
     }); 
@@ -18,25 +19,46 @@ describe('protractor library', function() {
     after(function(){
         server.close(); 
     });
-    it('should pass', function() {
-        expect(true).to.equal(true);
+
+    describe('Testing framework, Protractor, Selenium', function () {
+
+        it('should pass', function() {
+            expect(true).to.equal(true);
+        });
+        
+        it('should expose the correct global variables', function() {
+            expect(protractor).to.exist;
+            expect(browser).to.exist;
+            expect(by).to.exist;
+            expect(element).to.exist;
+            expect($).to.exist;
+        });
+        
+        it('should go to google.com and make sure the title is Google', function(done) {
+            browser.get('http://google.com');
+            expect(browser.getTitle()).to.eventually.eq('Google');
+            done();
+        });
+
     });
+
     
-    it('should expose the correct global variables', function() {
-        expect(protractor).to.exist;
-        expect(browser).to.exist;
-        expect(by).to.exist;
-        expect(element).to.exist;
-        expect($).to.exist;
+
+    describe('Unauthenticated use cases.', function () {
+
+        it('should successfully navigate to each page', function () {
+            browser.get('/');
+            expect(element(by.id('google-login'))).to.exist;
+            expect(element(by.id('facebook-login'))).to.exist;
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/');
+            browser.findElement(by.id('home-button')).click();
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/');
+        });
+
     });
-    
-    it('should go to google.com and make sure the title is Google', function(done) {
-        browser.get('http://google.com');
-        expect(browser.getTitle()).to.eventually.eq('Google');
-        done();
-    });
-    
-    
+
+
+    /*
     it('should login, logout, login, and logout with Facebook', function(done) {
         
         this.slow(4000);
@@ -76,8 +98,10 @@ describe('protractor library', function() {
 
         //expect(browser.getTitle()).to.eventually.equal('My AngularJS App');
     });
+    */
     
 });
+
 
 
 

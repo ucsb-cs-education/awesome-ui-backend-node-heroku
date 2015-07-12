@@ -40,7 +40,7 @@ Travis CI needs to know your Sauce Labs username and access key. On [the Travis 
 * SAUCE_USERNAME
 * SAUCE_ACCESS_KEY
 
-More details on how to set Travis CI environment variables at [HOWTO-SELENIUM.md](HOWTO-SELENIUM.md).
+More details on how to set Travis CI environment variables [here](/HOWTO-TRAVIS-CI.md).
 
 
 

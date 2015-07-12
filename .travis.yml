@@ -2,8 +2,15 @@ language: node_js
 node_js:
 - 0.12.2
 env:
-  global:
+  global: 
 addons:
   sauce_connect: true
 before_script:
-  - psql -c "create database $(basename ${DATABASE_URL});" -U postgres
+- psql -c "create database $(basename ${DATABASE_URL});" -U postgres
+deploy:
+  provider: heroku
+  api_key:
+    secure: lVrPAk3WnUsWuj9eg5+GYA0+7vnh671thXN18LdMuqqSFWE/6odyouR4BqBcSJUMVkUPgOxA8fVZv4ysjb8y6nzscADV3aYMl0FhMYgM5Q01W5ed3RkW7GaLT+pqoN2+lOKDL/OjfVLvUJSweDwTZ3bthbqoMD40PEmTg+7YqgGo7AiCuHsritPwppw07zMrIiaTx906IyuAloH6ZFmBE1W13oN/pEbWekD3m7HztDJF5OFB7WGfcs4dC2ZBrvebaNgJipDiEKnra6QeDibcsM+OgjmhRgfUqgbKajMx2Z2ptpJyW0lBtQ1JRYIalptR3dNm5lbm2aWVo5dLIZSbqZY2Eo5D4m+C+06/J1HhD35mla8jpwAGTDsIIRkGL4JguubUR+3bQSkSxcO0dhJsdVS7X+os4WLWeP1mBgeBnRDoN7C9Z1TLQQlKivX3g0tWhLn3DA4v4b0lb6ztVOCx29vPu/vfqwXz8bmnVo8iYrJxFTDlIz86AkYgodEIB6U92bEYe7/m31qL3d8fsTXkPEbtsEOt+/QA3JFIf5oqs961h5OdLyOQ+jsPXTIwTZpqv4VIvGMJ0dqInEgXqo39yIixIeaICKinLqsoZnvWtncPQaHo0Segw+NuIp80bM4NE08xcsA7kMW9yNgIIzwsVaBdveZTko40OIRsMa2Nkzk=
+  app: agile-thicket-8103
+  on:
+    repo: wolfenbarger/awesome-ui-backend-node-heroku

@@ -1,13 +1,5 @@
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var env;
-// FOR DEVELOPMENT (check if we are on localhost)
-var os = require('os');
-if(os.hostname().indexOf("local") > -1 || process.env.CI) {
-    env = 'localhost';
-} else {
-    env = 'development';
-}
 
 
 

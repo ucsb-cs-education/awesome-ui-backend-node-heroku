@@ -9,7 +9,6 @@ if(os.hostname().indexOf("local") > -1 || process.env.CI) {
     env = 'development';
 }
 
-var configAuth    = require(__dirname + '/../config/authentication.json')[env];
 
 
 module.exports = function(passport, models) {
@@ -62,9 +61,9 @@ module.exports = function(passport, models) {
 
     // GOOGLE ============================================================
     passport.use(new GoogleStrategy({
-        clientID : configAuth.googleAuth.clientID,
-        clientSecret : configAuth.googleAuth.clientSecret,
-        callbackURL : configAuth.googleAuth.callbackURL
+        clientID : process.env.GOOGLE_APP_ID,
+        clientSecret : process.env.GOOGLE_APP_SECRET,
+        callbackURL : process.env.GOOGLE_CALLBACK_URL
     },
     function(token, refreshToken, profile, done) {
         // asynchronous
@@ -76,9 +75,9 @@ module.exports = function(passport, models) {
 
     // FACEBOOK ==========================================================
     passport.use(new FacebookStrategy({
-        clientID        : configAuth.facebookAuth.clientID,
-        clientSecret    : configAuth.facebookAuth.clientSecret,
-        callbackURL     : configAuth.facebookAuth.callbackURL
+        clientID        : process.env.FACEBOOK_APP_ID,
+        clientSecret    : process.env.FACEBOOK_APP_SECRET,
+        callbackURL     : process.env.FACEBOOK_CALLBACK_URL
     },
     function(token, refreshToken, profile, done) {
         // asynchronous

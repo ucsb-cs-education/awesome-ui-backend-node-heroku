@@ -31,16 +31,6 @@ describe('protractor library', function() {
     });
     
     it('should go to google.com and make sure the title is Google', function(done) {
-        //this.slow(4000);
-        /*
-        browser.driver.get("http://google.com");
-        browser.driver.sleep(2000);
-        console.log(browser.getTitle())
-        expect(browser.getTitle()).toEqual('Google');
-        done();
-        */
-
-
         browser.get('http://google.com');
         expect(browser.getTitle()).to.eventually.eq('Google');
         done();
@@ -54,10 +44,22 @@ describe('protractor library', function() {
         browser.get('/');
         browser.findElement(by.id('facebook-login')).click()
 
-        browser.findElement(by.id('email')).sendKeys("khdrsbt_liangman_1436318828@tfbnw.net");
-        browser.findElement(by.id('pass')).sendKeys("martin");
+        browser.findElement(by.id('email')).sendKeys(process.env.FACEBOOK_TEST_EMAIL);
+        browser.findElement(by.id('pass')).sendKeys(process.env.FACEBOOK_TEST_PASSWORD);
         browser.findElement(by.id('u_0_2')).click();
 
+        browser.sleep(1000);
+
+        element(by.name('__CONFIRM__')).isPresent().then(function(result) {
+            if ( result ) {
+                browser.findElement(by.name('__CONFIRM__')).click();
+                browser.sleep(1000);
+            }
+        });
+        var waitLoading = by.id('logout');
+        browser.wait(function() {
+            return element(waitLoading).isPresent()
+        }, 3000);
 
         browser.findElement(by.id('logout')).click();
 

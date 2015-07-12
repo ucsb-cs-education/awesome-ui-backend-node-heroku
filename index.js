@@ -28,7 +28,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 // passport initialization
 app.use(session( { 
-	secret: 'somesecretforprojectawesomechangethismaybe',
+	secret: process.env.SESSION_SECRET || 'some_default_secret_for_project_awesome',
 	resave: true,
 	saveUninitialized: true
 } ));

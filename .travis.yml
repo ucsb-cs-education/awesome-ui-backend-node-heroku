@@ -4,4 +4,4 @@ node_js:
 addons:
   sauce_connect: true
 before_script:
-- DB_NAME=$(basename "$DATABASE_URL") && psql -c 'create database '$DB_NAME'' -U postgres
+- psql -c "create database $(basename ${DATABASE_URL});" -U postgres

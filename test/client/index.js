@@ -6,7 +6,7 @@ var app = require('../../index.js');
 var http = require('http');
 var server; 
 
-describe('Protractor + Selenium Browser Tests', function() {
+describe('End-to-End Tests', function() {
     before(function() { 
         browser.ignoreSynchronization = true;
         server = http.createServer(app); 
@@ -65,18 +65,12 @@ describe('Protractor + Selenium Browser Tests', function() {
             browser.findElement(by.id('pass')).sendKeys(process.env.FACEBOOK_TEST_PASSWORD);
             browser.findElement(by.id('u_0_2')).click();
 
-            browser.sleep(1000);
-
             element(by.name('__CONFIRM__')).isPresent().then(function(result) {
                 if ( result ) {
                     browser.findElement(by.name('__CONFIRM__')).click();
                     browser.sleep(1000);
                 }
             });
-            var waitLoading = by.id('logout');
-            browser.wait(function() {
-                return element(waitLoading).isPresent()
-            }, 3000);
             browser.findElement(by.id('logout')).click();
             browser.findElement(by.id('facebook-login')).click();
             done();

@@ -24,7 +24,7 @@ The environment variables you need are:
 
 * SAUCE_ACCESS_KEY
 * SAUCE_USERNAME
-* DATABASE_URL (to postgres://postgres@localhost/travisci_test_db)
+* DATABASE_URL (to postgres://postgres@localhost/tcidb)
 * FACEBOOK_APP_ID
 * FACEBOOK_APP_SECRET
 * FACEBOOK_CALLBACK_URL

@@ -1,8 +1,6 @@
 var app = require('../../index.js');
-var expect = require("chai").expect;
 var request = require('supertest');
-var models = require('../../models');
-
+var expect = require("chai").expect;
 
 
 
@@ -16,7 +14,7 @@ function makeBasicRouteTest(page) {
       .expect(200)
       .end(function(err, res){
         if (err) return done(err);
-        done()
+        done();
       });
   });
 }
@@ -27,7 +25,6 @@ describe('Testing routes.', function(){
   makeBasicRouteTest('/student');
   makeBasicRouteTest('/instructor');
   makeBasicRouteTest('/author');
-  makeBasicRouteTest('/developer');
   makeBasicRouteTest('/developer');
 
   it('GET /pagethatdoesntexist should respond with 404', function(done){

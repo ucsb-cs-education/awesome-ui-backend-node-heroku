@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha test/node/env_vars.js && mocha test/node/models.js && mocha test/node/page_routes.js && protractor test/client/config.js"
+    "test": "mocha test/node-unit/env_vars.js && mocha test/node-unit/models.js && mocha test/node-unit/page_routes.js && protractor test/e2e/config.js && protractor test/angular-unit/config.js"
   },
   "dependencies": {
+    "angular-mocks": "^1.4.2",
     "body-parser": "^1.13.1",
     "chai": "^3.0.0",
     "chai-as-promised": "^5.1.0",

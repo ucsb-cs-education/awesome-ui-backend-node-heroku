@@ -1,5 +1,5 @@
 exports.config = {
-	specs:['index.js', 'navigation_bar.js'],
+	specs:['index.js', 'navigation.js'],
 	baseUrl: 'http://localhost:5000',
 	framework:'mocha',
 	mochaOpts: {

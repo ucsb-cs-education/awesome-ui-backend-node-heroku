@@ -12,7 +12,7 @@ before(function(done) {
     });
 });
 
-describe('Navigation Bar Controller', function() {
+describe('Navigation Bar', function() {
     var expectPages = ['/student', '/instructor', '/author', '/developer'];
 
     beforeEach(function(done) {
@@ -24,8 +24,8 @@ describe('Navigation Bar Controller', function() {
     describe('Dropdown Menu', function () {
 
         it('should have 4 pages', function(done) {
-            var pagesList = element.all(by.repeater('page in pages'));
-            expect(pagesList.count()).to.eventually.equal(expectPages.length);
+            var ddItems = element.all(by.repeater('ddItem in dropDownItems'));
+            expect(ddItems.count()).to.eventually.equal(expectPages.length);
             done();
         });
 
@@ -33,7 +33,7 @@ describe('Navigation Bar Controller', function() {
 
             for (var i = 0; expectPages.length > i; i++) {
                 browser.findElement(by.css('.dropdown')).click();
-                var link = browser.findElement(by.repeater('page in pages').row(i).column('page'));
+                var link = browser.findElement(by.repeater('ddItem in dropDownItems').row(i).column('ddItem.name'));
                 link.click();
                 expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + expectPages[i]);
             }

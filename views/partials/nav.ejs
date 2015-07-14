@@ -60,7 +60,7 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Choose Your Role <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-          <li ng-repeat="page in pages"><a href="/{{ page }}">{{ page | capitalizeFirst }}</a></li>
+          <li ng-repeat="ddItem in dropDownItems"><a href="{{ ddItem.href }}">{{ ddItem.name }}</a></li>
         </ul>
       </li>
     </ul>

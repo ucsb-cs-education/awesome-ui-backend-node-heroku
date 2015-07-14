@@ -3,29 +3,19 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
 var app = require('../../index.js');
-var http = require('http');
-var server; 
 
 describe('End-to-End Tests', function() {
     before(function() { 
         browser.ignoreSynchronization = true;
-        server = http.createServer(app); 
-        server.listen(0);
-        console.log(browser.baseUrl);
-        console.log(app.get('port'));
     }); 
 
-    after(function(){
-        server.close(); 
+    after(function() {
+
     });
 
-    describe('Testing framework, Protractor, Selenium', function () {
+    describe('Protractor and Selenium', function () {
 
-        it('should pass', function() {
-            expect(true).to.equal(true);
-        });
-        
-        it('should expose the correct global variables', function() {
+        it('should expose the correct protractor global variables', function() {
             expect(protractor).to.exist;
             expect(browser).to.exist;
             expect(by).to.exist;
@@ -33,7 +23,7 @@ describe('End-to-End Tests', function() {
             expect($).to.exist;
         });
         
-        it('should go to google.com and make sure the title is Google', function(done) {
+        it('should complete a get request to google, and confirm the title', function(done) {
             browser.get('http://google.com');
             expect(browser.getTitle()).to.eventually.eq('Google');
             done();
@@ -41,26 +31,10 @@ describe('End-to-End Tests', function() {
 
     });
 
-    
-
-    describe('user navigation and drop-down menu', function () {
-
-        it('should use click the home button and end up at home', function (done) {
+    describe('Facebook Authenticated', function () {
+        it('should login, logout, login, and logout, using Facebook', function(done) {
             browser.get('/');
-            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/');
-            browser.findElement(by.id('home-button')).click();
-            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/');
-            done();
-        });
-
-        
-
-    });
-
-    describe('Authenticated use cases.', function () {
-        it('should login, logout, login, and logout with Facebook', function(done) {
-            browser.get('/');
-            browser.findElement(by.id('facebook-login')).click()
+            browser.findElement(by.id('facebook-login')).click();
             browser.findElement(by.id('email')).sendKeys(process.env.FACEBOOK_TEST_EMAIL);
             browser.findElement(by.id('pass')).sendKeys(process.env.FACEBOOK_TEST_PASSWORD);
             browser.findElement(by.id('u_0_2')).click();
@@ -73,6 +47,7 @@ describe('End-to-End Tests', function() {
             });
             browser.findElement(by.id('logout')).click();
             browser.findElement(by.id('facebook-login')).click();
+            browser.findElement(by.id('logout')).click();
             done();
         });
     });

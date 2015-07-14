@@ -24,17 +24,16 @@ describe('Navigation Bar', function() {
     describe('Dropdown Menu', function () {
 
         it('should have 4 pages', function(done) {
-            var ddItems = element.all(by.repeater('ddItem in dropDownItems'));
-            expect(ddItems.count()).to.eventually.equal(expectPages.length);
+            var navLinks = element(by.id('navigation-links')).all(by.css('a'));
+            expect(navLinks.count()).to.eventually.equal(expectPages.length);
             done();
         });
 
         it('should should take us to the given page when an item is clicked', function(done) {
-
             for (var i = 0; expectPages.length > i; i++) {
                 browser.findElement(by.css('.dropdown')).click();
-                var link = browser.findElement(by.repeater('ddItem in dropDownItems').row(i).column('ddItem.name'));
-                link.click();
+                var navLink = element(by.id('navigation-links')).all(by.css('a')).get(i);
+                navLink.click();
                 expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + expectPages[i]);
             }
             done();

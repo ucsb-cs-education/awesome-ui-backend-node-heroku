@@ -22,12 +22,6 @@ describe('End-to-End Tests', function() {
             expect(element).to.exist;
             expect($).to.exist;
         });
-        
-        it('should complete a get request to google, and confirm the title', function(done) {
-            browser.get('http://google.com');
-            expect(browser.getTitle()).to.eventually.eq('Google');
-            done();
-        });
 
     });
 

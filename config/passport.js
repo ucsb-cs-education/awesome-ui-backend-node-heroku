@@ -1,5 +1,9 @@
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var TestStrategy;
+if (process.env.NODE_ENV != 'production') {
+    TestStrategy = require('passport-local').Strategy;
+}
 
 
 
@@ -79,6 +83,34 @@ module.exports = function(passport, models) {
         });
 
     }));
+
+
+    // TESTING ==========================================================
+    if (process.env.NODE_ENV != 'production') {
+        passport.use('local-login', new TestStrategy({
+            // by default, local strategy uses username and password, we will override with email
+            usernameField: 'email',
+            passwordField: 'password',
+            passReqToCallback : true // allows us to pass back the entire request to the callback
+        },
+        function(req, email, password,  done) {
+            process.nextTick(function() {
+                profile = {
+                    id: req.query.id,
+                    emails: [{ value: email }],
+                    displayName: req.query.name
+                }
+                authResult(req.query.account_type, req.query.token, "some_test_refresh_token_1234", profile, done);
+            });
+
+        }));
+    }
+        
+
+
+    /*
+        http://localhost:5000/auth/test/callback?account_type=test&id=0123456789&token=some_test_token&email=some_test_email&name=Kakabutt&password=kaka
+    */
 
 
 }

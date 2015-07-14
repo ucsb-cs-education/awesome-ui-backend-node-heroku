@@ -2,7 +2,9 @@ var app = require('../../index.js');
 var chai = require('chai');
 var expect = chai.expect;
 var chaiAsPromised = require('chai-as-promised');
+var testUtils = require('../utils');
 chai.use(chaiAsPromised);
+
 
 before(function(done) {
     browser.ignoreSynchronization = false;
@@ -21,7 +23,7 @@ describe('Navigation Bar', function() {
         });
     });
 
-    describe('Dropdown Menu', function () {
+    describe('Navigation Dropdown Menu', function () {
 
         it('should have 4 pages', function(done) {
             var navLinks = element(by.id('navigation-links')).all(by.css('a'));
@@ -37,9 +39,25 @@ describe('Navigation Bar', function() {
                 expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + expectPages[i]);
             }
             done();
+        });
+    });
 
+    describe('User Dropdown Menu', function () {
+        beforeEach(function(done) {
+            browser.get(testUtils.createTestAuthUrl('test', 'id', 'token', 'email', 'Test Name')).then(function() {
+                done();
+            });
         });
 
+        afterEach(function(done) {
+            browser.get('/logout');
+            done();
+        });
+
+        it('should have logged the user in', function(done) {
+            browser.findElement(by.id('logout'));
+            done();
+        });
     });
 
     describe('Home Button', function () {

@@ -1,4 +1,6 @@
 module.exports = function(app, passport) {
+    var successRedirectUrl = '/';
+    var failureRedirectUrl = '/fail';
 
     // FACEBOOK authentication routes
     app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
@@ -6,8 +8,8 @@ module.exports = function(app, passport) {
     // after facebook authenticates
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
-            successRedirect : '/',
-            failureRedirect : '/fail'
+            successRedirect : successRedirectUrl,
+            failureRedirect : failureRedirectUrl
         }
     ));
 
@@ -17,8 +19,8 @@ module.exports = function(app, passport) {
     // after google authenticates
     app.get('/auth/google/callback',
 		passport.authenticate('google', {
-			successRedirect : '/',
-			failureRedirect : '/fail'
+			successRedirect : successRedirectUrl,
+			failureRedirect : failureRedirectUrl
 		}
 	));
 
@@ -27,5 +29,20 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
+    // TEST authenticaiton routes
+    if (process.env.NODE_ENV != 'production') {
+        app.get('/auth/test/callback', passport.authenticate('local-login', {
+            successRedirect : successRedirectUrl,
+            failureRedirect : failureRedirectUrl
+        }));
+    }
 
 }
+
+
+
+
+
+
+
+

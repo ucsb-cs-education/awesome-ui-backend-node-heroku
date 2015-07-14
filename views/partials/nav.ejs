@@ -52,7 +52,7 @@
    </ul>
 
 
-   <div class="navbar-left">
+   <div ng-controller="NavBarCtrl" class="navbar-left">
     <ul class="nav navbar-nav">
       <li class="active">
         <a href="/" id="home-button"><span class="glyphicon glyphicon-home"></span> Home</a>
@@ -60,10 +60,7 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Choose Your Role <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="/student">Student</a></li>
-          <li><a href="/instructor">Instructor</a></li>
-          <li><a href="/author">Author</a></li>
-          <li><a href="/developer">Developer</a></li>
+          <li ng-repeat="page in pages"><a href="/{{ page }}">{{ page | capitalizeFirst }}</a></li>
         </ul>
       </li>
     </ul>

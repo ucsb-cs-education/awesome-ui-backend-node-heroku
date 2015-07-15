@@ -5,6 +5,7 @@ module.exports = function(sequelize, DataTypes) {
 		id: { type: DataTypes.STRING,  unique: 'compositeIndex' },
 		token: DataTypes.STRING,
 		email: DataTypes.STRING,
-		name: DataTypes.STRING
+		name: DataTypes.STRING,
+		role: { type: DataTypes.ENUM('student', 'instructor', 'author', 'developer'), defaultValue: 'student' }
 	});
 };

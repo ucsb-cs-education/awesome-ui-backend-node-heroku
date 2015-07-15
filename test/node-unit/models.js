@@ -68,6 +68,19 @@ describe('User Model', function(){
       });
     });
   });
+
+
+  it('should create a user with a default start page prefence set to student', function(done){
+    models.User.create(testUser).then(function(user) {
+      models.User.findOne({
+        where: { awesome_id: testUser.awesome_id }
+      }).then(function(user) {
+        expect(user.role).to.equal('student');
+        done();
+      });
+    });
+  });
+
 });
 
 // Mocha cheatsheet

@@ -19,6 +19,7 @@ describe('Navigation Bar', function() {
 
     beforeEach(function(done) {
         browser.get('/').then(function() {
+            browser.findElement(by.id('navigation-dropdown')).click();
             done();
         });
     });
@@ -31,18 +32,34 @@ describe('Navigation Bar', function() {
             done();
         });
 
-        it('should should take us to the given page when an item is clicked', function(done) {
-            for (var i = 0; expectPages.length > i; i++) {
-                browser.findElement(by.css('.dropdown')).click();
-                var navLink = element(by.id('navigation-links')).all(by.css('a')).get(i);
-                navLink.click();
-                expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + expectPages[i]);
-            }
+        it('should navigate to /student', function(done) {
+            element(by.id('navigation-links')).element(by.cssContainingText('a','Student')).click();
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/student');
             done();
         });
+
+        it('should navigate to /instructor', function(done) {
+            element(by.id('navigation-links')).element(by.cssContainingText('a','Instructor')).click();
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/instructor');
+            done();
+        });
+        
+        it('should navigate to /author', function(done) {
+            element(by.id('navigation-links')).element(by.cssContainingText('a','Author')).click();
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/author');
+            done();
+        });
+        
+        it('should navigate to /developer', function(done) {
+            element(by.id('navigation-links')).element(by.cssContainingText('a','Developer')).click();
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/developer');
+            done();
+        });
+
     });
 
     describe('User Dropdown Menu', function () {
+        
         beforeEach(function(done) {
             browser.get(testUtils.createTestAuthUrl('test', 'id', 'token', 'email', 'Test Name')).then(function() {
                 done();
@@ -58,6 +75,7 @@ describe('Navigation Bar', function() {
             browser.findElement(by.id('logout'));
             done();
         });
+
     });
 
     describe('Home Button', function () {

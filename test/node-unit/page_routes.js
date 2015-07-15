@@ -26,6 +26,7 @@ describe('Testing routes.', function(){
   makeBasicRouteTest('/instructor');
   makeBasicRouteTest('/author');
   makeBasicRouteTest('/developer');
+  makeBasicRouteTest('/usersettings');
 
   it('GET /pagethatdoesntexist should respond with 404', function(done){
     request(app)

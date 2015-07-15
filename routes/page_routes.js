@@ -22,4 +22,8 @@ module.exports = function(app) {
 		response.render('pages/developer', { user : request.user })
 	});
 
+	app.get('/usersettings', function(request, response) {
+		response.render('pages/usersettings', { user : request.user })
+	});
+
 }

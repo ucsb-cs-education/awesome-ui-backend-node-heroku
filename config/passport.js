@@ -105,12 +105,7 @@ module.exports = function(passport, models) {
 
         }));
     }
-        
-
-
-    /*
-        http://localhost:5000/auth/test/callback?account_type=test&id=0123456789&token=some_test_token&email=some_test_email&name=Kakabutt&password=kaka
-    */
+    
 
 
 }

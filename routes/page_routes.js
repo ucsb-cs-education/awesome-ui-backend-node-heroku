@@ -1,8 +1,6 @@
 module.exports = function(app) {
 
 	app.get('/', function(request, response) {
-		var fullUrl = request.protocol + '://' + request.get('host') + request.originalUrl;
-		console.log(fullUrl);
 		response.render('pages/index', { user : request.user })
 	});
 

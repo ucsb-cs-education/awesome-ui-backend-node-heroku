@@ -1,6 +1,7 @@
 var app = require('../../index.js');
 var request = require('supertest');
 var expect = require("chai").expect;
+var utils = require("../utils");
 
 
 
@@ -19,7 +20,7 @@ function makeBasicRouteTest(page) {
   });
 }
 
-describe('Testing routes.', function(){
+describe('Routing', function(){
 
   makeBasicRouteTest('/');
   makeBasicRouteTest('/student');
@@ -36,6 +37,30 @@ describe('Testing routes.', function(){
       .end(function(err, res){
         if (err) return done(err);
         done()
+      });
+  });
+
+});
+
+describe('Cookies', function() {
+  it('should set the correct cookies when the user is authenticated', function(done) {
+    request(app)
+      .get(utils.createTestAuthUrl("test", 11, "test_token", "test_email", "Test Name"))
+      .end(function(err, res){
+        request(app)
+        .get('/')
+        .expect('Content-Type', /html/)
+        .expect(200)
+        .end(function(err, res){
+          if (err) return done(err);
+          var cookieString = JSON.stringify(res.header['set-cookie']);
+          expect(cookieString).to.include('awesome_id=');
+          expect(cookieString).to.include('email=');
+          expect(cookieString).to.include('name=');
+          expect(cookieString).to.include('role=');
+          expect(cookieString).to.include('connect.sid=');
+          done()
+        });
       });
   });
 

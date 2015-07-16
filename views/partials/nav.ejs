@@ -34,8 +34,14 @@
       <% if (user) { %>
 
       <!-- User is logged in so... display the user's name + logout link  -->
-      <li class="active">
-        <a href="/logout" id="logout"><%= user.name %> <span class="glyphicon glyphicon-remove-circle"></span></a>
+
+      <li class="dropdown" id="user-dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <%= user.name %>    <span class="glyphicon glyphicon-cog"></span></a>
+        <ul id="user-links" class="dropdown-menu" role="menu">
+          <li><a href="/usersettings">Settings</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="/logout">Sign Out</a></li>
+        </ul>
       </li>
 
       <% } else { %>

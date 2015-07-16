@@ -4,11 +4,44 @@
   <% include ../partials/header.ejs %>
 </head>
 
-<body ng-app="awesomeApp">
+	<body ng-app="awesomeApp">
 
-  <% include ../partials/nav.ejs %>
-    <h1>User Settings</h1>
+  		<% include ../partials/nav.ejs %>
+
+		<div class="container" ng-controller="UserPrefCtrl">
+
+			<div class="col-sm-6 col-sm-offset-2">
+
+	    		<h1><span class="fa"></span> User Settings</h1>
+
+	    		<hr>
+
+	    		<h3><span class="fa"></span> Role Preference</h1>
+
+				<div ng-controller="DropDownCtrl">
+
+				    <!-- Single button -->
+				    <div class="btn-group" dropdown is-open="status.isopen">
+				      <button type="button" class="btn btn-default btn-block dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+				        {{role.text}} <span class="caret"></span>
+				      </button>
+				      <ul class="dropdown-menu" role="menu">
+				        <li ng-repeat="role in roles">
+				          <a href ng-click="selectItem(role)">{{role.text}}</a>
+				        </li>
+				      </ul>
+				    <div>
+				</div>
+			</div>
+				    
+
+		</div>
+
+	    <hr>
+
+	    <button ng-click="updatePreferences()" type="submit" class="btn btn-success btn-lg">Update Profile</button>
 
 
-</body>
+   
+	</body>
 </html>

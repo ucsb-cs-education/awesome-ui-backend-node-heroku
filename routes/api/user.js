@@ -17,9 +17,9 @@ module.exports = function(app, models) {
                 user.updateAttributes({
                     role: req.query.role
                 }).then(function(user) {
-                    res.json({ success: true });
+                    res.json({ success: true, message: "Updated user. " + req.query.role });
                 }).catch(function(error) {
-                    res.json({ success: false, error: error });
+                    res.json({ success: false, error: error, message: "Error. " + req.query.role });
                 })
             }
         })

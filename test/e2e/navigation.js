@@ -59,7 +59,7 @@ describe('Navigation Bar', function() {
     });
 
     describe('User Dropdown Menu', function () {
-        
+
         beforeEach(function(done) {
             browser.get(testUtils.createTestAuthUrl('test', 'id', 'token', 'email', 'Test Name')).then(function() {
                 done();
@@ -72,7 +72,21 @@ describe('Navigation Bar', function() {
         });
 
         it('should have logged the user in', function(done) {
-            browser.findElement(by.id('logout'));
+            browser.findElement(by.id('user-dropdown'));
+            done();
+        });
+
+        it('should navigate to the /usersettings page', function(done) {
+            browser.findElement(by.id('user-dropdown')).click();
+            element(by.id('user-links')).element(by.cssContainingText('a','Settings')).click();
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/usersettings');
+            done();
+        });
+
+        it('should log out using the user dropdown', function(done) {
+            browser.findElement(by.id('user-dropdown')).click();
+            element(by.id('user-links')).element(by.cssContainingText('a','Sign Out')).click();
+            expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/');
             done();
         });
 

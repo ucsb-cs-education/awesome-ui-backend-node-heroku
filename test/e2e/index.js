@@ -26,7 +26,7 @@ describe('End-to-End Tests', function() {
     });
 
     describe('Facebook Authenticated', function () {
-        it('should login, logout, login, and logout, using Facebook', function(done) {
+        it('should login using Facebook auth', function(done) {
             browser.get('/');
             browser.findElement(by.id('facebook-login')).click();
             browser.findElement(by.id('email')).sendKeys(process.env.FACEBOOK_TEST_EMAIL);
@@ -39,9 +39,6 @@ describe('End-to-End Tests', function() {
                     browser.sleep(1000);
                 }
             });
-            browser.findElement(by.id('logout')).click();
-            browser.findElement(by.id('facebook-login')).click();
-            browser.findElement(by.id('logout')).click();
             done();
         });
     });

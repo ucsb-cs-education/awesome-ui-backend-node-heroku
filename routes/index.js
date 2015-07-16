@@ -1,8 +1,9 @@
-module.exports = function(app, passport) {
+module.exports = function(app, passport, models) {
 
 	app.use(setUserCookie);
 	require('./page_routes')(app);
 	require('./auth_routes')(app, passport);
+	require('./api')(app, models);
 }
 
 function setUserCookie(req, res, next) {

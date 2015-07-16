@@ -44,7 +44,7 @@ require('./config/passport.js')(passport, models);
 
 
 // routes ======================================================================
-require('./routes')(app, passport);
+require('./routes')(app, passport, models);
 
 
 app.listen(app.get('port'), function() {

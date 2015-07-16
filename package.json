@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha test/node-unit/env_vars.js && mocha test/node-unit/models.js && mocha test/node-unit/page_routes.js && protractor test/e2e/config.js && protractor test/angular-unit/config.js"
+    "test": "mocha test/node-unit/env_vars.js && mocha test/node-unit/models.js && mocha test/node-unit/page_routes.js && mocha test/node-unit/api/ && protractor test/e2e/config.js && ./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "dependencies": {
+    "angular": "^1.4.3",
     "angular-mocks": "^1.4.2",
     "body-parser": "^1.13.1",
     "chai": "^3.0.0",
@@ -39,5 +40,16 @@
     "heroku",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "angular-mocks": "^1.4.3",
+    "karma": "^0.13.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-requirejs": "^0.2.2",
+    "phantomjs": "^1.9.17",
+    "requirejs": "^2.1.19"
+  }
 }

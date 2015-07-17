@@ -15,6 +15,24 @@ After forking the repo, you need to run `npm install` from the root directory.  
 * passport, which is used for authenticating against Facebook, Google, etc. for logins
 * sequelize, which provides a database abstraction layer
 
+To be able to run tests locally, you may also need to do:
+
+```
+sudo npm install mocha -g
+```
+
+To see if that worked, try typing `mocha` at the command line.  You should see something like this:
+
+```
+169-231-89-105:awesome-ui-backend-node-heroku pconrad$ mocha
+
+
+  0 passing (3ms)
+
+169-231-89-105:awesome-ui-backend-node-heroku pconrad$ 
+```
+
+
 # Reading List
 
  Subject   | What it is | Where to learn more

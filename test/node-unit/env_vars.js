@@ -8,13 +8,9 @@ describe('Environment Variables', function() {
     expect(process.env.FACEBOOK_APP_ID).to.exist;
     expect(process.env.FACEBOOK_APP_SECRET).to.exist;
     expect(process.env.FACEBOOK_CALLBACK_URL).to.exist;
-    expect(process.env.FACEBOOK_TEST_EMAIL).to.exist;
-    expect(process.env.FACEBOOK_TEST_PASSWORD).to.exist;
     expect(process.env.GOOGLE_APP_ID).to.exist;
     expect(process.env.GOOGLE_APP_SECRET).to.exist;
     expect(process.env.GOOGLE_CALLBACK_URL).to.exist;
-    expect(process.env.GOOGLE_TEST_EMAIL).to.exist;
-    expect(process.env.GOOGLE_TEST_PASSWORD).to.exist;
     done();
   });
 });

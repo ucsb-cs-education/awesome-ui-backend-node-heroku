@@ -29,6 +29,7 @@ describe('Angular Controllers', function() {
 			});
 
 	  	});
+	  	
 	});
     
 });

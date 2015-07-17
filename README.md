@@ -8,6 +8,7 @@ To get started with this code, you need to set up a few things first.  This list
 At a minimum, you'll need to set up your development environment with:
 * The Heroku toolbelt for working with Node.js (follow the tutorial at heroku.com)
  * This includes, at least, git, node, and npm
+* For running and testing locally, you'll also need Postgres.  See: http://www.postgresql.org/download/
 
 After forking the repo, you need to run `npm install` from the root directory.  This will install various node.js modules as specified in package.json.  This includes, among other things:
 

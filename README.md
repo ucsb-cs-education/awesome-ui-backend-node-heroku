@@ -9,8 +9,11 @@ At a minimum, you'll need to set up your development environment with:
 * The Heroku toolbelt for working with Node.js (follow the tutorial at heroku.com)
  * This includes, at least, git, node, and npm
 
-After forking the repo, you need to run `npm install` from the root directory.  This will install, perhaps among other things, mocha, which is a test framework for node.
+After forking the repo, you need to run `npm install` from the root directory.  This will install various node.js modules as specified in package.json.  This includes, among other things:
 
+* mocha, which is a test framework for node
+* passport, which is used for authenticating against Facebook, Google, etc. for logins
+* sequelize, which provides a database abstraction layer
 
 # Reading List
 

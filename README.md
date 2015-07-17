@@ -36,7 +36,7 @@ To see if that worked, try typing `mocha` at the command line.  You should see s
 
 # Setting up your environment variables
 
-Define this is 
+Define:
 
 ```
 DATABASE_URL=postgres://postgres@localhost/postgres

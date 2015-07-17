@@ -9,7 +9,28 @@ At a minimum, you'll need to set up your development environment with:
 * The Heroku toolbelt for working with Node.js (follow the tutorial at heroku.com)
  * This includes, at least, git, node, and npm
 
-After forking the repo, you need to run `npm install` from the root directory.  This will install, perhaps among other things, mocha, which is a test framework for node.
+After forking the repo, you need to run `npm install` from the root directory.  This will install various node.js modules as specified in package.json.  This includes, among other things:
+
+* mocha, which is a test framework for node
+* passport, which is used for authenticating against Facebook, Google, etc. for logins
+* sequelize, which provides a database abstraction layer
+
+To be able to run tests locally, you may also need to do:
+
+```
+sudo npm install mocha -g
+```
+
+To see if that worked, try typing `mocha` at the command line.  You should see something like this:
+
+```
+169-231-89-105:awesome-ui-backend-node-heroku pconrad$ mocha
+
+
+  0 passing (3ms)
+
+169-231-89-105:awesome-ui-backend-node-heroku pconrad$ 
+```
 
 
 # Reading List

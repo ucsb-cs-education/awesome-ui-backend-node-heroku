@@ -34,6 +34,19 @@ To see if that worked, try typing `mocha` at the command line.  You should see s
 ```
 
 
+# Setting up your environment variables
+
+Define this is 
+
+```
+DATABASE_URL=postgres://postgres@localhost/postgres
+```
+
+# A bit of Postgres 
+
+* `psql` is the command to get into the postgres command line
+* `\l` lists databases 
+
 # Reading List
 
  Subject   | What it is | Where to learn more

@@ -1,6 +1,6 @@
 # Setting up Selenium
 
-[Selenium](http://www.seleniumhq.org) is a portable software testing framework for web applications. We will be using the Selenium WebDriver and Selenium Server to run automated tests. [Protractor](https://github.com/angular/protractor).
+[Selenium](http://www.seleniumhq.org) is a portable software testing framework for web applications. We will be using the Selenium WebDriver and Selenium Server to run automated tests. [Protractor](https://github.com/angular/protractor) is "an end-to-end test framework for AngularJS applications. Protractor runs tests against your application running in a real browser, interacting with it as a user would".
 
 ### Setting up locally
 

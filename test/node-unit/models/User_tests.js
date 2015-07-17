@@ -1,5 +1,5 @@
 var expect = require("chai").expect;
-var models = require('../../models');
+var models = require('../../../models');
 
 
 function expectEqualUsers(user1, user2) {

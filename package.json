@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "./test/runtests.sh"
+    "test": "mocha test/node-unit/env_vars.js"
   },
   "dependencies": {
     "angular": "^1.4.3",

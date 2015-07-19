@@ -21,7 +21,7 @@ If this results in merge conflicts (because you've made changes that conflict wi
 
 # Finding all forks of the main repo
 
-You can find a list of all forks by navigating to the main repo (the ucsb-cs-education one), and clicking on "graphs", then "network":
+You can find a list of all forks by navigating to the [main repo](https://github.com/ucsb-cs-education/awesome-ui-backend-node-heroku main repo) (the ucsb-cs-education one), and clicking on "graphs", then "network":
 
 ![Click graphs](images/click_graphs.png)
 

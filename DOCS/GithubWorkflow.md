@@ -23,9 +23,9 @@ If this results in merge conflicts (because you've made changes that conflict wi
 
 You can find a list of all forks by navigating to the main repo (the ucsb-cs-education one), and clicking on "graphs", then "network":
 
-![Click graphs](/DOCS/images/click_graphs.png)
+![Click graphs](images/click_graphs.png)
 
-![Click members](DOCS/images/click_members.png)
+![Click members](images/click_members.png)
 
-![members](DOCS/images/members.png)
+![members](images/members.png)
 

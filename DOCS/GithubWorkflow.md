@@ -25,7 +25,7 @@ You can find a list of all forks by navigating to the main repo (the ucsb-cs-edu
 
 ![Click graphs](/DOCS/images/click_graphs.png)
 
-![Click members](DOCS/images/click_members.png
+![Click members](DOCS/images/click_members.png)
 
 ![members](DOCS/images/members.png)
 

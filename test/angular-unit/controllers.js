@@ -4,30 +4,35 @@ describe('Angular Controllers', function() {
 	
 	describe('UserPrefCtrl', function() {
 		
-  		var $controller;
+  		var $controller, controller;
 		beforeEach(function() {
 
 			module('awesomeApp', function ($provide) {
-	            UserServiceMock = {
+	            AuthServiceMock = {
 					getRole : function() {
 						return 'student';
 					}
 				};
-				$provide.value('UserService', UserServiceMock);
+				$provide.value('AuthService', AuthServiceMock);
 		    });
 			inject(function(_$controller_) {
 				$controller = _$controller_;
 			});
+			var $scope = {  };
+			controller = $controller('UserPrefCtrl', { $scope: $scope });
 		});
 
-		describe('$scope.role', function() {
-
+		describe('roleSelection', function() {
 			it('should be defined on start', function() {
-				var $scope = {  };
-				var controller = $controller('UserPrefCtrl', { $scope: $scope });
-				expect($scope.role).to.eql({ text: 'Student', value: 'student' });
+				expect(controller.roleSelection).to.eql({ text: 'Student', value: 'student' });
 			});
+	  	});
 
+		describe('selectRole(role)', function() {
+			it('should set the roleSelection accordingly', function() {
+				controller.selectRole({ text: 'Instructor', value: 'instructor' })
+				expect(controller.roleSelection).to.eql({ text: 'Instructor', value: 'instructor' });
+			});
 	  	});
 	  	
 	});

@@ -8,7 +8,7 @@
 
   		<% include ../partials/nav.ejs %>
 
-		<div class="container" ng-controller="UserPrefCtrl">
+		<div class="container" ng-controller="UserPrefCtrl as preferences">
 
 			<div class="col-sm-6 col-sm-offset-2">
 
@@ -18,28 +18,28 @@
 
 	    		<h3><span class="fa"></span> Role Preference</h1>
 
-				<div ng-controller="DropDownCtrl">
+				<div>
 
 				    <!-- Single button -->
 				    <div class="btn-group" dropdown is-open="status.isopen">
 				      <button type="button" class="btn btn-default btn-block dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-				        {{role.text}} <span class="caret"></span>
+				        {{preferences.roleSelection.text}} <span class="caret"></span>
 				      </button>
 				      <ul class="dropdown-menu" role="menu">
-				        <li ng-repeat="role in roles">
-				          <a href ng-click="selectItem(role)">{{role.text}}</a>
+				        <li ng-repeat="role in preferences.roles">
+				          <a href ng-click="preferences.selectRole(role)">{{role.text}}</a>
 				        </li>
 				      </ul>
 				    <div>
 				</div>
 			</div>
 				    
+	    <hr>
+
+	    <button ng-click="preferences.updatePreferences()" type="submit" class="btn btn-success btn-lg">Update Profile</button>
 
 		</div>
 
-	    <hr>
-
-	    <button ng-click="updatePreferences()" type="submit" class="btn btn-success btn-lg">Update Profile</button>
 
 
    

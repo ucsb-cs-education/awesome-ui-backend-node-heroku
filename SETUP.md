@@ -25,3 +25,30 @@ After doing this, you also need to update the Selenium jar separately, with this
 ./node_modules/protractor/bin/webdriver-manager update 
 ```
 
+# Create a setupPrivateEnv.sh file
+
+The file `setupPrivateEnv.sh` is listed in the `.gitignore` file.    This file is NOT checked into the github repo, because it will contain private information---the keys needed to interact with Facebook and Google authentication, as well as Sauce Labs and Travis CI.
+
+The contents of this file are a series of environment variables, as shown below.  Get the correct values from someone involved in the project (these are not stored in the public repo).  (TODO: write some documentation on how someone not directly connected with the project could set up their own implementation by interacting with Facebook, Google, and Sauce in the way that our project team did to obtain these values.)
+
+```
+export DATABASE_URL="postgres://$USER@localhost/postgres"
+export SESSION_SECRET="xxxxxxx"
+export FACEBOOK_APP_ID="xxxxxxx"
+export FACEBOOK_APP_SECRET="xxxxxxxx"
+export FACEBOOK_CALLBACK_URL="http://localhost:5000/auth/facebook/callback"
+export FACEBOOK_TEST_EMAIL="someone@example.org"
+export FACEBOOK_TEST_PASSWORD="xxxxxxxx"
+export GOOGLE_APP_ID="xxxxxxxx.apps.googleusercontent.com"
+export GOOGLE_APP_SECRET="xxxxxxxx"
+export GOOGLE_CALLBACK_URL="http://localhost:5000/auth/google/callback"
+export GOOGLE_TEST_EMAIL="someone@example.org"
+export GOOGLE_TEST_PASSWORD="xxxxxxxx"
+```
+
+Put this file in the top level of your github repo so that the .gitignore will properly ignore it.  Then, anytime you want to run project awesome code locally, first add these environment variables to your shell by typing:
+
+```
+. ./setupPrivateEnv.sh
+```
+

@@ -52,3 +52,14 @@ Put this file in the top level of your github repo so that the .gitignore will p
 . ./setupPrivateEnv.sh
 ```
 
+# Did it work?
+
+Try typing:
+
+```
+npm test
+```
+
+You should see test cases passing.  If you don't, something is wrong.
+
+

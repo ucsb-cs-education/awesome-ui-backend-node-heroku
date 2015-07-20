@@ -5,66 +5,70 @@
 var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.bootstrap']);
 
 
-awesomeApp.factory("UserService",['$cookies', function($cookies) {
-    var userService = {};
+awesomeApp.factory("AuthService",['$cookies', '$http', function($cookies, $http) {
+    var authService = {};
 
-	userService.isAuthenticated = function() {
+	authService.isAuthenticated = function() {
 		return (typeof $cookies.get('awesome_id') !== 'undefined');
 	}
-
-    userService.getAwesomeId = function() {
+    authService.getAwesomeId = function() {
         return $cookies.get('awesome_id');
     }
-
-    userService.getEmail = function() {
+    authService.getEmail = function() {
         return $cookies.get('email');
     }
-
-    userService.getName = function() {
+    authService.getName = function() {
         return $cookies.get('name');
     }
-
-    userService.getRole = function() {
+    authService.getRole = function() {
         return $cookies.get('role');
     }
 
-	return userService;
-}]);
-
-
-awesomeApp.controller('DropDownCtrl', function ($scope) {
-    $scope.roles = [
-        { text: 'Student', value: 'student' },
-        { text: 'Instructor', value: 'instructor' },
-        { text: 'Author', value: 'author' },
-        { text: 'Developer', value: 'developer' }
-    ];
-    $scope.status = {
-        isopen: false
-    };
-
-    $scope.toggleDropdown = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
-    };
-});
-
-awesomeApp.controller("UserPrefCtrl", [ '$scope', '$http', 'UserService', function($scope, $http, UserService) {
-    $scope.updatePreferences = function() {
-        $http.put('/api/user/' + UserService.getAwesomeId() + '?role=' + $scope.role.value)
+    authService.updateUser = function (role) {
+        return $http.put('/api/user/' + authService.getAwesomeId() + '?role=' + role.value)
         .success(function(data, status, headers, config) {
-            window.location.reload();
+            $cookies.put('role', role.value);
+            return data;
         }).
         error(function(data, status, headers, config) {
-            alert('error');
+            return false;
         });
     }
 
-    $scope.selectItem = function(role) {
-        $scope.role = role;
+	return authService;
+}]);
+
+awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope, AuthService) {
+
+    function roleValueToJSON(roleValue) {
+        return { text: roleValue.charAt(0).toUpperCase() + roleValue.slice(1), value: roleValue };
     }
-    $scope.role = { text: UserService.getRole().charAt(0).toUpperCase() + UserService.getRole().slice(1), value: UserService.getRole() };
+    
+    var vm = this;
+
+    vm.roles = [
+        { text: 'Student', value: 'student' },
+        { text: 'Instructor', value: 'instructor' },
+        { text: 'Author', value: 'author' },
+        { text: 'Developer', value: 'developer'}
+    ];
+    vm.roleSelection = roleValueToJSON(AuthService.getRole());
+
+    vm.selectRole = function(role) {
+        vm.roleSelection = role;
+    }
+
+    vm.updatePreferences = function() {
+        AuthService.updateUser(vm.roleSelection)
+        .then(function(data) {
+            alert(data.data.success);
+            window.location.reload();
+        });
+    }
+
+
+    return vm;
+
 }]);
 
 

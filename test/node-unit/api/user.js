@@ -33,7 +33,6 @@ describe('UPDATE /api/user/:awesome_id', function() {
   };
   
   before(function(done) {
-    console.log(utils.createTestAuthUrl("test", 11, "test_token", "test_email", "Test Name"));
     agent
     .get(utils.createTestAuthUrl("test", 11, "test_token", "test_email", "Test Name"))
     .expect(302)

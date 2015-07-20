@@ -6,7 +6,7 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize(process.env.DATABASE_URL, { });
 
-var doNotSequelizeThese = ["index.js","QuizDescriptor.js","QuizDescriptorQuestion.js"];
+var doNotSequelizeThese = ["index.js"];
 
 // Loop through all files in /models and Sequelize import them
 fs

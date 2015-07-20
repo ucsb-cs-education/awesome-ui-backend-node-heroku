@@ -44,7 +44,20 @@ More details on how to set Travis CI environment variables [here](/HOWTO-TRAVIS-
 
 
 
+# Fixing the "No Selenium Server Jar" problem.
 
+To fix:
+```
+Error: No selenium server jar found at the specified location (/Users/pconrad/github/pconrad/awesome-ui-backend-node-heroku/node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar). Check that the version number is up to date.
+```
+
+Do this:
+
+```
+./node_modules/protractor/bin/webdriver-manager update 
+```
+
+as described here: http://hisabimbola.blogspot.com/2015/03/fix-error-no-selenium-server-jar-found.html
 
 
 

@@ -15,7 +15,8 @@ describe('UPDATE /api/user/:awesome_id', function() {
     email: "test@email.com",
     token: "test_token",
     name: "TestName",
-    awesome_id: 1
+    awesome_id: 1,
+    role: 'student'
   };
 
   before(function(done) {
@@ -24,7 +25,7 @@ describe('UPDATE /api/user/:awesome_id', function() {
               console.log('Node app is running on port', server.address().port);
               agent = request.agent(app);
               agent
-              .get(utils.createTestAuthUrl(testUser.account_type, testUser.id, testUser.token, testUser.email, testUser.name))
+              .get(utils.createTestAuthUrl(testUser.account_type, testUser.id, testUser.token, testUser.email, testUser.name, testUser.role))
               .expect(302)
               .end(function(err, res){
                 done()

@@ -72,7 +72,7 @@ describe('Navigation Bar', function() {
     describe('User Dropdown Menu', function () {
 
         beforeEach(function(done) {
-            browser.get(testUtils.createTestAuthUrl('test', 'id', 'token', 'email', 'Test Name')).then(function() {
+            browser.get(testUtils.createTestAuthUrl('test', 'id', 'token', 'email', 'Test Name', 'student')).then(function() {
                 done();
             });
         });

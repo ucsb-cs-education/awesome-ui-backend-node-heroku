@@ -27,6 +27,7 @@
     "request": "^2.58.0",
     "sequelize": "^3.3.2",
     "supertest": "^1.0.1",
+    "project-awesome": "git://github.com/wolfenbarger/project-awesome.git",
     "underscore": "^1.8.3"
   },
   "engines": {
@@ -51,7 +52,6 @@
     "karma-phantomjs-launcher": "^0.2.0",
     "karma-requirejs": "^0.2.2",
     "phantomjs": "^1.9.17",
-    "project-awesome": "git://github.com/wolfenbarger/project-awesome.git",
     "protractor": "^2.1.0",
     "requirejs": "^2.1.19"
   }

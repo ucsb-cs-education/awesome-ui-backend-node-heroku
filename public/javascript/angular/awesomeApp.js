@@ -61,7 +61,6 @@ awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope
     vm.updatePreferences = function() {
         AuthService.updateUser(vm.roleSelection)
         .then(function(data) {
-            alert(data.data.success);
             window.location.reload();
         });
     }

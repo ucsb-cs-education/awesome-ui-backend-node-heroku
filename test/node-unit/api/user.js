@@ -1,24 +1,14 @@
-var app = require('../../../app.js');
-var models = require('../../../models');
 var request = require('supertest');
 var expect = require("chai").expect;
 var utils = require("../../utils");
 var agent;
+var app = require('../../../app.js');
+var models = require('../../../models');
+var server;
 
-
-// test construction helpers
-// Fix this..... How to wait for sequelize to finish connection before starting?
-before(function(done) {
-  models.sequelize.sync({ force: true }).then(function () {
-    var server = app.listen(app.get('port'), function() {
-      console.log('Node app is running on port', server.address().port);
-      agent = request.agent(app);
-      done();
-    });
-  });
-});
 
 describe('UPDATE /api/user/:awesome_id', function() {
+
   var testUser = {
     account_type: "test",
     id: 11,
@@ -27,14 +17,24 @@ describe('UPDATE /api/user/:awesome_id', function() {
     name: "TestName",
     awesome_id: 1
   };
-  
+
   before(function(done) {
-    agent
-    .get(utils.createTestAuthUrl("test", 11, "test_token", "test_email", "Test Name"))
-    .expect(302)
-    .end(function(err, res){
-      done()
-    });
+      models.sequelize.sync({ force: true }).then(function () {
+          server = app.listen(app.get('port'), function() {
+              console.log('Node app is running on port', server.address().port);
+              agent = request.agent(app);
+              agent
+              .get(utils.createTestAuthUrl(testUser.account_type, testUser.id, testUser.token, testUser.email, testUser.name))
+              .expect(302)
+              .end(function(err, res){
+                done()
+              });
+          });
+      });
+  });
+
+  after(function() {
+      server.close();
   });
 
   it('should return 403 Forbidden if user is not authenticated as given awesome_id', function(done) {

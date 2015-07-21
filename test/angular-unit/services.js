@@ -72,8 +72,6 @@ describe('Angular Services', function() {
 				});
 				// flush the backend to "execute" the request to do the expectedGET assertion.
 				httpBackend.flush();
-				console.log(JSON.stringify(returnData));
-				console.log(JSON.stringify(result));
 				expect(result.status).to.equal(200);
 				expect(cookies.get('role')).to.equal('developer');
 				

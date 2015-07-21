@@ -20,7 +20,7 @@ function makeBasicRouteTest(page) {
   });
 }
 
-describe('Routing', function(){
+describe('Routing to roles pages (/student, etc.)', function(){
 
   makeBasicRouteTest('/');
   makeBasicRouteTest('/student');
@@ -39,6 +39,32 @@ describe('Routing', function(){
     });
   });
 });
+
+describe('/login', function(){
+  describe('Unauthenticated users', function() {
+    makeBasicRouteTest('/login');
+  });
+  
+  describe('Authenticated users', function() {
+    before(function() {
+      passportStub.login({ username: 'john.doe', role: 'student'});
+    });
+    after(function() {
+      passportStub.logout();
+    });
+    it('should redirect user to preferred page', function(done) {
+      request(app)
+      .get('/login')
+      .end(function(err, res) {
+        expect(res.redirect).to.equal(true);
+        expect(res.header.location).to.equal('/student');
+        expect(res.status).to.equal(302);
+        done();
+      });
+    });
+  });
+});
+
 
 describe('/usersettings', function() {
   describe('Unauthenticated users', function() {

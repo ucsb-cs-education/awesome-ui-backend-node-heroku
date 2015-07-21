@@ -1,16 +1,13 @@
-var app = require('../../index.js');
+var app = require('../../app.js');
 var request = require('supertest');
-var agent = request.agent(app);
 var expect = require("chai").expect;
 var utils = require("../utils");
-
-
 
 // test construction helpers
 
 function makeBasicRouteTest(page) {
   it('GET ' + page + ' should respond with OK 200', function(done){
-    agent
+    request(app)
     .get(page)
     .expect('Content-Type', /html/)
     .expect(200)

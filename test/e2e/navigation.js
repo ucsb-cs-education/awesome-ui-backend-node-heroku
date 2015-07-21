@@ -1,20 +1,31 @@
-var app = require('../../index.js');
+//var app = require('../../index.js');
 var chai = require('chai');
 var expect = chai.expect;
 var chaiAsPromised = require('chai-as-promised');
 var testUtils = require('../utils');
 chai.use(chaiAsPromised);
 
+var app = require('../../app.js');
+var models = require('../../models');
+var server;
 
-before(function(done) {
-    browser.ignoreSynchronization = false;
-    browser.get('/').then(function() {
-        browser.waitForAngular();
-        done();
-    });
-});
 
 describe('Navigation Bar', function() {
+    before(function(done) {
+        models.sequelize.sync({ force: true }).then(function () {
+            server = app.listen(app.get('port'), function() {
+                console.log('Node app is running on port', server.address().port);
+                browser.get('/').then(function() {
+                    done();
+                });
+            });
+        });
+    });
+
+    after(function() {
+        server.close();
+    });
+
     var expectPages = ['/student', '/instructor', '/author', '/developer'];
 
     beforeEach(function(done) {

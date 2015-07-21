@@ -1,21 +1,18 @@
-var app = require('../../index.js');
+var app = require('../../app.js');
 var request = require('supertest');
 var expect = require("chai").expect;
 var utils = require("../utils");
 
 
-var agent;
-
 beforeEach(function(done) {
-  agent = request.agent(app);
   done();
 });
 
 describe('/logout', function() {
 
 
-  it('should redirect an unauthenticated user to /', function(done) {
     /*
+  it('should redirect an unauthenticated user to /', function(done) {
     agent
     .get('/logout')
     .end(function(err, res){
@@ -24,8 +21,8 @@ describe('/logout', function() {
       if (err) return done(err);
       done();
     });
-    */
   });
+    */
 });
 
 

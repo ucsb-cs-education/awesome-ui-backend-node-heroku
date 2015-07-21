@@ -1,4 +1,5 @@
-module.exports = function(app, models) {
+var models = require('../../models');
+module.exports = function(app) {
 
     // 
     app.put('/api/user/:awesome_id', function(req, res) {

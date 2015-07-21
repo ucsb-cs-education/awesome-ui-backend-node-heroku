@@ -2,15 +2,25 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
-var app = require('../../index.js');
+
+var app = require('../../app.js');
+var models = require('../../models');
+var server;
 
 describe('End-to-End Tests', function() {
-    before(function() { 
-        browser.ignoreSynchronization = true;
-    }); 
+    before(function(done) {
+        models.sequelize.sync({ force: true }).then(function () {
+            server = app.listen(app.get('port'), function() {
+                console.log('Node app is running on port', server.address().port);
+                browser.get('/').then(function() {
+                    done();
+                });
+            });
+        });
+    });
 
     after(function() {
-
+        server.close();
     });
 
     describe('Protractor and Selenium', function () {
@@ -26,6 +36,12 @@ describe('End-to-End Tests', function() {
     });
 
     describe('Facebook Authenticated', function () {
+        before(function() {
+            browser.ignoreSynchronization = true;
+        });
+        after(function() {
+            browser.ignoreSynchronization = false;
+        });
         it('should login using Facebook auth', function(done) {
             browser.get('/');
             browser.findElement(by.id('facebook-login')).click();

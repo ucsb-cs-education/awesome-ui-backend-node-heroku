@@ -1,23 +1,19 @@
-var app = require('../../../index.js');
+var app = require('../../../app.js');
+var models = require('../../../models');
 var request = require('supertest');
 var expect = require("chai").expect;
-var agent = request.agent(app);
 var utils = require("../../utils");
-
+var agent;
 
 
 // test construction helpers
 // Fix this..... How to wait for sequelize to finish connection before starting?
 before(function(done) {
-  request(app).get('/').end(function(){
-    request(app).get('/student').end(function() {
-    request(app).get('/student').end(function() {
-    request(app).get('/student').end(function() {
-done();
-    });
-
-    });
-
+  models.sequelize.sync({ force: true }).then(function () {
+    var server = app.listen(app.get('port'), function() {
+      console.log('Node app is running on port', server.address().port);
+      agent = request.agent(app);
+      done();
     });
   });
 });

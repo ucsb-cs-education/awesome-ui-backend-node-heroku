@@ -3,6 +3,7 @@
 mocha test/node-unit/env_vars.js 
 mocha test/node-unit/models/*.js
 mocha test/node-unit/page_routes.js 
+mocha test/node-unit/auth_routes.js 
 mocha test/node-unit/api/ 
 
 protractor test/e2e/config.js 

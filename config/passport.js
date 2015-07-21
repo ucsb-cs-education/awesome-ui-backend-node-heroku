@@ -4,10 +4,11 @@ var TestStrategy;
 if (process.env.NODE_ENV != 'production') {
     TestStrategy = require('passport-local').Strategy;
 }
+var models = require('../models');
 
 
 
-module.exports = function(passport, models) {
+module.exports = function(passport) {
 
 
     // Session Setup

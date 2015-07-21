@@ -7,7 +7,7 @@ var models = require('../../../models');
 var server;
 
 
-describe('UPDATE /api/user/:awesome_id', function() {
+describe('PUT /api/user/:awesome_id', function() {
 
   var testUser = {
     account_type: "test",
@@ -68,11 +68,14 @@ describe('UPDATE /api/user/:awesome_id', function() {
       });
   });
 
-  it('should return 200 and json object { success: true, error: null } if successful', function(done) {
+  it('should return 200 and json object { success: true, error: null, message: "some string" } if successful', function(done) {
     agent
       .put('/api/user/1?role=author')
       .expect(200)
       .end(function(err, res) {
+        expect(res.body.success).to.equal(true);
+        expect(res.body.error).to.equal(null);
+        expect(res.body.message).to.be.a('string');
         if (err) return done(err);
         done();
       });

@@ -18,12 +18,12 @@ module.exports = function(app) {
                 user.updateAttributes({
                     role: req.query.role
                 }).then(function(user) {
-                    res.json({ success: true, message: "Updated user. " + req.query.role });
+                    res.json({ success: true, error: null, message: "Updated user. " + req.query.role });
                 }).catch(function(error) {
                     res.json({ success: false, error: error, message: "Error. " + req.query.role });
                 })
             }
-        })
+        });
         
     });
 

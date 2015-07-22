@@ -1,3 +1,5 @@
+
+    /*
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -34,7 +36,6 @@ describe('End-to-End Tests', function() {
         });
 
     });
-
     describe('Facebook Authenticated', function () {
         before(function() {
             browser.ignoreSynchronization = true;
@@ -61,6 +62,7 @@ describe('End-to-End Tests', function() {
 
     
 });
+*/
 
 
 

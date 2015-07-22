@@ -21,4 +21,11 @@
     border: 2px solid white; }
     .jumbotron .lang-logo img {
       max-width: 100%; }
-
+.navbar {
+  margin-bottom: 0px;
+}
+#flash-message-div {
+  height:30px;
+  margin:0px;
+  padding: 0px;
+}

@@ -81,31 +81,25 @@ describe('POST /api/quiz', function() {
       });
     });
 
-    it('should return unsuccessful if the descriptor syntax is invalid', function(done) {
+    it('should return 400 Bad Request if the descriptor syntax is invalid', function(done) {
       request(app)
       .post('/api/quiz?descriptor={something}')
-      .expect(200)
+      .expect(400)
       .end(function(err, res) {
         if (err) return done(err);
-        expect(res.body.success).to.equal(false);
-        expect(res.body.error).to.equal(null);
-        expect(res.body.message).to.be.a('string');
         done();
       });
     });
 
-    it('should give status 200 and return json { success: true, descriptor: {...} } if successful', function(done) {
+    it('should give status 200 and return json { descriptor: {...} } if successful', function(done) {
 
       request(app)
       .post('/api/quiz?descriptor=' + validDescriptorString)
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        expect(res.body.success).to.equal(true);
-        expect(res.body.error).to.equal(null);
-        expect(res.body.message).to.be.a('string');
-        expect(res.body.quiz.descriptor).to.equal(validDescriptorString);
-        expect(res.body.quiz.id).to.be.a('number');
+        expect(res.body.descriptor).to.equal(validDescriptorString);
+        expect(res.body.id).to.be.a('number');
         done();
       });
     });
@@ -184,14 +178,12 @@ describe('GET /api/quiz/:id', function() {
       .end(function(err, res) {
         if (err) return done(err);
         request(app)
-        .get('/api/quiz/' + res.body.quiz.id)
+        .get('/api/quiz/' + res.body.id)
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
-          expect(res.body.success).to.equal(true);
-          expect(res.body.error).to.equal(null);
-          expect(res.body.quiz.descriptor).to.equal(validDescriptorString);
-          expect(res.body.quiz.id).to.be.equal(res.body.quiz.id);
+          expect(res.body.descriptor).to.equal(validDescriptorString);
+          expect(res.body.id).to.be.a.number;
           done();
         });
 
@@ -263,9 +255,7 @@ describe('GET /api/quiz', function() {
           .expect(200)
           .end(function(err, res) {
             if (err) return done(err);
-            expect(res.body.success).to.equal(true);
-            expect(res.body.error).to.equal(null);
-            expect(res.body.descriptors.length).to.equal(2);
+            expect(res.body.length).to.equal(2);
             done();
           });
 

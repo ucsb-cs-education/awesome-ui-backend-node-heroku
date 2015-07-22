@@ -14,13 +14,12 @@ module.exports = function(app) {
         
         models.User.findOne({ where: {awesome_id: req.params.awesome_id} }).then(function(user) {
             if (user) { // if the record exists in the db
-                
                 user.updateAttributes({
                     role: req.query.role
                 }).then(function(user) {
-                    res.json({ success: true, error: null, message: "Updated User" });
+                    res.json(user);
                 }).catch(function(error) {
-                    res.json({ success: false, error: error, message: "Error" });
+                    res.status(500).end();
                 })
             }
         });

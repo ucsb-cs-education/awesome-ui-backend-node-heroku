@@ -1,6 +1,87 @@
 
 describe('Angular Services', function() {
 	
+	describe('API', function() {
+
+		var httpBackend;
+  		var API;
+		beforeEach(function() {
+
+			module('awesomeApp');
+		    inject(function($httpBackend, _API_) {
+		    	API = _API_;      
+		    	httpBackend = $httpBackend;
+		    });
+		});
+
+		describe('API.quiz', function() {
+			it('should exist', function() {
+				expect(API.quiz).to.exist;
+			});
+
+			describe('API.quiz.read()', function() {
+				it('should return the http promise result', function() {
+					var returnData = { "version" : "0.1", "title" : "Example QuizJSON 1", "quiz": [{ "question": "orderOfOperations", "repeat": 5 }] };
+					httpBackend.expectGET('/api/quiz').respond(returnData);
+					var returnedPromise = API.quiz.read();
+					var result;
+					returnedPromise.then(function(response) {
+						result = response;
+					});
+					// flush the backend to "execute" the request to do the expectedGET assertion.
+					httpBackend.flush();
+					expect(result.status).to.equal(200);
+					expect(result.data).to.eql(returnData);
+				});
+			});
+
+			describe('API.quiz.create(descriptor)', function() {
+				it('should return the http promise result', function() {
+					var quizDescriptor = { "version" : "0.1", "title" : "Example QuizJSON 1", "quiz": [{ "question": "orderOfOperations", "repeat": 5 }] };
+					var postData = JSON.stringify(quizDescriptor);
+					httpBackend.expectPOST('/api/quiz?descriptor=' + postData).respond(quizDescriptor);
+					var returnedPromise = API.quiz.create(postData);
+					var result;
+					returnedPromise.then(function(response) {
+						result = response;
+					});
+					// flush the backend to "execute" the request to do the expectedGET assertion.
+					httpBackend.flush();
+					expect(result.status).to.equal(200);
+					expect(result.data).to.eql(quizDescriptor);
+				});
+			});
+		});
+
+		describe('API.user', function() {
+			it('should exist', function() {
+				expect(API.user).to.exist;
+			});
+
+			describe('API.user.update(awesome_id, role)', function() {
+				it('should return the http promise result', function() {
+					var awesome_id = 1;
+					var role = 'student';
+					httpBackend.expectPUT('/api/user/' + awesome_id + "?role=" + role).respond({});
+					var returnedPromise = API.user.update(awesome_id, role);
+					var result;
+					returnedPromise.then(function(response) {
+						result = response;
+					});
+					// flush the backend to "execute" the request to do the expectedGET assertion.
+					httpBackend.flush();
+					expect(result.status).to.equal(200);
+				});
+			});
+		});
+
+	});
+
+
+
+
+
+	
 	describe('AuthService', function() {
 
 		var httpBackend;

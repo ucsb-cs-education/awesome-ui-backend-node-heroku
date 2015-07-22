@@ -121,15 +121,41 @@ describe('GET /api/quiz/:id', function() {
     after(function() {
         server.close();
     });
-    it('should return 403 Forbidden if user is not authenticated and get IS formatted correctly', function(done) {
+    
+    it('should return 400 Bad Request if id is not an integer', function(done) {
       request(app)
-      .get('/api/quiz/1')
-      .expect(403)
+      .get('/api/quiz/a')
+      .expect(400)
       .end(function(err, res) {
         if (err) return done(err);
         done();
       });
     });
+
+    it('should return 404 not found if quiz does not exist', function(done) {
+      request(app)
+      .get('/api/quiz/0')
+      .expect(404)
+      .end(function(err, res) {
+        if (err) return done(err);
+        done();
+      });
+    });
+
+    it('should give status 200 if successful', function(done) {
+      models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
+        request(app)
+        .get('/api/quiz/' + qd.id)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(res.body.descriptor).to.equal(validDescriptorString);
+          expect(res.body.id).to.be.a.number;
+          done();
+        });
+      });
+    });
+
 
 
   });
@@ -172,13 +198,9 @@ describe('GET /api/quiz/:id', function() {
     });
 
     it('should give status 200 if successful', function(done) {
-      request(app)
-      .post('/api/quiz?descriptor=' + validDescriptorString)
-      .expect(200)
-      .end(function(err, res) {
-        if (err) return done(err);
+      models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
         request(app)
-        .get('/api/quiz/' + res.body.id)
+        .get('/api/quiz/' + qd.id)
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
@@ -186,7 +208,6 @@ describe('GET /api/quiz/:id', function() {
           expect(res.body.id).to.be.a.number;
           done();
         });
-
       });
     });
 

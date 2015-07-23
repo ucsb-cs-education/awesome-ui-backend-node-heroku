@@ -58,7 +58,7 @@ DATABASE_URL=postgres://postgres@localhost/postgres
  Travis-CI | Continous Integration Framework | https://travis-ci.org/
  Passport  | Authentication for node.js apps | http://passportjs.org/
  PostgreSQL | SQL database that works with Heroku | http://www.postgresql.org/
- 
+ Browserify | node.js npm modules in client side code | https://github.com/substack/browserify-handbook
  
 # What Unit testing framework is best for node.js?
 

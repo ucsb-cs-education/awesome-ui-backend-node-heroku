@@ -1,6 +1,7 @@
-module.exports = function(app, models) {
+module.exports = function(app) {
 
-	require('./user')(app, models);
+	require('./user')(app);
+	require('./quiz')(app);
 
 }
 

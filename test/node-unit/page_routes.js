@@ -1,16 +1,15 @@
-var app = require('../../index.js');
+var app = require('../../app.js');
 var request = require('supertest');
-var agent = request.agent(app);
-var expect = require("chai").expect;
 var utils = require("../utils");
-
-
+var expect = require("chai").expect;
+var passportStub = require('passport-stub');
+passportStub.install(app);
 
 // test construction helpers
 
 function makeBasicRouteTest(page) {
   it('GET ' + page + ' should respond with OK 200', function(done){
-    agent
+    request(app)
     .get(page)
     .expect('Content-Type', /html/)
     .expect(200)
@@ -21,25 +20,88 @@ function makeBasicRouteTest(page) {
   });
 }
 
-describe('Routing', function(){
+describe('Routing to roles pages (/student, etc.)', function(){
 
   makeBasicRouteTest('/');
   makeBasicRouteTest('/student');
   makeBasicRouteTest('/instructor');
   makeBasicRouteTest('/author');
   makeBasicRouteTest('/developer');
-  makeBasicRouteTest('/usersettings');
 
   it('GET /pagethatdoesntexist should respond with 404', function(done){
     request(app)
-      .get('/pagethatdoesntexist')
-      .expect('Content-Type', /html/)
-      .expect(404)
-      .end(function(err, res){
-        if (err) return done(err);
-        done()
-      });
+    .get('/pagethatdoesntexist')
+    .expect('Content-Type', /html/)
+    .expect(404)
+    .end(function(err, res){
+      if (err) return done(err);
+      done();
+    });
   });
+});
+
+describe('/login', function(){
+  describe('Unauthenticated users', function() {
+    makeBasicRouteTest('/login');
+  });
+  
+  describe('Authenticated users', function() {
+    before(function() {
+      passportStub.login({ username: 'john.doe', role: 'student'});
+    });
+    after(function() {
+      passportStub.logout();
+    });
+    it('should redirect user to preferred page', function(done) {
+      request(app)
+      .get('/login')
+      .end(function(err, res) {
+        expect(res.redirect).to.equal(true);
+        expect(res.header.location).to.equal('/student');
+        expect(res.status).to.equal(302);
+        done();
+      });
+    });
+  });
+});
+
+
+describe('/usersettings', function() {
+  describe('Unauthenticated users', function() {
+
+    it('should redirect user to login page', function(done) {
+      request(app)
+      .get('/usersettings')
+      .end(function(err, res) {
+        expect(res.redirect).to.equal(true);
+        expect(res.header.location).to.equal('/login');
+        expect(res.status).to.equal(302);
+        done();
+      });
+    });
+
+  });
+  
+  describe('Authenticated users', function() {
+    before(function() {
+      passportStub.login({username: 'john.doe'});
+    });
+    after(function() {
+      passportStub.logout();
+    });
+    it('should respond with 200', function(done) {
+      request(app)
+      .get('/usersettings')
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
+        done();
+      });
+    });
+
+  });
+
+
 });
 
 /*

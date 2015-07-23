@@ -1,4 +1,5 @@
-module.exports = function(app, models) {
+var models = require('../../models');
+module.exports = function(app) {
 
     // 
     app.put('/api/user/:awesome_id', function(req, res) {
@@ -13,16 +14,15 @@ module.exports = function(app, models) {
         
         models.User.findOne({ where: {awesome_id: req.params.awesome_id} }).then(function(user) {
             if (user) { // if the record exists in the db
-                
                 user.updateAttributes({
                     role: req.query.role
                 }).then(function(user) {
-                    res.json({ success: true, message: "Updated user. " + req.query.role });
+                    res.json(user);
                 }).catch(function(error) {
-                    res.json({ success: false, error: error, message: "Error. " + req.query.role });
+                    res.status(500).end();
                 })
             }
-        })
+        });
         
     });
 

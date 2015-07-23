@@ -7,14 +7,15 @@ var models = require('../../../models');
 var server;
 
 
-var validDescriptorString = JSON.stringify({
+var validDescriptorJSON = {
   "version" : "0.1",
   "title" : "Example QuizJSON 1",
   "quiz": [{
     "question": "orderOfOperations",
        "repeat": 5
    }] 
-});
+};
+var validDescriptorString = JSON.stringify(validDescriptorJSON);
 
 var testUser;
 
@@ -98,7 +99,7 @@ describe('POST /api/quiz', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        expect(res.body.descriptor).to.equal(validDescriptorString);
+        expect(res.body.descriptor).to.eql(validDescriptorJSON);
         expect(res.body.id).to.be.a('number');
         done();
       });
@@ -121,7 +122,7 @@ describe('GET /api/quiz/:id', function() {
     after(function() {
         server.close();
     });
-    
+
     it('should return 400 Bad Request if id is not an integer', function(done) {
       request(app)
       .get('/api/quiz/a')
@@ -149,7 +150,7 @@ describe('GET /api/quiz/:id', function() {
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
-          expect(res.body.descriptor).to.equal(validDescriptorString);
+          expect(res.body.descriptor).to.eql(validDescriptorJSON);
           expect(res.body.id).to.be.a.number;
           done();
         });
@@ -204,7 +205,7 @@ describe('GET /api/quiz/:id', function() {
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
-          expect(res.body.descriptor).to.equal(validDescriptorString);
+          expect(res.body.descriptor).to.eql(validDescriptorJSON);
           expect(res.body.id).to.be.a.number;
           done();
         });

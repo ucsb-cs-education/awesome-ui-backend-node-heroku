@@ -17,6 +17,7 @@ module.exports = function(app) {
         models.User.findOne({ where: {awesome_id: req.user.awesome_id} }).then(function(user) {
             if (user) {
                 user.createQuizDescriptor({descriptor: req.query.descriptor}).then(function(qd) {
+                    qd.descriptor = JSON.parse(qd.descriptor);
                     res.json(qd);
                 }).catch(function(error) {
                     res.status(500).end();
@@ -29,6 +30,7 @@ module.exports = function(app) {
     function isValidId(n){
         return /^\d+$/.test(n);
     }
+    
     app.get('/api/quiz/:id', function(req, res) {
         if (!isValidId(req.params.id)) {
             res.status(400).end();
@@ -40,6 +42,7 @@ module.exports = function(app) {
             if (!qd) {
                 res.status(404).end();
             } else {
+                qd.descriptor = JSON.parse(qd.descriptor);
                 res.json(qd);
             }
         });
@@ -55,13 +58,16 @@ module.exports = function(app) {
 
         models.User.findOne({ where: {awesome_id: req.user.awesome_id} }).then(function(user) {
             if (user) {
-            user.getQuizDescriptors().then(function(descriptors) {
-                if (!descriptors) {
-                    res.status(404).end();
-                } else {
-                    res.json(descriptors);
-                }
-            });
+                user.getQuizDescriptors().then(function(qds) {
+                    if (!qds) {
+                        res.status(404).end();
+                    } else {
+                        for (var i = 0; qds.length > i; i++) {
+                            qds[i].descriptor = JSON.parse(qds[i].descriptor);
+                        }
+                        res.json(qds);
+                    }
+                });
             }
         });
         

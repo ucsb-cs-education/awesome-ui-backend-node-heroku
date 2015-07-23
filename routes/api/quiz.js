@@ -2,7 +2,7 @@ var models = require('../../models');
 var projectAwesome = require("project-awesome");
 module.exports = function(app) {
     
-    app.post('/api/quiz', function(req, res) {
+    app.post('/api/qd', function(req, res) {
         if (!req.isAuthenticated()) {
             res.status(403).end();
             return;
@@ -31,7 +31,7 @@ module.exports = function(app) {
         return /^\d+$/.test(n);
     }
     
-    app.get('/api/quiz/:id', function(req, res) {
+    app.get('/api/qd/:id', function(req, res) {
         if (!isValidId(req.params.id)) {
             res.status(400).end();
             return;
@@ -49,7 +49,7 @@ module.exports = function(app) {
         
     });
 
-    app.get('/api/quiz', function(req, res) {
+    app.get('/api/qd', function(req, res) {
         if (!req.isAuthenticated()) {
             res.status(403).end();
             return;

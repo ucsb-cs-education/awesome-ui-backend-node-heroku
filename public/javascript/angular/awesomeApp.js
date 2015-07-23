@@ -46,10 +46,10 @@ awesomeApp.factory("API",['$http', function($http) {
 
 
     API.quiz.create = function(descriptor) {
-        return $http.post('/api/quiz?descriptor='+descriptor);
+        return $http.post('/api/qd?descriptor='+descriptor);
     }
     API.quiz.read = function() {
-        return $http.get('/api/quiz');
+        return $http.get('/api/qd');
     }
 
 

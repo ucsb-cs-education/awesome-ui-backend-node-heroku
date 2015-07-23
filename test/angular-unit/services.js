@@ -22,7 +22,7 @@ describe('Angular Services', function() {
 			describe('API.quiz.read()', function() {
 				it('should return the http promise result', function() {
 					var returnData = { "version" : "0.1", "title" : "Example QuizJSON 1", "quiz": [{ "question": "orderOfOperations", "repeat": 5 }] };
-					httpBackend.expectGET('/api/quiz').respond(returnData);
+					httpBackend.expectGET('/api/qd').respond(returnData);
 					var returnedPromise = API.quiz.read();
 					var result;
 					returnedPromise.then(function(response) {
@@ -39,7 +39,7 @@ describe('Angular Services', function() {
 				it('should return the http promise result', function() {
 					var quizDescriptor = { "version" : "0.1", "title" : "Example QuizJSON 1", "quiz": [{ "question": "orderOfOperations", "repeat": 5 }] };
 					var postData = JSON.stringify(quizDescriptor);
-					httpBackend.expectPOST('/api/quiz?descriptor=' + postData).respond(quizDescriptor);
+					httpBackend.expectPOST('/api/qd?descriptor=' + postData).respond(quizDescriptor);
 					var returnedPromise = API.quiz.create(postData);
 					var result;
 					returnedPromise.then(function(response) {

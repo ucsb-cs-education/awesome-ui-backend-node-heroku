@@ -1,44 +1,41 @@
-var app = require('../../../index.js');
 var request = require('supertest');
 var expect = require("chai").expect;
-var agent = request.agent(app);
 var utils = require("../../utils");
+var agent;
+var app = require('../../../app.js');
+var models = require('../../../models');
+var server;
 
 
+describe('PUT /api/user/:awesome_id', function() {
 
-// test construction helpers
-// Fix this..... How to wait for sequelize to finish connection before starting?
-before(function(done) {
-  request(app).get('/').end(function(){
-    request(app).get('/student').end(function() {
-    request(app).get('/student').end(function() {
-    request(app).get('/student').end(function() {
-done();
-    });
-
-    });
-
-    });
-  });
-});
-
-describe('UPDATE /api/user/:awesome_id', function() {
   var testUser = {
     account_type: "test",
     id: 11,
     email: "test@email.com",
     token: "test_token",
     name: "TestName",
-    awesome_id: 1
+    awesome_id: 1,
+    role: 'student'
   };
-  
+
   before(function(done) {
-    agent
-    .get(utils.createTestAuthUrl("test", 11, "test_token", "test_email", "Test Name"))
-    .expect(302)
-    .end(function(err, res){
-      done()
-    });
+      models.sequelize.sync({ force: true }).then(function () {
+          server = app.listen(app.get('port'), function() {
+              console.log('Node app is running on port', server.address().port);
+              agent = request.agent(app);
+              agent
+              .get(utils.createTestAuthUrl(testUser.account_type, testUser.id, testUser.token, testUser.email, testUser.name, testUser.role))
+              .expect(302)
+              .end(function(err, res){
+                done()
+              });
+          });
+      });
+  });
+
+  after(function() {
+      server.close();
   });
 
   it('should return 403 Forbidden if user is not authenticated as given awesome_id', function(done) {
@@ -71,11 +68,12 @@ describe('UPDATE /api/user/:awesome_id', function() {
       });
   });
 
-  it('should return 200 and json object { success: true, error: null } if successful', function(done) {
+  it('should return 200 and json object user if successful', function(done) {
     agent
       .put('/api/user/1?role=author')
       .expect(200)
       .end(function(err, res) {
+        expect(res.body.role).to.equal('author');
         if (err) return done(err);
         done();
       });

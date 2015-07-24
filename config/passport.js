@@ -4,10 +4,11 @@ var TestStrategy;
 if (process.env.NODE_ENV != 'production') {
     TestStrategy = require('passport-local').Strategy;
 }
+var models = require('../models');
 
 
 
-module.exports = function(passport, models) {
+module.exports = function(passport) {
 
 
     // Session Setup
@@ -40,13 +41,16 @@ module.exports = function(passport, models) {
             return done(null, user);
           } else {
             console.log(profile.id + " " + type + " is new, adding new user.");
-            models.User.create({
+            var newUser = {
                 account_type : type,
                 id: profile.id,
                 token: token,
                 email: profile.emails[0].value,
                 name: profile.displayName
-            }).then(function(createdUser) {
+            };
+            if (process.env.NODE_ENV != 'production')
+                newUser.role = profile.role;
+            models.User.create(newUser).then(function(createdUser) {
                 return done(null, createdUser);
             }); // don't catch error
           }
@@ -96,6 +100,7 @@ module.exports = function(passport, models) {
         function(req, email, password,  done) {
             process.nextTick(function() {
                 profile = {
+                    role: req.query.role,
                     id: req.query.id,
                     emails: [{ value: email }],
                     displayName: req.query.name

@@ -2,7 +2,7 @@
 
 
 
-var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.bootstrap']);
+var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.bootstrap', 'flash']);
 
 
 awesomeApp.factory("AuthService",['$cookies', '$http', function($cookies, $http) {
@@ -38,6 +38,64 @@ awesomeApp.factory("AuthService",['$cookies', '$http', function($cookies, $http)
 	return authService;
 }]);
 
+awesomeApp.factory("API",['$http', function($http) {
+    var API = {};
+    API.user = {};
+    API.quiz = {};
+
+
+
+    API.quiz.create = function(descriptor) {
+        return $http.post('/api/qd?descriptor='+descriptor);
+    }
+    API.quiz.read = function() {
+        return $http.get('/api/qd');
+    }
+
+
+    API.user.update = function(awesome_id, role) {
+        return $http.put('/api/user/' + awesome_id + '?role=' + role);
+    }
+
+    return API;
+}]);
+
+awesomeApp.controller("QuizDescriptorCtrl", [ 'AuthService', 'API', 'Flash', function(AuthService, API, Flash) {
+    var vm = this;
+
+    vm.clickedDescriptor = function(selection) {
+        window.location.href = '/showpage/' + selection.id;
+    }
+
+    vm.addQuizDescriptor = function() {
+        API.quiz.create(vm.quizDescriptorText)
+        .success(function(data) {
+            Flash.create('success', '<strong> Quiz Descriptor Saved:</strong>  id = ' + data.id + '.', 'custom-class');
+            vm.quizzes.push(data);
+        })
+        .error(function(data) {
+            Flash.create('warning', '<strong> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
+            return false;
+        });
+        vm.quizDescriptorText = "";
+    }
+
+    vm.quizzes = [];
+    vm.quizDescriptorText = "";
+
+    if (AuthService.isAuthenticated()) {
+        API.quiz.read()
+        .success(function(data) {
+            vm.quizzes = data;
+        })
+        .error(function(data) {
+            alert('Some Error - fix');
+        });
+    }
+
+    return vm;
+}]);
+
 awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope, AuthService) {
 
     function roleValueToJSON(roleValue) {
@@ -61,7 +119,6 @@ awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope
     vm.updatePreferences = function() {
         AuthService.updateUser(vm.roleSelection)
         .then(function(data) {
-            alert(data.data.success);
             window.location.reload();
         });
     }
@@ -70,8 +127,6 @@ awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope
     return vm;
 
 }]);
-
-
 
 
 

@@ -50,17 +50,10 @@ module.exports = function(app) {
     });
 
     app.get('/api/qd', function(req, res) {
-        if (!req.isAuthenticated()) {
-            res.status(403).end();
-            return;
-        }
 
-
-        models.User.findOne({ where: {awesome_id: req.user.awesome_id} }).then(function(user) {
-            if (user) {
-                user.getQuizDescriptors().then(function(qds) {
+        models.QuizDescriptor.findAll().then(function(qds) {
                     if (!qds) {
-                        res.status(404).end();
+                        res.status(500).end();
                     } else {
                         for (var i = 0; qds.length > i; i++) {
                             qds[i].descriptor = JSON.parse(qds[i].descriptor);
@@ -68,9 +61,8 @@ module.exports = function(app) {
                         res.json(qds);
                     }
                 });
-            }
-        });
         
     });
 
 }
+

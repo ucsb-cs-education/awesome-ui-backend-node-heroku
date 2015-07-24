@@ -34,3 +34,26 @@ This list may be incomplete or out of date.   To get the actual URLs used for th
 -----------------------   	| -----| ---  | ---   | ------------ 
  /api/user/:awesome_id 	    |      |      |  PUT  | create a new user
 
+
+# /pa URLs pass directly through to project-awesome functionality.
+
+URL         	    |  GET | POST | other | Description        
+------------   	    | -----| ---  | ---   | ------------ 
+ /pa/quiz           |   *  |      |       | main menu    
+
+seed=ABCD1234       [TODO: change to s]
+showQuestions=yes   [TODO: change to q, 0/1]
+showKey=yes         [TODO: change to k, 0/1]
+jsonString=[URLencodedQuizDescriptor]  [TODO: change to qd]
+format=html [optional, default=html, other option: json]
+
+
+URL         	    |  GET | POST | other | Description        
+------------   	    | -----| ---  | ---   | ------------ 
+ /pas/quiz/:id           |   *  |      |       | main menu    
+
+s=ABCD1234 [optional, default: choose randomly, options: any eight digit hex number]
+q=1  [optional, default: 1, options 0,1]
+k=1  [optional, default: 1, options 0,1]
+:id  quiz descriptor id
+

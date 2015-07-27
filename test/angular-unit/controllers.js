@@ -1,5 +1,3 @@
-
-
 describe('Angular Controllers', function() {
 	
 	describe('UserPrefCtrl', function() {

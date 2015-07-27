@@ -15,9 +15,11 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/sinon/pkg/sinon.js',
       'node_modules/angular/angular.js',
       'public/javascript/*.js',
       'public/javascript/angular/*.js',
+      'public/javascript/under.js',
       'test/angular-unit/*.js'
     ],
 

@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "./test/runtests.sh",
-    "prestart": "node fixtures"
+    "test": "./test/runtests.sh"
   },
   "dependencies": {
     "angular": "^1.4.3",

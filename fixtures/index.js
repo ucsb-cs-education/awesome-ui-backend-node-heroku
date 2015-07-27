@@ -3,7 +3,7 @@ var models = require('../models');
 var testQuizDescriptors = [
     {
       "version" : "0.1",
-      "title" : "Example QuizJSON 1",
+      "title" : "Fixture Example Quiz",
       "quiz": [{
         "question": "orderOfOperations",
            "repeat": 5
@@ -20,6 +20,8 @@ var fixtures = testQuizDescriptors.map(function(qd) {
     }
 });
 
-sequelize_fixtures.loadFixtures(fixtures, models).then(function(){
-    console.log("Added " + testQuizDescriptors.length + " QuizDescriptor fixtures to db.")
-});
+module.exports.loadFixtures = function(models) {
+  sequelize_fixtures.loadFixtures(fixtures, models).then(function(){
+      console.log("Added " + testQuizDescriptors.length + " QuizDescriptor fixtures to db.")
+  });
+}

@@ -20,9 +20,8 @@ awesomeApp.controller("QuizDescriptorCtrl", [ 'AuthService', 'Flash', 'Restangul
     vm.quizzes = [];
     vm.quizDescriptorText = "";
 
-    if (AuthService.isAuthenticated()) {
-        vm.quizzes = qds.getList().$object;
-    }
+    vm.quizzes = qds.getList().$object;
+    
     return vm;
 }]);
 

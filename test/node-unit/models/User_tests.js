@@ -29,8 +29,6 @@ describe('User Model', function(){
 
   it('should create a new user', function(done){
     models.User.create(testUser).then(function(user) {
-      console.log(user.dataValues);
-      console.log(testUser);
       expectEqualUsers(user, testUser);
       done();
     });
@@ -63,7 +61,6 @@ describe('User Model', function(){
     models.User.create(testUser).then(function(user) {
       expectEqualUsers(user, testUser);
       user.destroy().then(function(user) {
-        console.log(user);
         done();
       });
     });

@@ -76,7 +76,6 @@ describe('PUT /api/user/:awesome_id', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);
-        console.log(res.body);
         expect(res.body.role).to.equal('author');
         done();
       });

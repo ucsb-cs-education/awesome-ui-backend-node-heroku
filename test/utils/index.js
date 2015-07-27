@@ -36,5 +36,19 @@ module.exports.unauthenticateTestUser = function() {
 	passportStub.uninstall(app);
 }
 
+module.exports.waitForElement = function (element) {
+    browser.wait(function () {
+        return element.isPresent();
+    },5000);
+    browser.wait(function () {
+        return element.isDisplayed();
+    },5000);
+    return element;
+};
 
-// /auth/test/callback?account_type=test&id=1&token=test_token&email=test_email&name=testName&password=test&role=author
+
+
+
+
+
+

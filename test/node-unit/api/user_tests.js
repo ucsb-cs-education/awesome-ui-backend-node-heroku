@@ -60,7 +60,8 @@ describe('PUT /api/user/:awesome_id', function() {
 
   it('should return 400 Bad Request if role is anything but student, instructor, author, or developer', function(done) {
     agent
-      .put('/api/user/1?role=somethingelse')
+      .put('/api/user/1')
+      .send({role: 'somethingelse'})
       .expect(400)
       .end(function(err, res) {
         if (err) return done(err);
@@ -70,11 +71,13 @@ describe('PUT /api/user/:awesome_id', function() {
 
   it('should return 200 and json object user if successful', function(done) {
     agent
-      .put('/api/user/1?role=author')
+      .put('/api/user/1')
+      .send({role: 'author'})
       .expect(200)
       .end(function(err, res) {
-        expect(res.body.role).to.equal('author');
         if (err) return done(err);
+        console.log(res.body);
+        expect(res.body.role).to.equal('author');
         done();
       });
   });

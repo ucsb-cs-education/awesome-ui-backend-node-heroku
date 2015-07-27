@@ -35,7 +35,8 @@ describe('POST /api/qd', function() {
     });
     it('should return 403 Forbidden if user is not authenticated and post is NOT formatted correctly', function(done) {
       request(app)
-      .post('/api/qd?something=blah')
+      .post('/api/qd')
+      .send({descriptor: '{something: "blah"}'})
       .expect(403)
       .end(function(err, res) {
         if (err) return done(err);
@@ -44,7 +45,8 @@ describe('POST /api/qd', function() {
     });
     it('should return 403 Forbidden if user is not authenticated and post IS formatted correctly', function(done) {
       request(app)
-      .post('/api/qd?descriptor=' + validDescriptorString)
+      .post('/api/qd')
+      .send({descriptor: validDescriptorString})
       .expect(403)
       .end(function(err, res) {
         if (err) return done(err);
@@ -84,7 +86,8 @@ describe('POST /api/qd', function() {
 
     it('should return 400 Bad Request if the descriptor syntax is invalid', function(done) {
       request(app)
-      .post('/api/qd?descriptor={something}')
+      .post('/api/qd')
+      .send({descriptor: '{something: "blah"}'})
       .expect(400)
       .end(function(err, res) {
         if (err) return done(err);
@@ -95,7 +98,8 @@ describe('POST /api/qd', function() {
     it('should give status 200 and return json { descriptor: {...} } if successful', function(done) {
 
       request(app)
-      .post('/api/qd?descriptor=' + validDescriptorString)
+      .post('/api/qd')
+      .send({descriptor: validDescriptorString})
       .expect(200)
       .end(function(err, res) {
         if (err) return done(err);

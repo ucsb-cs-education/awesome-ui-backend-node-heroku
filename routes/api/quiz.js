@@ -6,17 +6,17 @@ module.exports = function(app) {
         if (!req.isAuthenticated()) {
             res.status(403).end();
             return;
-        } else if (!req.query.descriptor) {
+        } else if (!req.body.descriptor) {
             res.status(400).end();
             return;
-        } else if (!projectAwesome.isValidQuizDescriptorJSON(req.query.descriptor)) {
+        } else if (!projectAwesome.isValidQuizDescriptorJSON(req.body.descriptor)) {
             res.status(400).end();
             return;
         }
 
         models.User.findOne({ where: {awesome_id: req.user.awesome_id} }).then(function(user) {
             if (user) {
-                user.createQuizDescriptor({descriptor: req.query.descriptor}).then(function(qd) {
+                user.createQuizDescriptor({descriptor: req.body.descriptor}).then(function(qd) {
                     qd.descriptor = JSON.parse(qd.descriptor);
                     res.json(qd);
                 }).catch(function(error) {

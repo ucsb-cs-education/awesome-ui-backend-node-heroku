@@ -27,6 +27,7 @@
     "sequelize": "^3.3.2",
     "supertest": "^1.0.1",
     "project-awesome": "git://github.com/wolfenbarger/project-awesome.git",
+    "sequelize-fixtures": "^0.4.7",
     "underscore": "^1.8.3"
   },
   "engines": {
@@ -52,7 +53,6 @@
     "karma-requirejs": "^0.2.2",
     "phantomjs": "^1.9.17",
     "protractor": "^2.1.0",
-    "sequelize-fixtures": "^0.4.7",
     "sinon": "^1.15.4"
   }
 }

@@ -55,6 +55,15 @@ module.exports.waitForElement = function (element) {
 };
 
 
+module.exports.validDescriptorJSON = {
+  "version" : "0.1",
+  "title" : "Example QuizJSON 1",
+  "quiz": [{
+    "question": "orderOfOperations",
+       "repeat": 5
+   }]
+};
+module.exports.validDescriptorString = JSON.stringify(module.exports.validDescriptorJSON);
 
 
 

@@ -5,8 +5,17 @@ var models = require('../../models');
 module.exports.createTestAuthUrl = function(account_type, id, token, email, name, role) {
     return ('/auth/test/callback?account_type=' + account_type + '&id=' + id + '&token=' + token + '&email=' + email + '&name=' + name + '&password=test' + '&role=' + role).split(' ').join('+');
 }
+
 module.exports.createLogoutUrl = function() {
     return '/logout';
+}
+
+module.exports.resetEnvironment = function(a, m) {
+	return models.sequelize.sync({ force: true }).then(function () {
+		passportStub.uninstall(a);
+		passportStub.install(a);
+		passportStub.logout();
+	});
 }
 
 module.exports.authenticateTestUser = function() {
@@ -23,7 +32,6 @@ module.exports.authenticateTestUser = function() {
 		testUser.id += result;
 		return models.User.create(testUser).then(function(user) {
 			if (!user) throw error("User wasn't created");
-			passportStub.install(app);
 			testUser.awesome_id = user.awesome_id;
 			testUser.username = "testusername";
 			passportStub.login(testUser);
@@ -33,7 +41,7 @@ module.exports.authenticateTestUser = function() {
 }
 
 module.exports.unauthenticateTestUser = function() {
-	passportStub.uninstall(app);
+	passportStub.logout();
 }
 
 module.exports.waitForElement = function (element) {

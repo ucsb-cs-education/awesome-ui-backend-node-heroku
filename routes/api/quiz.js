@@ -9,7 +9,7 @@ module.exports = function(app) {
         } else if (!req.body.descriptor) {
             res.status(400).end();
             return;
-        } else if (!projectAwesome.isValidQuizDescriptorJSON(req.body.descriptor)) {
+        } else if (!projectAwesome.isValidQuizDescriptor(req.body.descriptor)) {
             res.status(400).end();
             return;
         }
@@ -17,7 +17,6 @@ module.exports = function(app) {
         models.User.findOne({ where: {awesome_id: req.user.awesome_id} }).then(function(user) {
             if (user) {
                 user.createQuizDescriptor({descriptor: req.body.descriptor}).then(function(qd) {
-                    qd.descriptor = JSON.parse(qd.descriptor);
                     res.json(qd);
                 }).catch(function(error) {
                     res.status(500).end();
@@ -42,7 +41,6 @@ module.exports = function(app) {
             if (!qd) {
                 res.status(404).end();
             } else {
-                qd.descriptor = JSON.parse(qd.descriptor);
                 res.json(qd);
             }
         });
@@ -55,9 +53,6 @@ module.exports = function(app) {
                     if (!qds) {
                         res.status(500).end();
                     } else {
-                        for (var i = 0; qds.length > i; i++) {
-                            qds[i].descriptor = JSON.parse(qds[i].descriptor);
-                        }
                         res.json(qds);
                     }
                 });

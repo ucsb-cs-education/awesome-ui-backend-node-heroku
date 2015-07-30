@@ -5,16 +5,7 @@ var utils = require("../../utils");
 var app = require('../../../app.js');
 var models = require('../../../models');
 
-
-var validDescriptorJSON = {
-  "version" : "0.1",
-  "title" : "Example QuizJSON 1",
-  "quiz": [{
-    "question": "orderOfOperations",
-       "repeat": 5
-   }]
-};
-var validDescriptorString = JSON.stringify(validDescriptorJSON);
+var validDescriptor= utils.validDescriptor;
 
 var testUser;
 
@@ -42,7 +33,7 @@ describe('api/quiz_tests.js', function() {
       it('should return 403 Forbidden if user is not authenticated and post IS formatted correctly', function(done) {
         request(app)
         .post('/api/qd')
-        .send({descriptor: validDescriptorString})
+        .send({descriptor: validDescriptor})
         .expect(403)
         .end(function(err, res) {
           if (err) return done(err);
@@ -91,11 +82,11 @@ describe('api/quiz_tests.js', function() {
 
         request(app)
         .post('/api/qd')
-        .send({descriptor: validDescriptorString})
+        .send({descriptor: validDescriptor})
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
-          expect(res.body.descriptor).to.eql(validDescriptorJSON);
+          expect(res.body.descriptor).to.eql(validDescriptor);
           expect(res.body.id).to.be.a('number');
           done();
         });
@@ -135,13 +126,13 @@ describe('api/quiz_tests.js', function() {
       });
 
       it('should give status 200 if successful', function(done) {
-        models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
+        models.QuizDescriptor.create({descriptor: validDescriptor}).then(function(qd) {
           request(app)
           .get('/api/qd/' + qd.id)
           .expect(200)
           .end(function(err, res) {
             if (err) return done(err);
-            expect(res.body.descriptor).to.eql(validDescriptorJSON);
+            expect(res.body.descriptor).to.eql(validDescriptor);
             expect(res.body.id).to.be.a.number;
             done();
           });
@@ -186,13 +177,13 @@ describe('api/quiz_tests.js', function() {
       });
 
       it('should give status 200 if successful', function(done) {
-        models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
+        models.QuizDescriptor.create({descriptor: validDescriptor}).then(function(qd) {
           request(app)
           .get('/api/qd/' + qd.id)
           .expect(200)
           .end(function(err, res) {
             if (err) return done(err);
-            expect(res.body.descriptor).to.eql(validDescriptorJSON);
+            expect(res.body.descriptor).to.eql(validDescriptor);
             expect(res.body.id).to.be.a.number;
             done();
           });
@@ -214,8 +205,8 @@ describe('api/quiz_tests.js', function() {
           });
       });
       it('should give status 200 if successful and return all items (2 here)', function(done) {
-        models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
-          models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
+        models.QuizDescriptor.create({descriptor: validDescriptor}).then(function(qd) {
+          models.QuizDescriptor.create({descriptor: validDescriptor}).then(function(qd) {
             request(app)
             .get('/api/qd')
             .expect(200)
@@ -245,8 +236,8 @@ describe('api/quiz_tests.js', function() {
       });
 
       it('should give status 200 if successful and return all items (2 here)', function(done) {
-        models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
-          models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
+        models.QuizDescriptor.create({descriptor: validDescriptor}).then(function(qd) {
+          models.QuizDescriptor.create({descriptor: validDescriptor}).then(function(qd) {
             request(app)
             .get('/api/qd')
             .expect(200)

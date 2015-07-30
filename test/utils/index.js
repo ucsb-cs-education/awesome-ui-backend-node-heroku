@@ -80,7 +80,7 @@ module.exports.protractorLogout = function() {
 }
 
 
-module.exports.validDescriptorJSON = {
+module.exports.validDescriptor = {
   "version" : "0.1",
   "title" : "Example QuizJSON 1",
   "quiz": [{
@@ -88,7 +88,7 @@ module.exports.validDescriptorJSON = {
        "repeat": 5
    }]
 };
-module.exports.validDescriptorString = JSON.stringify(module.exports.validDescriptorJSON);
+module.exports.validDescriptorString = JSON.stringify(module.exports.validDescriptor);
 
 
 

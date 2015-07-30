@@ -27,7 +27,6 @@
     "sequelize": "^3.3.2",
     "supertest": "^1.0.1",
     "project-awesome": "git://github.com/wolfenbarger/project-awesome.git",
-    "sequelize-fixtures": "^0.4.7",
     "underscore": "^1.8.3"
   },
   "engines": {

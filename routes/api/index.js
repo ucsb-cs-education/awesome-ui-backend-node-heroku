@@ -1,7 +1,7 @@
 module.exports = function(app) {
 
 	require('./user')(app);
-	require('./quiz')(app);
+	require('./qd')(app);
 
 }
 

@@ -5,7 +5,6 @@ chai.use(chaiAsPromised);
 var app = require('../../app.js');
 var models = require('../../models');
 var utils = require('../utils');
-var 
 var server;
 
 describe('Routes', function() {

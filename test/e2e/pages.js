@@ -68,6 +68,45 @@ describe('Routes', function() {
 				});
 			});
 		});
+
+		describe('/login', function() {
+			describe('unauthenticated user', function() {
+				it('GET: should not redirect the user', function(done) {
+					browser.get('/login');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
+					done();
+				});
+				it('navigate: should not redirect the user', function(done) {
+					browser.get('/login');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
+					done();
+				});
+			});
+			describe('authenticated user', function() {
+		        var testUser;
+		        before(function(done) {
+		            utils.protractorLogin().then(function(user) {
+		                testUser = user;
+		                done();
+		            });
+		        });
+		        after(function(done) {
+		            utils.protractorLogout().then(function() {
+		                done();
+		            });
+		        });
+				it('GET: should redirect the user to preferred page', function(done) {
+					browser.get('/login');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/' + testUser.role);
+					done();
+				});
+				it('navigate: should redirect the user to preferred page', function(done) {
+					browser.get('/login');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/' + testUser.role);
+					done();
+				});
+			});
+		});
 	});
 
 });

@@ -43,9 +43,19 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 .run(['AuthService', '$rootScope', '$location', function(AuthService, $rootScope, $location) {
 	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
 		if (!AuthService.isAuthenticated()) {
+
+			// redirect user to login page if they try to access user settings page
 			if (next.templateUrl === "partials/usersettings.html") {
 				$location.path("/login");
 			}
+
+		} else {
+
+			// redirect user to preferred page if they try to access login page
+			if (next.templateUrl === "partials/login.html") {
+				$location.path("/" + AuthService.getRole());
+			}
+ 
 		}
 	});
 }]);

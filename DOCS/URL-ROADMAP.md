@@ -5,14 +5,16 @@ This allows us to make sure we are keeping the URL namespace clean, tidy, sane a
 
 # These URLS are the main pages of navigation for actual human interaction
 
- URL         	|  GET | POST | other | Description        
-------------   	| -----| ---  | ---   | ------------ 
- /           	|   *  |      |       | main menu           
- /student    	|   *  |      |       |  student main menu  
- /instructor 	|   *  |      |       |  instructor main menu
- /author     	|   *  |      |       |  author main menu
- /developer     |   *  |      |       |  developer main menu
- /usersettings	|   *  |      |       |   user settings options
+ URL         		|  GET 	| POST | other | Description        
+------------------- | -----	| ---- | ----- | ------------ 
+ /           		|   *	|      |       |  main menu           
+ /student    		|   *	|      |       |  student main menu  
+ /instructor 		|   *	|      |       |  instructor main menu
+ /author     		|   *	|      |       |  author main menu
+ /developer     	|   *	|      |       |  developer main menu
+ /usersettings		|   *	|      |       |  user settings options
+ /login				|   *	|      |       |  login page
+ /quizdescriptor:id	|	*	|      |       |  select quiz options before quiz
  
  
 #  /api is for the RESTFUL api used for AJAX style interactions

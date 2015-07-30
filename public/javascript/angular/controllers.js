@@ -1,5 +1,43 @@
 'use strict';
 
+awesomeApp.controller("AuthController", ['$window', 'AuthService', function($window, AuthService) {
+    var vm = this;
+    vm.isAuthenticated = AuthService.isAuthenticated();
+    vm.user = {};
+
+    if (AuthService.isAuthenticated())
+        vm.user.name = AuthService.getName();
+
+    vm.facebook = function() {
+        $window.location.href = "/auth/facebook";
+    }
+
+    vm.google = function() {
+        $window.location.href = "/auth/google";
+    }
+
+    vm.logout = function() {
+        $window.location.href = "/logout";
+    }
+
+    return vm;
+    
+}]);
+
+awesomeApp.controller("QuizStartCtrl", [ 'Restangular', '$routeParams', function(Restangular, $routeParams) {
+    var vm = this;
+    
+    vm.qd = Restangular.one('qd', $routeParams.id).get().$object;
+    vm.displayOption = "answer";
+    vm.seed = "";
+
+    vm.startQuiz = function() {
+        alert("Starting quiz: displayOption = " + vm.displayOption + ", seed = " + vm.seed);
+    }
+    
+    return vm;
+}]);
+
 awesomeApp.controller("QuizDescriptorCtrl", [ 'AuthService', 'Flash', 'Restangular', function(AuthService, Flash, Restangular) {
     var vm = this;
     var qds = Restangular.all('qd');
@@ -25,7 +63,7 @@ awesomeApp.controller("QuizDescriptorCtrl", [ 'AuthService', 'Flash', 'Restangul
     return vm;
 }]);
 
-awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope, AuthService) {
+awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', 'Flash', function($scope, AuthService, Flash) {
     function roleValueToJSON(roleValue) {
         return { text: roleValue.charAt(0).toUpperCase() + roleValue.slice(1), value: roleValue };
     }
@@ -45,7 +83,9 @@ awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope
     vm.updatePreferences = function() {
         AuthService.updateUser(vm.roleSelection.value)
         .then(function(data) {
-            window.location.reload();
+            Flash.create('success', '<strong> Updated:</strong>  Your settings have been saved.');
+        }, function(error) {
+
         });
     }
 

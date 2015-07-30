@@ -17,6 +17,7 @@ module.exports = function(app) {
                 user.updateAttributes({
                     role: req.body.role
                 }).then(function(updatedUser) {
+                    res.cookie('role', updatedUser.role, { maxAge: 900000, httpOnly: false });
                     res.json(updatedUser);
                 }).catch(function(error) {
                     res.status(500).end();

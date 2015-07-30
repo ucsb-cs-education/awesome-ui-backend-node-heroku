@@ -1,5 +1,5 @@
 var models = require('../../models');
-var projectAwesome = require("project-awesome").qd;
+var projectAwesome = require("project-awesome");
 module.exports = function(app) {
     
     app.post('/api/qd', function(req, res) {

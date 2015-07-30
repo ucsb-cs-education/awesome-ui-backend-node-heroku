@@ -53,6 +53,31 @@ module.exports.waitForElement = function (element) {
     },5000);
     return element;
 };
+var userCount = 0;
+module.exports.protractorLogin = function() {
+	userCount++;
+	var user = {};
+    return browser.get(module.exports.createTestAuthUrl('test', userCount, 'testtoken', 'email@test.com', 'Tester' + userCount, 'student')).then(function() {
+        browser.get('/');
+        module.exports.waitForElement(element(by.id('home-button')));
+        return browser.findElement(by.id('user-dropdown')).click().then(function() {
+            return browser.manage().getCookies().then(function(cookies) {
+            	for (var i = 0; cookies.length > i; i++)
+            		user[cookies[i].name] = cookies[i].value;
+            	return user;
+            });
+        });
+    });
+}
+module.exports.protractorLogout = function() {
+	browser.ignoreSynchronization = true;
+	return browser.get('/logout').then(function() {
+		browser.ignoreSynchronization = false;
+		return browser.get('/').then(function() {
+			return module.exports.waitForElement(element(by.id('home-button')));
+		});
+	});
+}
 
 
 module.exports.validDescriptorJSON = {

@@ -1,15 +1,15 @@
 RestangularMock = {
 	one : function(path, awesome_id) {
-		return {
-			role: '',
-			put: function() {
-				return {
-					then: function(callback) {
-						callback({role: 'student'});
-					}
-				}
+		var meMock = {}
+		meMock.role = '';
+		meMock.put = function() {
+			var promiseMock = {};
+			promiseMock.then = function(callback) {
+				callback({role: meMock.role});
 			}
-		};
+			return promiseMock;
+		}
+		return meMock;
 	}
 };
 
@@ -18,43 +18,53 @@ describe('Angular Services', function() {
 	describe('AuthService', function() {
 		beforeEach(module('awesomeApp'));
   		var AuthService, Restangular, cookies;
+  		var user;
 
 		beforeEach(function() {
 			module('awesomeApp', function($provide) {
 				$provide.value('Restangular', RestangularMock);
 			});
+
 		    inject(function(_AuthService_, _$cookies_) {
 		    	AuthService = _AuthService_;   
 		    	cookies = _$cookies_;
+
 		    });
 
-    		cookies.put('awesome_id','1234');
-    		cookies.put('email', 'test@email.com');
-    		cookies.put('name', 'Test Name');
-    		cookies.put('role', 'student');
+		    user = {
+	  			awesome_id: "1234",
+	  			email: "test@email.com",
+	  			name: "Test Name",
+	  			role: "student"
+	  		}
+
+    		cookies.put('awesome_id',user.awesome_id);
+    		cookies.put('email', user.email);
+    		cookies.put('name', user.name);
+    		cookies.put('role', user.role);
 		});
 		
 		describe('getAwesomeId()', function() {
 			it('should return the awesome_id cookie', function() {
-				expect(AuthService.getAwesomeId()).to.equal('1234');
+				expect(AuthService.getAwesomeId()).to.equal(user.awesome_id);
 			});
 		});
 
 		describe('getEmail()', function() {
 			it('should return the email cookie', function() {
-				expect(AuthService.getEmail()).to.equal('test@email.com');
+				expect(AuthService.getEmail()).to.equal(user.email);
 			});
 		});
 
 		describe('getName()', function() {
 			it('should return the name cookie', function() {
-				expect(AuthService.getName()).to.equal('Test Name');
+				expect(AuthService.getName()).to.equal(user.name);
 			});
 		});
 
 		describe('getRole()', function() {
 			it('should return the role cookie', function() {
-				expect(AuthService.getRole()).to.equal('student');
+				expect(AuthService.getRole()).to.equal(user.role);
 			});
 		});
 		describe('isAuthenticated()', function() {
@@ -69,8 +79,11 @@ describe('Angular Services', function() {
 
 		describe('updateUser()', function() {
 			it('should use Restangular to make a put request and update the role on success', function () {
-				AuthService.updateUser({ value:'developer', text:'Developer' });
-				expect(AuthService.getRole()).to.equal('developer');
+				AuthService.updateUser('developer')
+				.then(function(user) {
+					expect(user.role).to.equal('developer');
+				});
+				
 			});
 		});
 
@@ -78,8 +91,6 @@ describe('Angular Services', function() {
 	});
     
 });
-
-
 
 
 

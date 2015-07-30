@@ -47,11 +47,9 @@ var quizDescriptorFixtures = [
 
 
 module.exports.loadAllFixtures = function(models) {
-  /*
   for (var i = 0; quizDescriptorFixtures.length > i; i++) {
       models.QuizDescriptor.create(quizDescriptorFixtures[i]);
   }
-  */
 }
 
 

@@ -1,7 +1,6 @@
 var models = require('../../models');
 module.exports = function(app) {
-
-    // 
+    
     app.put('/api/user/:awesome_id', function(req, res) {
         if (!req.isAuthenticated() || req.user.awesome_id != req.params.awesome_id) {
             res.status(403).end();
@@ -17,7 +16,6 @@ module.exports = function(app) {
                 user.updateAttributes({
                     role: req.body.role
                 }).then(function(updatedUser) {
-                    res.cookie('role', updatedUser.role, { maxAge: 900000, httpOnly: false });
                     res.json(updatedUser);
                 }).catch(function(error) {
                     res.status(500).end();

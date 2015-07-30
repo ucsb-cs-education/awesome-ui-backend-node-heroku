@@ -82,7 +82,8 @@ awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', 'Flash', functi
 
     vm.updatePreferences = function() {
         AuthService.updateUser(vm.roleSelection.value)
-        .then(function(data) {
+        .then(function(user) {
+            alert(JSON.stringify(user));
             Flash.create('success', '<strong> Updated:</strong>  Your settings have been saved.');
         }, function(error) {
 

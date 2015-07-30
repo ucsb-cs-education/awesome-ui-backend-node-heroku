@@ -22,7 +22,10 @@ awesomeApp.factory("AuthService",['$cookies', 'Restangular', function($cookies, 
     authService.updateUser = function (role) {
         var me = Restangular.one('user',$cookies.get('awesome_id'));
         me.role = role;
-        return me.put();
+        return me.put().then(function(user) {
+            $cookies.put('role', user.role);
+            return user;
+        });
     }
 
 	return authService;

@@ -1,70 +1,58 @@
-RestangularMock = {
-	one : function(path, awesome_id) {
-		var meMock = {}
-		meMock.role = '';
-		meMock.put = function() {
-			var promiseMock = {};
-			promiseMock.then = function(callback) {
-				callback({role: meMock.role});
-			}
-			return promiseMock;
-		}
-		return meMock;
-	}
-};
-
 describe('Angular Services', function() {
 	
 	describe('AuthService', function() {
 		beforeEach(module('awesomeApp'));
   		var AuthService, Restangular, cookies;
-  		var user;
+		var q, rootScope, deferred;
+  		var RestangularMock = {};
+  		var testUser;
 
 		beforeEach(function() {
 			module('awesomeApp', function($provide) {
 				$provide.value('Restangular', RestangularMock);
 			});
 
-		    inject(function(_AuthService_, _$cookies_) {
+		    inject(function(_AuthService_, _$cookies_, _$q_, _$rootScope_) {
 		    	AuthService = _AuthService_;   
 		    	cookies = _$cookies_;
-
+		    	q = _$q_;
+		    	rootScope = _$rootScope_;
 		    });
 
-		    user = {
+		    testUser = {
 	  			awesome_id: "1234",
 	  			email: "test@email.com",
 	  			name: "Test Name",
 	  			role: "student"
 	  		}
 
-    		cookies.put('awesome_id',user.awesome_id);
-    		cookies.put('email', user.email);
-    		cookies.put('name', user.name);
-    		cookies.put('role', user.role);
+    		cookies.put('awesome_id',testUser.awesome_id);
+    		cookies.put('email', testUser.email);
+    		cookies.put('name', testUser.name);
+    		cookies.put('role', testUser.role);
 		});
 		
 		describe('getAwesomeId()', function() {
 			it('should return the awesome_id cookie', function() {
-				expect(AuthService.getAwesomeId()).to.equal(user.awesome_id);
+				expect(AuthService.getAwesomeId()).to.equal(testUser.awesome_id);
 			});
 		});
 
 		describe('getEmail()', function() {
 			it('should return the email cookie', function() {
-				expect(AuthService.getEmail()).to.equal(user.email);
+				expect(AuthService.getEmail()).to.equal(testUser.email);
 			});
 		});
 
 		describe('getName()', function() {
 			it('should return the name cookie', function() {
-				expect(AuthService.getName()).to.equal(user.name);
+				expect(AuthService.getName()).to.equal(testUser.name);
 			});
 		});
 
 		describe('getRole()', function() {
 			it('should return the role cookie', function() {
-				expect(AuthService.getRole()).to.equal(user.role);
+				expect(AuthService.getRole()).to.equal(testUser.role);
 			});
 		});
 		describe('isAuthenticated()', function() {
@@ -78,15 +66,81 @@ describe('Angular Services', function() {
 		});
 
 		describe('updateUser()', function() {
+			var one = {};
+	    	RestangularMock.one = function(path, awesome_id) {
+				one.role = '';
+				return one;
+	    	}
+			describe('successful Restangular put request', function() {
+				before(function() {
+					one.put = function() {
+						deferred = q.defer();
+						deferred.resolve({ role : one.role });
+						return deferred.promise;
+					}
+				});
+
+				it('should update the role and set the corresponding cookie', function() {
+					var resolveValue;
+					AuthService.updateUser('developer')
+					.then(function(user) {
+						resolveValue = user;
+					});
+					rootScope.$apply();
+					expect(resolveValue.role).to.equal('developer');
+					expect(AuthService.getRole()).to.equal('developer');
+				});
+			});
+			describe('successful Restangular put request', function() {
+				before(function() {
+					one.put = function() {
+						deferred = q.defer();
+						deferred.reject('error');
+						return deferred.promise;
+					}
+				});
+				it('should update the role and set the corresponding cookie', function() {
+					var resolveValue;
+					var roleBeforeUpdate = AuthService.getRole();
+					AuthService.updateUser('developer')
+					.then(function(user) {
+						expect(false); // shouldn't get here
+					}, function(error) {
+						resolveValue = error;
+					});
+					rootScope.$apply();
+					expect(resolveValue).to.equal('error');
+					expect(AuthService.getRole()).to.equal(roleBeforeUpdate);
+				});
+			});
+		
+		});
+		/*
+		    	RestangularMock.one = function(path, awesome_id) {
+					var meMock = {};
+					meMock.role = '';
+					meMock.put = function() {
+						deferred = q.defer();
+						return deferred.promise;
+					}
+					return meMock;
+		    	}
+		describe('updateUser()', function() {
 			it('should use Restangular to make a put request and update the role on success', function () {
+				console.log(AuthService.getRole());
 				AuthService.updateUser('developer')
 				.then(function(user) {
-					expect(user.role).to.equal('developer');
+					console.log(AuthService.getRole());
 				});
+				deferred.resolve({ role : 'kakabutt' });
+				rootScope.$apply();
+				expect(user.role).to.equal('developer');
+				expect(AuthService.getRole()).to.equal('developer');
 				
 			});
-		});
 
+		});
+	*/
 	
 	});
     

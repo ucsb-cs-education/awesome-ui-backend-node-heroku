@@ -39,4 +39,31 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 	$locationProvider.html5Mode({
 		enabled: true
 	});
+}])
+.run(['AuthService', '$rootScope', '$location', function(AuthService, $rootScope, $location) {
+	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
+		if (!AuthService.isAuthenticated()) {
+			if (next.templateUrl === "partials/usersettings.html") {
+				$location.path("/login");
+			}
+		}
+	});
 }]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

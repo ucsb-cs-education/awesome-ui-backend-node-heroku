@@ -90,8 +90,10 @@ describe('Navigation Bar', function() {
             });
 
             it('should log out using the user dropdown', function(done) {
+                browser.ignoreSynchronization = true;
                 element(by.id('user-links')).element(by.cssContainingText('a','Sign Out')).click();
                 expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/');
+                browser.ignoreSynchronization = false;
                 done();
             });
 

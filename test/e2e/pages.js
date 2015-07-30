@@ -25,12 +25,60 @@ describe('Routes', function() {
     });
 
 	describe('/instructor', function() {
-		
+
 	});
 
 
+	describe('Redirects', function() {
+		describe('/usersettings', function() {
+			describe('unauthenticated user', function() {
+				it('GET: should redirect the user to /login', function(done) {
+					browser.get('/usersettings');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
+					done();
+				});
+				it('navigate: should redirect the user to /login', function(done) {
+					browser.get('/usersettings');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
+					done();
+				});
+			});
+			describe('authenticated user', function() {
+		        var testUser;
+		        before(function(done) {
+		            utils.protractorLogin().then(function(user) {
+		                testUser = user;
+		                done();
+		            });
+		        });
+		        after(function(done) {
+		            utils.protractorLogout().then(function() {
+		                done();
+		            });
+		        });
+				it('GET: should not redirect the user to /login', function(done) {
+					browser.get('/usersettings');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/usersettings');
+					done();
+				});
+				it('navigate: should not redirect the user to /login', function(done) {
+					browser.get('/usersettings');
+					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/usersettings');
+					done();
+				});
+			});
+		});
+	});
 
 });
+
+
+
+
+
+
+
+
 
 
 

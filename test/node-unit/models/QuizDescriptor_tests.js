@@ -5,7 +5,7 @@ var utils = require('../../utils');
 var testUser;
 
 
-var validQuizDescriptorJSON = utils.validDescriptorJSON;
+var validDescriptor = utils.validDescriptorJSON;
 
 
 describe('QuizDescriptor', function() {
@@ -27,19 +27,19 @@ describe('QuizDescriptor', function() {
   });
 
   it('shouldcreate a quiz descriptor', function(done){
-    models.QuizDescriptor.create({descriptor: validQuizDescriptorJSON}).then(function(qd) {
+    models.QuizDescriptor.create({descriptor: validDescriptor}).then(function(qd) {
       done();
     });
   });
 
   it('should use the testUser to create a quiz descriptor', function(done){
-    testUser.createQuizDescriptor({descriptor: validQuizDescriptorJSON}).then(function(qd) {
+    testUser.createQuizDescriptor({descriptor: validDescriptor}).then(function(qd) {
       done();
     });
   });
 
   it('should create one quiz descriptor for user, and retrieve all expecting 1', function(done){
-    testUser.createQuizDescriptor({descriptor: validQuizDescriptorJSON}).then(function(qd) {
+    testUser.createQuizDescriptor({descriptor: validDescriptor}).then(function(qd) {
       testUser.getQuizDescriptors().then(function(results) {
         expect(results.length).to.equal(1);
         done();
@@ -48,8 +48,8 @@ describe('QuizDescriptor', function() {
   });
 
   it('should create two quiz descriptor for user, and retrieve all expecting 2', function(done){
-    testUser.createQuizDescriptor({descriptor: validQuizDescriptorJSON}).then(function(qd1) {
-      testUser.createQuizDescriptor({descriptor: validQuizDescriptorJSON}).then(function(qd2) {
+    testUser.createQuizDescriptor({descriptor: validDescriptor}).then(function(qd1) {
+      testUser.createQuizDescriptor({descriptor: validDescriptor}).then(function(qd2) {
         testUser.getQuizDescriptors().then(function(results) {
           expect(results.length).to.equal(2);
           done();

@@ -81,13 +81,30 @@ module.exports.protractorLogout = function() {
 
 
 module.exports.validDescriptor = {
-  "version" : "0.1",
-  "title" : "Example QuizJSON 1",
-  "quiz": [{
-    "question": "orderOfOperations",
-       "repeat": 5
-   }]
+    "version" : "0.1",
+    "title" : "Example QuizJSON 1",
+    "quiz": [{
+	    "question": "binHexOctDec",
+	    "repeat": 5,
+	}]
 };
+
+
+module.exports.insertQuizDescriptor = function(m, title) {
+	return m.QuizDescriptor.create(
+		{ 
+			descriptor : {
+			    "version" : "0.1",
+			    "title" : title,
+			    "quiz": [{
+				    "question": "binHexOctDec",
+				    "repeat": 5,
+				}]
+			}
+		}
+	);
+}
+
 module.exports.validDescriptorString = JSON.stringify(module.exports.validDescriptor);
 
 

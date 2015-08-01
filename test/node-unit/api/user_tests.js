@@ -7,7 +7,7 @@ var models = require('../../../models');
 var testUser;
 
 
-describe('api/user_tests.js', function() {
+describe('User API', function() {
   describe('PUT /api/user/:awesome_id', function() {
 
     describe('when users are unauthenticated', function() {

@@ -9,7 +9,7 @@ var validDescriptor= utils.validDescriptor;
 
 var testUser;
 
-describe('api/quiz_tests.js', function() {
+describe('QuizDescriptor API', function() {
 
   describe('POST /api/qd', function() {
 

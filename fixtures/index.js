@@ -1,47 +1,11 @@
 var sequelize_fixtures = require('sequelize-fixtures');
 var models = require('../models');
-var testQuizDescriptors = [
-    {
-      "version" : "0.1",
-      "title" : "Fixture Example Quiz",
-      "quiz": [{
-        "question": "orderOfOperations",
-           "repeat": 5
-       }] 
-    } 
-];
+var utils = require('../test/utils');
 
 var quizDescriptorFixtures = [
-    { 
-        descriptor : {
-        "version" : "0.1",
-        "title" : "First Fixture Example Quiz",
-        "quiz": [{
-          "question": "orderOfOperations",
-             "repeat": 1
-         }] 
-      }
-    },
-    { 
-      descriptor : {
-        "version" : "0.1",
-        "title" : "Second Fixture Example Quiz",
-        "quiz": [{
-          "question": "orderOfOperations",
-             "repeat": 2
-         }] 
-      }
-    }, 
-    {
-      descriptor : {
-        "version" : "0.1",
-        "title" : "Third Fixture Example Quiz",
-        "quiz": [{
-          "question": "orderOfOperations",
-             "repeat": 3
-         }] 
-      }
-    }
+  { descriptor : utils.getSampleQuizDescriptor("First Fixture Example Quiz") },
+  { descriptor : utils.getSampleQuizDescriptor("Second Fixture Example Quiz") },
+  { descriptor : utils.getSampleQuizDescriptor("Third Fixture Example Quiz") }
 ];
 
 

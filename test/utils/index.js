@@ -89,19 +89,21 @@ module.exports.validDescriptor = {
 	}]
 };
 
+module.exports.getSampleQuizDescriptor = function(title) {
+	return {
+	    "version" : "0.1",
+	    "title" : title,
+	    "quiz": [{
+		    "question": "binHexOctDec",
+		    "repeat": 5,
+		}]
+	}
+}
+
 
 module.exports.insertQuizDescriptor = function(m, title) {
-	return m.QuizDescriptor.create(
-		{ 
-			descriptor : {
-			    "version" : "0.1",
-			    "title" : title,
-			    "quiz": [{
-				    "question": "binHexOctDec",
-				    "repeat": 5,
-				}]
-			}
-		}
+	return m.QuizDescriptor.create( 
+		{ descriptor : module.exports.getSampleQuizDescriptor(title) }
 	);
 }
 

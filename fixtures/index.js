@@ -1,4 +1,3 @@
-var sequelize_fixtures = require('sequelize-fixtures');
 var models = require('../models');
 var utils = require('../test/utils');
 

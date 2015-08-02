@@ -26,7 +26,7 @@
     "request": "^2.58.0",
     "sequelize": "^3.3.2",
     "supertest": "^1.0.1",
-    "project-awesome": "git://github.com/wolfenbarger/project-awesome.git",
+    "project-awesome": "git://github.com/wolfenbarger/project-awesome#master",
     "underscore": "^1.8.3"
   },
   "engines": {

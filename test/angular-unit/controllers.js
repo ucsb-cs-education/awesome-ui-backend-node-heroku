@@ -36,28 +36,23 @@ describe('Angular Controllers', function() {
 	});
 
 	describe('QuizStartCtrl', function() {
-  		var RestangularMock = {};
+  		var QDMock = {
+			"id":1,
+			"descriptor":{}
+		};
 		var RouteParamsMock = { id: 1 };
 		var LocationMock = {};
 		var $controller, controller;
-
-		var getReturn;
 					
 		beforeEach(function() {
 			module('awesomeApp', function($provide) {
-				$provide.value('Restangular', RestangularMock);
+				$provide.value('qd', QDMock);
 				$provide.value('$routeParams', RouteParamsMock);
 				$provide.value('$location', LocationMock);
 			});
 			inject(function(_$controller_) {
 				$controller = _$controller_;
-			}); 
-			getReturn = {
-				$object: {
-					"id":1,
-					"descriptor":{}
-				}
-			};
+			});
 
 			LocationMock.currentPath = "/quizdescriptor/1";
 			LocationMock.currentSearch = {};
@@ -77,21 +72,12 @@ describe('Angular Controllers', function() {
 					return this.currentSearch;
 				}
 			}
-
-	    	RestangularMock.one = function(path, id) {
-	    		var one = {};
-				one.role = '';
-				one.get = function() {
-					return getReturn;
-				}
-				return one;
-	    	}
 			controller = $controller('QuizStartCtrl', { $scope: {}});
 		});
 
 		describe('qd', function() {
-			it('should be assigned the result of the Restangular query', function() {
-				expect(controller.qd).to.equal(getReturn.$object);
+			it('should be assigned the qd service result', function() {
+				expect(controller.qd).to.equal(QDMock);
 			});
 		});
 
@@ -165,7 +151,9 @@ describe('Angular Controllers', function() {
 	});
 
 	describe('QuizCtrl', function() {
-  		var RestangularMock = {};
+  		var QuizMock = {
+			"title":"First Fixture Example Quiz"
+		};
 		var RouteParamsMock = {
 			id: 1,
 			s : 1,
@@ -173,40 +161,22 @@ describe('Angular Controllers', function() {
 			k : 1
 		};
 		var $controller, controller;
-
-		var getReturn;
-					
 		beforeEach(function() {
 			module('awesomeApp', function($provide) {
-				$provide.value('Restangular', RestangularMock);
+				$provide.value('quiz', QuizMock);
 				$provide.value('$routeParams', RouteParamsMock);
 			});
 			inject(function(_$controller_) {
 				$controller = _$controller_;
-			}); 
-
-			getReturn = {
-				$object: {
-					"title":"First Fixture Example Quiz"
-				}
-			};
-
-	    	RestangularMock.one = function(path, id) {
-	    		var one = {};
-				one.role = '';
-				one.get = function() {
-					return getReturn;
-				}
-				return one;
-	    	}
+			});
 			controller = $controller('QuizCtrl', { $scope: {}});
 		});
 
 			
 
 		describe('quiz', function() {
-			it('should have set quiz to the Restangular response', function() {
-				expect(controller.quiz).to.eql(getReturn.$object);
+			it('should have set quiz to the quiz service result', function() {
+				expect(controller.quiz).to.eql(QuizMock);
 			});
 		});
 
@@ -285,7 +255,7 @@ describe('Angular Controllers', function() {
 		});
 
 		it('should have set quiz to the Restangular response', function() {
-			expect(controller.quiz).to.eql(getReturn.$object);
+			expect(controller.quiz).to.eql(QuizMock);
 		});
 
 

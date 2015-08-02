@@ -24,9 +24,9 @@ awesomeApp.controller("AuthController", ['$window', 'AuthService', function($win
     
 }]);
 
-awesomeApp.controller("QuizCtrl", [ 'Restangular', '$routeParams', function(Restangular, $routeParams) {
+awesomeApp.controller("QuizCtrl", [ 'quiz', '$routeParams', function(quiz, $routeParams) {
     var vm = this;
-    vm.quiz = {};
+    vm.quiz = quiz;
     vm.seed = 1;
     vm.showQuestions = true;
     vm.showKey = false;
@@ -36,14 +36,13 @@ awesomeApp.controller("QuizCtrl", [ 'Restangular', '$routeParams', function(Rest
         vm.showQuestions = $routeParams.q | 0;
     if ($routeParams.k == 1 || $routeParams.k == 0)
         vm.showKey = $routeParams.k | 0;
-    vm.quiz = Restangular.one('quiz', $routeParams.id).get({ s : vm.seed }).$object;
     return vm;
 }]);
 
-awesomeApp.controller("QuizStartCtrl", [ 'Restangular', '$routeParams', '$location', function(Restangular, $routeParams, $location) {
+awesomeApp.controller("QuizStartCtrl", [ 'qd', '$routeParams', '$location', function(qd, $routeParams, $location) {
     var vm = this;
     
-    vm.qd = Restangular.one('qd', $routeParams.id).get().$object;
+    vm.qd = qd;
     vm.displayOption = "questions";
     vm.seed = "";
 
@@ -59,15 +58,16 @@ awesomeApp.controller("QuizStartCtrl", [ 'Restangular', '$routeParams', '$locati
     return vm;
 }]);
 
-awesomeApp.controller("QuizDescriptorCtrl", [ 'AuthService', 'Flash', 'Restangular', function(AuthService, Flash, Restangular) {
+awesomeApp.controller("QuizDescriptorCtrl", [ 'qds', 'AuthService', 'Flash', 'Restangular', function(qds, AuthService, Flash, Restangular) {
     var vm = this;
-    var qds = Restangular.all('qd');
+    vm.quizzes = qds;
+    vm.quizDescriptorText = "";
 
     vm.clickedDescriptor = function(selection) {
         window.location.href = '/showpage/' + selection.id;
     }
     vm.addQuizDescriptor = function() {
-        qds.post({descriptor: vm.quizDescriptorText})
+        Restangular.all('qd').post({descriptor: vm.quizDescriptorText})
         .then(function(qd) {
             Flash.create('success', '<strong> Quiz Descriptor Saved:</strong>  id = ' + qd.id + '.', 'custom-class');
             vm.quizzes.push(qd);
@@ -76,10 +76,7 @@ awesomeApp.controller("QuizDescriptorCtrl", [ 'AuthService', 'Flash', 'Restangul
         });
         vm.quizDescriptorText = "";
     }
-    vm.quizzes = [];
-    vm.quizDescriptorText = "";
 
-    vm.quizzes = qds.getList().$object;
     
     return vm;
 }]);

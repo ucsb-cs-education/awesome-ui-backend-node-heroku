@@ -10,12 +10,22 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 	.when('/student', {
 		templateUrl: 'partials/student.html',
 		controller: 'QuizDescriptorCtrl',
-		controllerAs: 'quizDescriptors'
+		controllerAs: 'quizDescriptors',
+		resolve: {
+			qds: ['Restangular', '$route', function(Restangular, $route) {
+				return Restangular.all('qd').getList();
+			}]
+		}
 	})
 	.when('/instructor', {
 		templateUrl: 'partials/instructor.html',
 		controller: 'QuizDescriptorCtrl',
-		controllerAs: 'quizDescriptors'
+		controllerAs: 'quizDescriptors',
+		resolve: {
+			qds: ['Restangular', '$route', function(Restangular, $route) {
+				return Restangular.all('qd').getList();
+			}]
+		}
 	})
 	.when('/developer', {
 		templateUrl: 'partials/developer.html'
@@ -34,12 +44,22 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 	.when('/quizdescriptor/:id', {
 		templateUrl: 'partials/quizdescriptor.html',
 		controller: 'QuizStartCtrl',
-		controllerAs: 'quizStarter'
+		controllerAs: 'quizStarter',
+		resolve: {
+			qd: ['Restangular', '$route', function(Restangular, $route) {
+				return Restangular.one('qd', $route.current.params.id).get();
+			}]
+		}
 	})
 	.when('/quiz/:id', {
 		templateUrl: 'partials/quiz.html',
 		controller: 'QuizCtrl',
-		controllerAs: 'quizCtrl'
+		controllerAs: 'quizCtrl',
+		resolve: {
+			quiz: ['Restangular', '$route', function(Restangular, $route) {
+				return Restangular.one('quiz', $route.current.params.id).get({ s : $route.current.params.s });
+			}]
+		}
 	})
 	$locationProvider.html5Mode({
 		enabled: true

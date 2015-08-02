@@ -18,14 +18,13 @@ module.exports = function(app) {
         }
         //?s=seed
         var seed = 1;
-        if (req.body.s) {
-        	if (!isPositiveInteger(req.body.s)) {
+        if (req.query.s) {
+        	if (!isValidId(req.query.s)) {
         		res.status(400).end();
         		return;
         	}
-        	seed = req.body.s;
+            seed = parseInt(req.query.s);
         }
-
 
         models.QuizDescriptor.findOne({ where: {id: req.params.id} }).then(function(qd) {
             if (!qd) {

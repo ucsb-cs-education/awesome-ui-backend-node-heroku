@@ -24,15 +24,36 @@ awesomeApp.controller("AuthController", ['$window', 'AuthService', function($win
     
 }]);
 
-awesomeApp.controller("QuizStartCtrl", [ 'Restangular', '$routeParams', function(Restangular, $routeParams) {
+awesomeApp.controller("QuizCtrl", [ 'Restangular', '$routeParams', function(Restangular, $routeParams) {
+    var vm = this;
+    vm.quiz = {};
+    vm.seed = 1;
+    vm.showQuestions = true;
+    vm.showKey = false;
+    if ($routeParams.s != undefined)
+        vm.seed = $routeParams.s;
+    if ($routeParams.q == 1 || $routeParams.q == 0)
+        vm.showQuestions = $routeParams.q | 0;
+    if ($routeParams.k == 1 || $routeParams.k == 0)
+        vm.showKey = $routeParams.k | 0;
+    vm.quiz = Restangular.one('quiz', $routeParams.id).get({ s : vm.seed }).$object;
+    return vm;
+}]);
+
+awesomeApp.controller("QuizStartCtrl", [ 'Restangular', '$routeParams', '$location', function(Restangular, $routeParams, $location) {
     var vm = this;
     
     vm.qd = Restangular.one('qd', $routeParams.id).get().$object;
-    vm.displayOption = "answer";
+    vm.displayOption = "questions";
     vm.seed = "";
 
     vm.startQuiz = function() {
-        alert("Starting quiz: displayOption = " + vm.displayOption + ", seed = " + vm.seed);
+        var seed, showQuestions, showKey;
+
+        seed = (vm.seed === "") ? "1" : vm.seed;
+        showQuestions = (vm.displayOption !== "answers") ? 1 : 0;
+        showKey = (vm.displayOption !== "questions") ? 1 : 0;
+        $location.path('/quiz/' + $routeParams.id).search({ s: seed, q: showQuestions, k: showKey });
     }
     
     return vm;

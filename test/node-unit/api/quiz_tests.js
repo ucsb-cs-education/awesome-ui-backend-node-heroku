@@ -47,16 +47,7 @@ describe('Quiz API', function() {
 
     it('should respond with 400 Bad Request if the seed is not a positive integer', function(done) {
         request(app)
-        .get('/api/quiz/'+qd.id)
-        .send({ s : 1.1 })
-        .expect(400)
-        .end(done);
-    });
-
-    it('should respond with 400 Bad Request if the seed is not a positive integer', function(done) {
-        request(app)
-        .get('/api/quiz/'+qd.id)
-        .send({ s : '1' })
+        .get('/api/quiz/'+qd.id+'?s=1.1')
         .expect(400)
         .end(done);
     });
@@ -75,8 +66,7 @@ describe('Quiz API', function() {
 
     it('should respond with 200 and a valid json quiz and return the quiz give the correct seed', function(done) {
         request(app)
-        .get('/api/quiz/'+qd.id)
-        .send({ s : 100 })
+        .get('/api/quiz/'+qd.id+'?s=100')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);

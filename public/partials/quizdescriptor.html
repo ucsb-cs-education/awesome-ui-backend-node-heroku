@@ -10,26 +10,26 @@
 			<form>
 				<div class="form-group">
 					<label>Enter Quiz Seed</label>
-					<input type="text" class="form-control" ng-model="quizStarter.seed" placeholder="Seed">
+					<input type="text" class="form-control" ng-model="quizStarter.seed" placeholder="Random">
 				</div>
 				<div class="form-group">
 					<label>Display Options</label>
 					<div class="radio">
 						<label>
-							<input type="radio" ng-model="quizStarter.displayOption" value="answer">
+							<input type="radio" ng-model="quizStarter.displayOption" value="questions">
+							Questions
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" ng-model="quizStarter.displayOption" value="questions_answers">
+							Questions &amp; Answers
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" ng-model="quizStarter.displayOption" value="answers">
 							Answers
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" ng-model="quizStarter.displayOption" value="key_answer">
-							Answers &amp; Key
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" ng-model="quizStarter.displayOption" value="key">
-							Key
 						</label>
 					</div>
 				</div>

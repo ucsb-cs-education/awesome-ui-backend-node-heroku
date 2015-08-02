@@ -23,11 +23,6 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 	.when('/author', {
 		templateUrl: 'partials/author.html'
 	})
-	.when('/quizdescriptor/:id', {
-		templateUrl: 'partials/quizdescriptor.html',
-		controller: 'QuizStartCtrl',
-		controllerAs: 'quizStarter'
-	})
 	.when('/login', {
 		templateUrl: 'partials/login.html'
 	})
@@ -35,6 +30,16 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 		templateUrl: 'partials/usersettings.html',
 		controller: 'UserPrefCtrl',
 		controllerAs: 'preferences'
+	})
+	.when('/quizdescriptor/:id', {
+		templateUrl: 'partials/quizdescriptor.html',
+		controller: 'QuizStartCtrl',
+		controllerAs: 'quizStarter'
+	})
+	.when('/quiz/:id', {
+		templateUrl: 'partials/quiz.html',
+		controller: 'QuizCtrl',
+		controllerAs: 'quizCtrl'
 	})
 	$locationProvider.html5Mode({
 		enabled: true

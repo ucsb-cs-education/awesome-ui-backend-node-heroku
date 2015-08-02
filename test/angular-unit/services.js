@@ -115,32 +115,6 @@ describe('Angular Services', function() {
 			});
 		
 		});
-		/*
-		    	RestangularMock.one = function(path, awesome_id) {
-					var meMock = {};
-					meMock.role = '';
-					meMock.put = function() {
-						deferred = q.defer();
-						return deferred.promise;
-					}
-					return meMock;
-		    	}
-		describe('updateUser()', function() {
-			it('should use Restangular to make a put request and update the role on success', function () {
-				console.log(AuthService.getRole());
-				AuthService.updateUser('developer')
-				.then(function(user) {
-					console.log(AuthService.getRole());
-				});
-				deferred.resolve({ role : 'kakabutt' });
-				rootScope.$apply();
-				expect(user.role).to.equal('developer');
-				expect(AuthService.getRole()).to.equal('developer');
-				
-			});
-
-		});
-	*/
 	
 	});
     

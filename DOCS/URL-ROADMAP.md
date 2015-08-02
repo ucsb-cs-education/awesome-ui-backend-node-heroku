@@ -52,7 +52,7 @@ format=html [optional, default=html, other option: json]
 
 URL         	    |  GET | POST | other | Description        
 ------------   	    | -----| ---  | ---   | ------------ 
- /pas/quiz/:id           |   *  |      |       | main menu    
+ /pas/quiz/:id      |   *  |      |       | main menu    
 
 s=ABCD1234 [optional, default: choose randomly, options: any eight digit hex number]
 q=1  [optional, default: 1, options 0,1]

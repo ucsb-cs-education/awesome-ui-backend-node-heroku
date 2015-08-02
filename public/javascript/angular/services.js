@@ -32,22 +32,6 @@ awesomeApp.factory("AuthService",['$cookies', 'Restangular', function($cookies, 
 }]);
 
 
-//Temporary service until we start using routes / make app an SPA
-awesomeApp.factory("PathIdExtractor",[ function() {
-    var pathExtractor = {};
-
-    pathExtractor.idFor = function(path, name) {
-        var re = new RegExp("/" + name + "/([^[/|?]+)", "i");
-        var match = path.match(re);
-        if (match && match.length > 1) return match[1];
-        return null;
-        
-    }
-
-    return pathExtractor;
-}]);
-
-
 
 
 

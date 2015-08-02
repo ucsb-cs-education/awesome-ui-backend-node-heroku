@@ -50,7 +50,7 @@ awesomeApp.controller("QuizStartCtrl", [ 'Restangular', '$routeParams', '$locati
     vm.startQuiz = function() {
         var seed, showQuestions, showKey;
 
-        seed = (vm.seed === "") ? "1" : vm.seed;
+        seed = (vm.seed === "") ? Math.floor((Math.random() * 9007199254740991) + 1)+'' : vm.seed;
         showQuestions = (vm.displayOption !== "answers") ? 1 : 0;
         showKey = (vm.displayOption !== "questions") ? 1 : 0;
         $location.path('/quiz/' + $routeParams.id).search({ s: seed, q: showQuestions, k: showKey });

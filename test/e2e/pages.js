@@ -7,7 +7,8 @@ var models = require('../../models');
 var utils = require('../utils');
 var server;
 
-describe('Routes', function() {
+
+describe('Pages', function() {
 
     before(function(done) {
         models.sequelize.sync({ force: true }).then(function () {
@@ -24,93 +25,48 @@ describe('Routes', function() {
         done();
     });
 
-	describe('Pages', function() {
-		
-	});
+    describe('/quizdescriptor/:id', function() {
+        var qd;
+        before(function(done) {
+            models.sequelize.sync({ force: true }).then(function () {
+                utils.insertQuizDescriptor(models, 'Example Quiz Descriptor Title').then(function(res) {
+                    qd = res;
+                    browser.get('/quizdescriptor/'+qd.id);
+                    done();
+                });
+            });
+        });
 
+        it('should display the quiz title on the page', function() {
+            expect(element(by.binding('quizStarter.qd.descriptor.title')).getText()).to.eventually.equal(qd.descriptor.title);
+        });
 
-	describe('Redirects', function() {
-		describe('/usersettings', function() {
-			describe('unauthenticated user', function() {
-				it('GET: should redirect the user to /login', function(done) {
-					browser.get('/usersettings');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
-					done();
-				});
-				it('navigate: should redirect the user to /login', function(done) {
-					browser.get('/usersettings');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
-					done();
-				});
-			});
-			describe('authenticated user', function() {
-		        var testUser;
-		        before(function(done) {
-		            utils.protractorLogin().then(function(user) {
-		                testUser = user;
-		                done();
-		            });
-		        });
-		        after(function(done) {
-		            utils.protractorLogout().then(function() {
-		                done();
-		            });
-		        });
-				it('GET: should not redirect the user to /login', function(done) {
-					browser.get('/usersettings');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/usersettings');
-					done();
-				});
-				it('navigate: should not redirect the user to /login', function(done) {
-					browser.get('/usersettings');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/usersettings');
-					done();
-				});
-			});
-		});
+        it('should go to /quiz/:id when the user clicks the Start Quiz button', function(done) {
+            element(by.buttonText('Start Quiz')).click();
+            expect(browser.getCurrentUrl()).to.eventually.include(browser.baseUrl + '/quiz/' + qd.id);
+            done();
+        });
 
-		describe('/login', function() {
-			describe('unauthenticated user', function() {
-				it('GET: should not redirect the user', function(done) {
-					browser.get('/login');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
-					done();
-				});
-				it('navigate: should not redirect the user', function(done) {
-					browser.get('/login');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/login');
-					done();
-				});
-			});
-			describe('authenticated user', function() {
-		        var testUser;
-		        before(function(done) {
-		            utils.protractorLogin().then(function(user) {
-		                testUser = user;
-		                done();
-		            });
-		        });
-		        after(function(done) {
-		            utils.protractorLogout().then(function() {
-		                done();
-		            });
-		        });
-				it('GET: should redirect the user to preferred page', function(done) {
-					browser.get('/login');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/' + testUser.role);
-					done();
-				});
-				it('navigate: should redirect the user to preferred page', function(done) {
-					browser.get('/login');
-					expect(browser.getCurrentUrl()).to.eventually.equal(browser.baseUrl + '/' + testUser.role);
-					done();
-				});
-			});
-		});
-	});
+    });
 
+    describe('/quiz:id?s=seed&q=showquestions&k=showkey', function() {
+        var qd;
+        before(function(done) {
+            models.sequelize.sync({ force: true }).then(function () {
+                utils.insertQuizDescriptor(models, 'Example Quiz Descriptor Title').then(function(res) {
+                    qd = res;
+                    browser.get('/quiz/'+qd.id+'?s=1&q=1&k=1');
+                    done();
+                });
+            });
+        });
+
+        it('should display the quiz title on the page', function() {
+            expect(element(by.binding('quizCtrl.quiz.title')).getText()).to.eventually.equal(qd.descriptor.title);
+        });
+        
+    });
 });
-
 
 
 

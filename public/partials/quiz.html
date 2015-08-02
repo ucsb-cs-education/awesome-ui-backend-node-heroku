@@ -1,0 +1,43 @@
+<div class="container">
+
+	<div class="col-sm-6 col-sm-offset-2">
+
+		<h1><span class="fa"><b>{{ quizCtrl.quiz.id }} </b> {{ quizCtrl.quiz.title }}</span></h1>
+
+		<hr>
+
+		<div ng-show="quizCtrl.showQuestions">
+			<h3>Questions</h3>
+			<br>
+			<ol>
+				<li ng-repeat="question in quizCtrl.quiz.questions" ng-switch="question.format">
+					<div ng-switch-when="multiple-choice">
+						<p> {{ question.question }} </p>
+						<p ng-repeat="choice in question.choices">
+							<span><b>{{ $index }}</b> {{ choice }} </span>
+						</p>
+						<p> {{ question.answer }} </p>
+					</div>
+					<div ng-switch-when="input">
+						<p> {{ question.question }} </p>
+					</div>
+				</li>
+			</ol>
+		</div>
+		<div ng-show="quizCtrl.showKey">
+			<h3>Answers</h3>
+			<br>
+			<ol>
+				<li ng-repeat="question in quizCtrl.quiz.questions">
+					<div>
+						<p> {{ question.answer }} </p>
+					</div>
+				</li>
+			</ol>
+		</div>
+		
+		<br>
+
+	</div>
+	
+</div>

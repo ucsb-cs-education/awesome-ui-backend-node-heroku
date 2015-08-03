@@ -1,10 +1,6 @@
 var models = require('../../models');
 var projectAwesome = require("project-awesome");
 
-function isPositiveInteger(x) {
-    return (typeof x === 'number') && (x % 1 === 0) && x >= 0;
-}
-
 function isValidId(n) {
 	return /^\d+$/.test(n);
 }
@@ -16,14 +12,13 @@ module.exports = function(app) {
             res.status(400).end();
             return;
         }
-        //?s=seed
-        var seed = 1;
+        var seed = '00000001';
         if (req.query.s) {
-        	if (!isValidId(req.query.s)) {
+        	if (!projectAwesome.isStringValidSeed(req.query.s)) {
         		res.status(400).end();
         		return;
         	}
-            seed = parseInt(req.query.s);
+            seed = req.query.s;
         }
 
         models.QuizDescriptor.findOne({ where: {id: req.params.id} }).then(function(qd) {

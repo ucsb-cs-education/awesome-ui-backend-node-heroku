@@ -55,7 +55,7 @@ describe('Pages', function() {
             models.sequelize.sync({ force: true }).then(function () {
                 utils.insertQuizDescriptor(models, 'Example Quiz Descriptor Title').then(function(res) {
                     qd = res;
-                    browser.get('/quiz/'+qd.id+'?s=1&q=1&k=1');
+                    browser.get('/quiz/'+qd.id+'?s=1234abcd&q=1&k=1');
                     done();
                 });
             });

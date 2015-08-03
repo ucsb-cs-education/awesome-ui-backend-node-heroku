@@ -45,9 +45,16 @@ describe('Quiz API', function() {
         .end(done);
     });
 
-    it('should respond with 400 Bad Request if the seed is not a positive integer', function(done) {
+    it('should respond with 400 Bad Request if the seed is not a hex string', function(done) {
         request(app)
-        .get('/api/quiz/'+qd.id+'?s=1.1')
+        .get('/api/quiz/'+qd.id+'?s=1234567t')
+        .expect(400)
+        .end(done);
+    });
+
+    it('should respond with 400 Bad Request if the seed is not an 8 digit hex string', function(done) {
+        request(app)
+        .get('/api/quiz/'+qd.id+'?s=123456f')
         .expect(400)
         .end(done);
     });
@@ -59,19 +66,20 @@ describe('Quiz API', function() {
         .end(function(err, res) {
           if (err) return done(err);
           expect(projectAwesome.QuizValidator.isValid(res.body)).to.be.true;
-          expect(res.body.seed).to.equal(1);
+          expect(res.body.seed).to.equal('00000001');
           done();
         });
     });
 
     it('should respond with 200 and a valid json quiz and return the quiz give the correct seed', function(done) {
         request(app)
-        .get('/api/quiz/'+qd.id+'?s=100')
+        .get('/api/quiz/'+qd.id+'?s=1234abef')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
+          console.log(res.body)
           expect(projectAwesome.QuizValidator.isValid(res.body)).to.be.true;
-          expect(res.body.seed).to.equal(100);
+          expect(res.body.seed).to.equal('1234abef');
           done();
         });
     });

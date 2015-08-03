@@ -24,6 +24,8 @@ describe('Redirects', function() {
         server.close();
         done();
     });
+
+
 	describe('/usersettings', function() {
 		describe('unauthenticated user', function() {
 			it('GET: should redirect the user to /login', function(done) {

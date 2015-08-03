@@ -39,7 +39,7 @@ awesomeApp.controller("QuizCtrl", [ 'quiz', '$routeParams', function(quiz, $rout
     return vm;
 }]);
 
-awesomeApp.controller("QuizStartCtrl", [ 'qd', '$routeParams', '$location', function(qd, $routeParams, $location) {
+awesomeApp.controller("QuizStartCtrl", [ 'qd', 'SeedGenerator','$routeParams', '$location', function(qd, SeedGenerator, $routeParams, $location) {
     var vm = this;
     
     vm.qd = qd;
@@ -47,12 +47,13 @@ awesomeApp.controller("QuizStartCtrl", [ 'qd', '$routeParams', '$location', func
     vm.seed = "";
 
     vm.startQuiz = function() {
-        var seed, showQuestions, showKey;
-
-        seed = (vm.seed === "") ? Math.floor((Math.random() * 9007199254740991) + 1)+'' : vm.seed;
-        showQuestions = (vm.displayOption !== "answers") ? 1 : 0;
-        showKey = (vm.displayOption !== "questions") ? 1 : 0;
-        $location.path('/quiz/' + $routeParams.id).search({ s: seed, q: showQuestions, k: showKey });
+        var query = {};
+        query.s = vm.seed;
+        if (query.s === "")
+            query.s = SeedGenerator.getSeed();
+        query.q = (vm.displayOption !== "answers") ? 1 : 0;
+        query.k = (vm.displayOption !== "questions") ? 1 : 0;
+        $location.path('/quiz/' + $routeParams.id).search(query);
     }
     
     return vm;

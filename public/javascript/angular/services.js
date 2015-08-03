@@ -34,7 +34,10 @@ awesomeApp.factory("AuthService",['$cookies', 'Restangular', function($cookies, 
 awesomeApp.factory('SeedGenerator', [function() {
     var generator = {};
     generator.getSeed = function() {
-        return (Math.floor(Math.random() * (0xFFFFFFFF + 1))).toString(16);
+        var newHexString = (Math.floor(Math.random() * (0xFFFFFFFF + 1))).toString(16);
+        while (newHexString.length < 8)
+            newHexString = '0'+newHexString;
+        return newHexString;
     }
     return generator;
 }]);

@@ -117,6 +117,35 @@ describe('Angular Services', function() {
 		});
 	
 	});
+
+	describe('SeedGenerator', function() {
+		beforeEach(module('awesomeApp'));
+  		var SeedGenerator;
+
+		beforeEach(function() {
+			module('awesomeApp');
+		    inject(function(_SeedGenerator_) {
+		    	SeedGenerator = _SeedGenerator_; 
+		    });
+		});
+		
+		describe('getSeed()', function() {
+
+			it('should return a string', function() {
+				expect(SeedGenerator.getSeed()).to.be.a('string');
+			});
+
+			it('should return a string of length 8', function() {
+				expect(SeedGenerator.getSeed().length).to.equal(8);
+			});
+
+			it('should return a parsable hex string', function() {
+				expect(parseInt(SeedGenerator.getSeed(), 16)).to.be.a('number');
+			});
+
+		});
+	
+	});
     
 });
 

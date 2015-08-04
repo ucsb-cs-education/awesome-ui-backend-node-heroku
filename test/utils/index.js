@@ -83,20 +83,32 @@ module.exports.protractorLogout = function() {
 module.exports.validDescriptor = {
     "version" : "0.1",
     "title" : "Example QuizJSON 1",
-    "quiz": [{
-	    "question": "binHexOctDec",
-	    "repeat": 5,
-	}]
+    "quiz": [
+    	{
+		    "question": "binHexOctDec",
+		    "repeat": 5,
+		},
+    	{
+		    "question": "changeOfBase",
+		    "repeat": 5,
+		}
+	]
 };
 
 module.exports.getSampleQuizDescriptor = function(title) {
 	return {
 	    "version" : "0.1",
 	    "title" : title,
-	    "quiz": [{
-		    "question": "binHexOctDec",
-		    "repeat": 5,
-		}]
+	    "quiz": [
+	    	{
+		    	"question": "binHexOctDec",
+		    	"repeat": 5,
+			},
+	    	{
+			    "question": "changeOfBase",
+			    "repeat": 5,
+			}
+		]
 	}
 }
 

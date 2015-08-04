@@ -11,16 +11,16 @@
 			<br>
 			<ol>
 				<li ng-repeat="question in quizCtrl.quiz.questions" ng-switch="question.format">
-					<div ng-switch-when="multiple-choice">
-						<p> {{ question.question }} </p>
-						<p ng-repeat="choice in question.choices">
-							<span><b>{{ $index }}</b> {{ choice }} </span>
-						</p>
-						<p> {{ question.answer }} </p>
+
+					<div ng-switch-when="multiple-choice" class="question multiple-choice-question">
+						<div> {{ question.question }} </div>
+						<div ng-repeat="choice in question.choices"><span class="multiple-choice-label">{{ $index | indexToLetter }}.</span> {{ choice }}</div>
 					</div>
-					<div ng-switch-when="input">
-						<p> {{ question.question }} </p>
+
+					<div ng-switch-when="input" class="question input-question">
+						<div> {{ question.question }} </div>
 					</div>
+
 				</li>
 			</ol>
 		</div>
@@ -28,9 +28,12 @@
 			<h3>Answers</h3>
 			<br>
 			<ol>
-				<li ng-repeat="question in quizCtrl.quiz.questions">
-					<div>
-						<p> {{ question.answer }} </p>
+				<li ng-repeat="question in quizCtrl.quiz.questions" ng-switch="question.format">
+					<div ng-switch-when="multiple-choice" class="answer multiple-choice-answer">
+						<div> {{ question.answer | indexToLetter }} </div>
+					</div>
+					<div ng-switch-when="input" class="answer input-answer">
+						<div> {{ question.answer }} </div>
 					</div>
 				</li>
 			</ol>

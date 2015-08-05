@@ -151,7 +151,7 @@ describe('Angular Controllers', function() {
 	});
 
 	describe('QuizCtrl', function() {
-  		var QuizMock = {
+		var QuizMock = {
 			"title":"First Fixture Example Quiz"
 		};
 		var RouteParamsMock = {
@@ -172,7 +172,7 @@ describe('Angular Controllers', function() {
 			controller = $controller('QuizCtrl', { $scope: {}});
 		});
 
-			
+
 
 		describe('quiz', function() {
 			it('should have set quiz to the quiz service result', function() {
@@ -184,7 +184,7 @@ describe('Angular Controllers', function() {
 			before(function() {
 				RouteParamsMock = { id: 6, s : 2, q : 0, k : 1 };
 			});
-			
+
 			it('should set seed according to the routeParams', function() {
 				expect(controller.seed).to.equal(RouteParamsMock.s);
 			});
@@ -253,12 +253,6 @@ describe('Angular Controllers', function() {
 			});
 
 		});
-
-		it('should have set quiz to the Restangular response', function() {
-			expect(controller.quiz).to.eql(QuizMock);
-		});
-
-
 
 
 	});

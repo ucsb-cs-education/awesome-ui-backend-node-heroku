@@ -1,6 +1,7 @@
 var passportStub = require('passport-stub');
 var app = require('../../app.js');
 var models = require('../../models');
+var _und = require("underscore")._;
 
 module.exports.createTestAuthUrl = function(account_type, id, token, email, name, role) {
     return ('/auth/test/callback?account_type=' + account_type + '&id=' + id + '&token=' + token + '&email=' + email + '&name=' + name + '&password=test' + '&role=' + role).split(' ').join('+');
@@ -86,30 +87,23 @@ module.exports.validDescriptor = {
     "quiz": [
     	{
 		    "question": "binHexOctDec",
-		    "repeat": 5,
+		    "repeat": 2,
 		},
     	{
 		    "question": "changeOfBase",
-		    "repeat": 5,
+		    "repeat": 2,
+		},
+    	{
+		    "question": "cppAppropriateVariables",
+		    "repeat": 2,
 		}
 	]
 };
 
 module.exports.getSampleQuizDescriptor = function(title) {
-	return {
-	    "version" : "0.1",
-	    "title" : title,
-	    "quiz": [
-	    	{
-		    	"question": "binHexOctDec",
-		    	"repeat": 5,
-			},
-	    	{
-			    "question": "changeOfBase",
-			    "repeat": 5,
-			}
-		]
-	}
+	var qd = _und.clone(module.exports.validDescriptor);
+	qd.title = title;
+	return qd;
 }
 
 

@@ -14,7 +14,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/sinon/pkg/sinon.js',
       'node_modules/angular/angular.js',
       'public/javascript/ext/*.js',
       'public/javascript/angular/*.js',
@@ -24,8 +23,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      'test/angular-unit/exampleexclude.js',
-      'public/javascript/angular.min.js'
+      'public/javascript/ext/angular.min.js'
     ],
 
 

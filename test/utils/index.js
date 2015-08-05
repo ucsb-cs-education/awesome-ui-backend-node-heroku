@@ -92,10 +92,6 @@ module.exports.validDescriptor = {
     	{
 		    "question": "changeOfBase",
 		    "repeat": 2,
-		},
-    	{
-		    "question": "cppAppropriateVariables",
-		    "repeat": 2,
 		}
 	]
 };

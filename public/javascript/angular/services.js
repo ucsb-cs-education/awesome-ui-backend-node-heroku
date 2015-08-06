@@ -39,6 +39,9 @@ awesomeApp.factory('SeedGenerator', [function() {
             newHexString = '0'+newHexString;
         return newHexString;
     }
+    generator.isValidSeed = function(seed) {
+        return (typeof seed === 'string' && seed.match(/^[a-fA-F0-9]{8}$/) !== null && seed.length == 8);
+    }
     return generator;
 }]);
 

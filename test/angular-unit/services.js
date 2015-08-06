@@ -144,6 +144,34 @@ describe('Angular Services', function() {
 			});
 
 		});
+
+		describe('isValidSeed(seed)', function() {
+
+			it('should return false if the seed is not a string', function() {
+				expect(SeedGenerator.isValidSeed(parseInt('1234abcd', 16))).to.be.false;
+			});
+
+			it('should return false if the seed has length > 8', function() {
+				expect(SeedGenerator.isValidSeed('1234abcde')).to.be.false;
+			});
+
+			it('should return false if the seed has length < 8', function() {
+				expect(SeedGenerator.isValidSeed('1234abc')).to.be.false;
+			});
+
+			it('should return false if the seed includes non hex characters', function() {
+				expect(SeedGenerator.isValidSeed('1234abch')).to.be.false;
+			});
+
+			it('should return true if the seed is a valid 8 digit hex string', function() {
+				expect(SeedGenerator.isValidSeed('1234abcd')).to.be.true;
+			});
+
+			it('should return true if the seed is a valid 8 digit hex string with uppercase characters', function() {
+				expect(SeedGenerator.isValidSeed('1234ABCD')).to.be.true;
+			});
+
+		});
 	
 	});
     

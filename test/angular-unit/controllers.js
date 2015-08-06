@@ -152,7 +152,12 @@ describe('Angular Controllers', function() {
 
 	describe('QuizCtrl', function() {
 		var QuizMock = {
-			"title":"First Fixture Example Quiz"
+			"title":"First Fixture Example Quiz",
+			"questions":[{
+		        "question": "Convert 11011 from base 2 to octal.",
+		        "answer": "33",
+		        "format": "input"
+		    }]
 		};
 		var RouteParamsMock = {
 			id: 1,
@@ -172,12 +177,62 @@ describe('Angular Controllers', function() {
 			controller = $controller('QuizCtrl', { $scope: {}});
 		});
 
+		describe('gradeQuiz()', function() {
 
+			it('should set graded to true', function() {
+				controller.gradeQuiz();
+				expect(controller.graded).to.be.true;
+			});
+
+			it('should mark a question as incorrect if the userAnswer is not defined', function() {
+				QuizMock.questions = [
+					{
+				        "question": "Convert 11011 from base 2 to octal.",
+				        "answer": "33"
+			    	}
+			    ];
+			    controller.gradeQuiz();
+			    expect(controller.quiz.questions[0].isCorrect).to.be.false;
+			});
+			
+			it('should mark a question as incorrect if the userAnswer does not match the answer property', function() {
+				QuizMock.questions = [
+					{
+				        "question": "Convert 11011 from base 2 to octal.",
+				        "answer": "33",
+				        "userAnswer": "55"
+			    	}
+			    ];
+			    controller.gradeQuiz();
+			    expect(controller.quiz.questions[0].isCorrect).to.be.false;
+			});
+			
+			it('should mark a question as correct if the userAnswer matches the answer property', function() {
+				QuizMock.questions = [
+					{
+				        "question": "Convert 11011 from base 2 to octal.",
+				        "answer": "33",
+				        "userAnswer": "33"
+			    	}
+			    ];
+			    controller.gradeQuiz();
+			    expect(controller.quiz.questions[0].isCorrect).to.be.true;
+			});
+
+		});
+
+		describe('graded', function() {
+			it('should be initialized to false', function() {
+				expect(controller.graded).to.be.false;
+			});
+		});
 
 		describe('quiz', function() {
+
 			it('should have set quiz to the quiz service result', function() {
 				expect(controller.quiz).to.eql(QuizMock);
 			});
+
 		});
 
 		describe('seed', function() {

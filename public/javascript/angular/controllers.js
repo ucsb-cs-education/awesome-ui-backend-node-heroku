@@ -26,6 +26,13 @@ awesomeApp.controller("AuthController", ['$window', 'AuthService', function($win
 
 awesomeApp.controller("QuizCtrl", [ 'quiz', '$routeParams', function(quiz, $routeParams) {
     var vm = this;
+    /*
+    var questionsWithSelected = quiz.questions.map(function(q) {
+        q.userAnswer = {};
+        return q;
+    });
+    quiz.questions = questionsWithSelected;
+    */
     vm.quiz = quiz;
     vm.seed = 1;
     vm.showQuestions = true;
@@ -36,6 +43,19 @@ awesomeApp.controller("QuizCtrl", [ 'quiz', '$routeParams', function(quiz, $rout
         vm.showQuestions = $routeParams.q | 0;
     if ($routeParams.k == 1 || $routeParams.k == 0)
         vm.showKey = $routeParams.k | 0;
+
+    vm.graded = false;
+
+    vm.gradeQuiz = function() {
+        for (var i = 0; vm.quiz.questions.length > i; i++) {
+            var userAnswer = vm.quiz.questions[i].userAnswer;
+            var answer = vm.quiz.questions[i].answer;
+            vm.quiz.questions[i].isCorrect = (userAnswer == answer);
+        }
+        vm.graded = true;
+    }
+
+
     return vm;
 }]);
 

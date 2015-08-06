@@ -7,20 +7,41 @@
 		<div>Seed: <span id="quiz-seed">{{ quizCtrl.seed }}</span></div>
 
 		<hr>
+		<style>
+			.correct-mark {
+				color:green;
+			}
+			.incorrect-mark {
+				color:red;
+			}
+			.not-graded {
+				visibility: hidden;
+			}
+
+		</style>
 
 		<div ng-show="quizCtrl.showQuestions">
 			<h3>Questions</h3>
 			<br>
-			<ol>
+			<ol class="custom-counter">
 				<li ng-repeat="question in quizCtrl.quiz.questions" ng-switch="question.format">
-
+					<i style="position:absolute; margin-left:-38px;margin-top:7px;" ng-class="{'correct-mark fa-check':question.isCorrect, 'incorrect-mark fa-close':!question.isCorrect, 'not-graded': !quizCtrl.graded }" class="fa"></i>
 					<div ng-switch-when="multiple-choice" class="question multiple-choice-question">
-						<div> {{ question.question }} </div>
-						<div ng-repeat="choice in question.choices"><span class="multiple-choice-label">{{ $index | indexToLetter }}.</span> {{ choice }}</div>
+						<div>{{ question.question }}</div>
+
+						<div class="radio" ng-repeat="choice in question.choices">
+							<label>
+								<input type="radio" ng-model="question.userAnswer" value="{{ $index }}">
+								<span class="multiple-choice-label"></span> {{ choice }}
+							</label>
+						</div>
 					</div>
 
 					<div ng-switch-when="input" class="question input-question">
 						<div> {{ question.question }} </div>
+						<div class="form-group input-group-sm">
+							<input type="text" class="form-control" ng-model="question.userAnswer">
+						</div>
 					</div>
 
 				</li>
@@ -42,6 +63,7 @@
 		</div>
 		
 		<br>
+		<button type="submit" class="btn btn-success btn-lg" ng-click="quizCtrl.gradeQuiz()">Check Answers</button>
 
 	</div>
 	

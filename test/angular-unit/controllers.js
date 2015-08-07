@@ -112,11 +112,19 @@ describe('Angular Controllers', function() {
 				});
 			});
 
-			describe('non-empty seed input', function() {
+			describe('non-empty valid seed input', function() {
 				it('should navigate to quiz page without the s param set as the given seed', function() {
-					controller.seed = 42;
+					controller.seed = 'abcd1234';
 					controller.startQuiz();
-					expect(LocationMock.search().s).to.equal(42);
+					expect(LocationMock.search().s).to.equal('abcd1234');
+				});
+			});
+
+			describe('non-empty invalid seed input', function() {
+				it('should not navigate to quiz page', function() {
+					controller.seed = 'notvalidseed';
+					controller.startQuiz();
+					expect(LocationMock.search().s).to.not.equal('abcd1234');
 				});
 			});
 

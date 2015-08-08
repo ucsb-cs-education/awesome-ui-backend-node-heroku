@@ -60,7 +60,7 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 				var error = {};
 				if (!SeedGenerator.isValidSeed($route.current.params.seed))
 					return { error: { invalidSeed: true } };
-				return Restangular.one('quiz', $route.current.params.id).get({ s : $route.current.params.seed }).then(function(quiz) {
+				return Restangular.one('quiz', $route.current.params.id).customGET($route.current.params.seed).then(function(quiz) {
 					return quiz;
 				}, function(error) {
 					return { error: { notFound: true } };

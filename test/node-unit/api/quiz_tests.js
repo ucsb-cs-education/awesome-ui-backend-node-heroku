@@ -27,7 +27,7 @@ describe('Quiz API', function() {
 
 
 
-  describe('GET /api/quiz/:id?s=seed', function() {
+  describe('GET /api/quiz/:id/:seed', function() {
     var qd = {};
     before(function(done) {
       models.sequelize.sync({ force: true }).then(function () {
@@ -38,51 +38,85 @@ describe('Quiz API', function() {
       });
     });
 
-    it('should respond with 400 Bad Request if the id param is not valid', function(done) {
-        request(app)
-        .get('/api/quiz/a')
-        .expect(400)
-        .end(done);
-    });
-
-    it('should respond with 400 Bad Request if the seed is not a hex string', function(done) {
-        request(app)
-        .get('/api/quiz/'+qd.id+'?s=1234567t')
-        .expect(400)
-        .end(done);
-    });
-
-    it('should respond with 400 Bad Request if the seed is not an 8 digit hex string', function(done) {
-        request(app)
-        .get('/api/quiz/'+qd.id+'?s=123456f')
-        .expect(400)
-        .end(done);
-    });
-
-    it('should respond with 200 and a valid json quiz corresponding to seed=1 if seed is not specified', function(done) {
-        request(app)
-        .get('/api/quiz/'+qd.id)
-        .expect(200)
-        .end(function(err, res) {
-          if (err) return done(err);
-          expect(projectAwesome.QuizValidator.isValid(res.body)).to.be.true;
-          expect(res.body.seed).to.equal('00000001');
-          done();
+    describe('no seed', function() {
+        it('should respond with 404 Not Found if missing the seed param', function(done) {
+            request(app)
+            .get('/api/quiz/1')
+            .expect(404)
+            .end(done);
         });
     });
 
-    it('should respond with 200 and a valid json quiz and return the quiz give the correct seed', function(done) {
-        request(app)
-        .get('/api/quiz/'+qd.id+'?s=1234abef')
-        .expect(200)
-        .end(function(err, res) {
-          if (err) return done(err);
-          console.log(res.body)
-          expect(projectAwesome.QuizValidator.isValid(res.body)).to.be.true;
-          expect(res.body.seed).to.equal('1234abef');
+    describe('invalid seed', function() {
+
+      describe('seed is not a hex', function() {
+
+        it('should respond with 404 not found', function(done) {
+            request(app)
+            .get('/api/quiz/'+qd.id+'/1234567t')
+            .expect(404)
+            .end(done);
+        });
+
+      });
+
+      describe('seed is a hex, but has length > 8', function() {
+
+        it('should respond with 404 Not Found if the seed is not an 8 digit hex string', function(done) {
+          request(app)
+          .get('/api/quiz/'+qd.id+'/123456f')
+          .expect(404)
+          .end(done);
+        });
+
+      });
+
+      describe('seed is a hex, but has length < 8', function() {
+
+        it('should respond with 404 Not Found if the seed is not an 8 digit hex string', function(done) {
+          request(app)
+          .get('/api/quiz/'+qd.id+'/12345678f')
+          .expect(404)
+          .end(done);
+        });
+
+      });
+
+    });
+
+    describe('valid seed, valid id', function() {
+
+      it('should respond with 200 and a valid json quiz with seed set correctly', function(done) {
+          request(app)
+          .get('/api/quiz/'+qd.id+'/1234abcd')
+          .expect(200)
+          .end(function(err, res) {
+            if (err) return done(err);
+            expect(res.body.seed).to.equal('1234abcd');
+            expect(projectAwesome.QuizValidator.isValid(res.body)).to.be.true;
+            done();
+          });
+      });
+
+    });
+
+    describe('valid seed, but no quiz with the given id exists', function() {
+      before(function(done) {
+        models.sequelize.sync({ force: true }).then(function () {
           done();
         });
+      });
+
+      it('should response with 404 not found', function(done) {
+        request(app)
+        .get('/api/quiz/'+qd.id+'/1234abcd')
+        .expect(404)
+        .end(done);
+      });
+
     });
+    
+
 
   });
 });

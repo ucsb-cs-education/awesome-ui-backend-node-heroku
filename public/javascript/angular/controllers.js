@@ -27,11 +27,9 @@ awesomeApp.controller("AuthController", ['$window', 'AuthService', function($win
 awesomeApp.controller("QuizCtrl", [ 'quiz', '$routeParams', function(quiz, $routeParams) {
     var vm = this;
     vm.quiz = quiz;
-    vm.seed = 1;
+    vm.seed = $routeParams.seed;
     vm.showQuestions = true;
     vm.showKey = false;
-    if ($routeParams.s != undefined)
-        vm.seed = $routeParams.s;
     if ($routeParams.q == 1 || $routeParams.q == 0)
         vm.showQuestions = $routeParams.q | 0;
     if ($routeParams.k == 1 || $routeParams.k == 0)
@@ -52,7 +50,7 @@ awesomeApp.controller("QuizCtrl", [ 'quiz', '$routeParams', function(quiz, $rout
     return vm;
 }]);
 
-awesomeApp.controller("QuizStartCtrl", [ 'qd', 'SeedGenerator', 'Flash', '$routeParams', '$location', function(qd, SeedGenerator, Flash, $routeParams, $location) {
+awesomeApp.controller("QuizStartCtrl", [ 'qd', 'SeedGenerator', '$routeParams', '$location', function(qd, SeedGenerator, $routeParams, $location) {
     var vm = this;
     
     vm.qd = qd;
@@ -62,13 +60,13 @@ awesomeApp.controller("QuizStartCtrl", [ 'qd', 'SeedGenerator', 'Flash', '$route
     vm.startQuiz = function() {
         if (vm.seed !== "" && !SeedGenerator.isValidSeed(vm.seed))
             return;
+        var seed = vm.seed;
         var query = {};
-        query.s = vm.seed;
-        if (query.s === "")
-            query.s = SeedGenerator.getSeed();
+        if (seed === "")
+            seed = SeedGenerator.getSeed();
         query.q = (vm.displayOption !== "answers") ? 1 : 0;
         query.k = (vm.displayOption !== "questions") ? 1 : 0;
-        $location.path('/quiz/' + $routeParams.id).search(query);
+        $location.path('/quiz/' + $routeParams.id + '/' + seed).search(query);
     }
     
     return vm;

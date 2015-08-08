@@ -41,6 +41,10 @@ describe('Angular Controllers', function() {
 			"descriptor":{}
 		};
 		var RouteParamsMock = { id: 1 };
+		var SeedGeneratorMock = {
+			isValidSeed: function(s) { return false; },
+			getSeed: function() { return ''; }
+		};
 		var LocationMock = {};
 		var $controller, controller;
 					
@@ -48,13 +52,14 @@ describe('Angular Controllers', function() {
 			module('awesomeApp', function($provide) {
 				$provide.value('qd', QDMock);
 				$provide.value('$routeParams', RouteParamsMock);
+				$provide.value('SeedGenerator', SeedGeneratorMock);
 				$provide.value('$location', LocationMock);
 			});
 			inject(function(_$controller_) {
 				$controller = _$controller_;
 			});
 
-			LocationMock.currentPath = "/quizdescriptor/1";
+			LocationMock.currentPath = "/quiz/1";
 			LocationMock.currentSearch = {};
 			LocationMock.path = function(path) { 
 				if (path) {
@@ -96,35 +101,48 @@ describe('Angular Controllers', function() {
 		describe('startQuiz', function() {
 
 			beforeEach(function() {
-				LocationMock.currentPath = "/quizdescriptor/1";
+				LocationMock.currentPath = "/quiz/1";
 				LocationMock.currentSearch = {};
 			});
 
-			it('should navigate to the /quiz/:id page where :id is routeParams.id', function() {
-				controller.startQuiz();
-				expect(LocationMock.path()).to.include('/quiz/' + RouteParamsMock.id);
-			});
-
 			describe('empty seed input', function() {
-				it('should navigate to quiz page with the s param set', function() {
+				before(function() {
+					SeedGeneratorMock = {
+						isValidSeed: function(s) { return false; },
+						getSeed: function() { return 'aaaabbbb'; }
+					};
+				});
+				it('should navigate to quiz page with the :seed set by SeedGenerator', function() {
 					controller.startQuiz();
-					expect(LocationMock.search().s).to.exist;
+					expect(LocationMock.path()).to.include('/quiz/' + RouteParamsMock.id + '/aaaabbbb');
 				});
 			});
 
 			describe('non-empty valid seed input', function() {
+				before(function() {
+					SeedGeneratorMock = {
+						isValidSeed: function(s) { return true; },
+						getSeed: function() { return 'aaaabbbb'; }
+					};
+				});
 				it('should navigate to quiz page without the s param set as the given seed', function() {
 					controller.seed = 'abcd1234';
 					controller.startQuiz();
-					expect(LocationMock.search().s).to.equal('abcd1234');
+					expect(LocationMock.path()).to.include('/quiz/' + RouteParamsMock.id + '/abcd1234');
 				});
 			});
 
 			describe('non-empty invalid seed input', function() {
+				before(function() {
+					SeedGeneratorMock = {
+						isValidSeed: function(s) { return false; },
+						getSeed: function() { return 'aaaabbbb'; }
+					};
+				});
 				it('should not navigate to quiz page', function() {
 					controller.seed = 'notvalidseed';
 					controller.startQuiz();
-					expect(LocationMock.search().s).to.not.equal('abcd1234');
+					expect(LocationMock.path()).to.equal('/quiz/1');
 				});
 			});
 
@@ -169,7 +187,7 @@ describe('Angular Controllers', function() {
 		};
 		var RouteParamsMock = {
 			id: 1,
-			s : 1,
+			seed : 'abcddcba',
 			q : 1,
 			k : 1
 		};
@@ -244,21 +262,15 @@ describe('Angular Controllers', function() {
 		});
 
 		describe('seed', function() {
+
 			before(function() {
 				RouteParamsMock = { id: 6, s : 2, q : 0, k : 1 };
 			});
 
 			it('should set seed according to the routeParams', function() {
-				expect(controller.seed).to.equal(RouteParamsMock.s);
+				expect(controller.seed).to.equal(RouteParamsMock.seed);
 			});
-			describe('when seed is not in the routeParams', function() {
-				before(function() {
-					RouteParamsMock = { id: 6, q : 0, k : 1 };
-				});
-				it('should (for now) use seed 1', function() {
-					expect(controller.seed).to.equal(1);
-				});
-			});
+
 		});
 
 		describe('showQuestions', function() {

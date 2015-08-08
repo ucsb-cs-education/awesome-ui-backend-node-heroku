@@ -41,7 +41,7 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 		controller: 'UserPrefCtrl',
 		controllerAs: 'preferences'
 	})
-	.when('/quizdescriptor/:id', {
+	.when('/quiz/:id', {
 		templateUrl: 'partials/quizdescriptor.html',
 		controller: 'QuizStartCtrl',
 		controllerAs: 'quizStarter',
@@ -51,13 +51,20 @@ awesomeApp.config(['$routeProvider', '$locationProvider', 'RestangularProvider',
 			}]
 		}
 	})
-	.when('/quiz/:id', {
+	.when('/quiz/:id/:seed', {
 		templateUrl: 'partials/quiz.html',
 		controller: 'QuizCtrl',
 		controllerAs: 'quizCtrl',
 		resolve: {
-			quiz: ['Restangular', '$route', function(Restangular, $route) {
-				return Restangular.one('quiz', $route.current.params.id).get({ s : $route.current.params.s });
+			quiz: ['Restangular', 'SeedGenerator', '$route', function(Restangular, SeedGenerator, $route) {
+				var error = {};
+				if (!SeedGenerator.isValidSeed($route.current.params.seed))
+					return { error: { invalidSeed: true } };
+				return Restangular.one('quiz', $route.current.params.id).get({ s : $route.current.params.seed }).then(function(quiz) {
+					return quiz;
+				}, function(error) {
+					return { error: { notFound: true } };
+				});
 			}]
 		}
 	})

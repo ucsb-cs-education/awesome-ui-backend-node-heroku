@@ -40,7 +40,7 @@ describe('Angular Controllers', function() {
 			"id":1,
 			"descriptor":{}
 		};
-		var RouteParamsMock = { id: 1 };
+		var StateParamsMock = { id: 1 };
 		var SeedGeneratorMock = {
 			isValidSeed: function(s) { return false; },
 			getSeed: function() { return ''; }
@@ -51,7 +51,7 @@ describe('Angular Controllers', function() {
 		beforeEach(function() {
 			module('awesomeApp', function($provide) {
 				$provide.value('qd', QDMock);
-				$provide.value('$routeParams', RouteParamsMock);
+				$provide.value('$stateParams', StateParamsMock);
 				$provide.value('SeedGenerator', SeedGeneratorMock);
 				$provide.value('$location', LocationMock);
 			});
@@ -114,7 +114,7 @@ describe('Angular Controllers', function() {
 				});
 				it('should navigate to quiz page with the :seed set by SeedGenerator', function() {
 					controller.startQuiz();
-					expect(LocationMock.path()).to.include('/quiz/' + RouteParamsMock.id + '/aaaabbbb');
+					expect(LocationMock.path()).to.include('/quiz/' + StateParamsMock.id + '/aaaabbbb');
 				});
 			});
 
@@ -128,7 +128,7 @@ describe('Angular Controllers', function() {
 				it('should navigate to quiz page without the s param set as the given seed', function() {
 					controller.seed = 'abcd1234';
 					controller.startQuiz();
-					expect(LocationMock.path()).to.include('/quiz/' + RouteParamsMock.id + '/abcd1234');
+					expect(LocationMock.path()).to.include('/quiz/' + StateParamsMock.id + '/abcd1234');
 				});
 			});
 
@@ -185,7 +185,7 @@ describe('Angular Controllers', function() {
 		        "format": "input"
 		    }]
 		};
-		var RouteParamsMock = {
+		var StateParamsMock = {
 			id: 1,
 			seed : 'abcddcba',
 			q : 1,
@@ -195,7 +195,7 @@ describe('Angular Controllers', function() {
 		beforeEach(function() {
 			module('awesomeApp', function($provide) {
 				$provide.value('quiz', QuizMock);
-				$provide.value('$routeParams', RouteParamsMock);
+				$provide.value('$stateParams', StateParamsMock);
 			});
 			inject(function(_$controller_) {
 				$controller = _$controller_;
@@ -264,35 +264,35 @@ describe('Angular Controllers', function() {
 		describe('seed', function() {
 
 			before(function() {
-				RouteParamsMock = { id: 6, s : 2, q : 0, k : 1 };
+				StateParamsMock = { id: 6, s : 2, q : 0, k : 1 };
 			});
 
-			it('should set seed according to the routeParams', function() {
-				expect(controller.seed).to.equal(RouteParamsMock.seed);
+			it('should set seed according to the stateParams', function() {
+				expect(controller.seed).to.equal(StateParamsMock.seed);
 			});
 
 		});
 
 		describe('showQuestions', function() {
 			before(function() {
-				RouteParamsMock = { id: 6, s : 1, q : 0, k : 1 };
+				StateParamsMock = { id: 6, s : 1, q : 0, k : 1 };
 			});
-			it('should set showQuestions according to the routeParams', function() {
-				expect(controller.showQuestions).to.equal(RouteParamsMock.q | 0);
+			it('should set showQuestions according to the stateParams', function() {
+				expect(controller.showQuestions).to.equal(StateParamsMock.q | 0);
 			});
 
-			describe('when showQuestions is not defined in routeParams', function() {
+			describe('when showQuestions is not defined in stateParams', function() {
 				before(function() {
-					RouteParamsMock = { id: 6, s : 1, k : 1 };
+					StateParamsMock = { id: 6, s : 1, k : 1 };
 				});
 				it('should use the default value of 1', function() {
 					expect(controller.showQuestions).to.be.true;
 				});
 			});
 
-			describe('when showQuestions is not 0 or 1 in routeParams', function() {
+			describe('when showQuestions is not 0 or 1 in stateParams', function() {
 				before(function() {
-					RouteParamsMock = { id: 6, s : 1, q : 2, k : 1 };
+					StateParamsMock = { id: 6, s : 1, q : 2, k : 1 };
 				});
 				it('should use the default value of 1', function() {
 					expect(controller.showQuestions).to.be.true;
@@ -303,24 +303,24 @@ describe('Angular Controllers', function() {
 
 		describe('showKey', function() {
 			before(function() {
-				RouteParamsMock = { id: 6, s : 1, q : 0, k : 1 };
+				StateParamsMock = { id: 6, s : 1, q : 0, k : 1 };
 			});
-			it('should set showKey according to the routeParams', function() {
-				expect(controller.showKey).to.equal(RouteParamsMock.k | 0);
+			it('should set showKey according to the stateParams', function() {
+				expect(controller.showKey).to.equal(StateParamsMock.k | 0);
 			});
 
-			describe('when showKey is not defined in routeParams', function() {
+			describe('when showKey is not defined in stateParams', function() {
 				before(function() {
-					RouteParamsMock = { id: 6, s : 1, q : 0 };
+					StateParamsMock = { id: 6, s : 1, q : 0 };
 				});
 				it('should use the default value of 0', function() {
 					expect(controller.showKey).to.be.false;
 				});
 			});
 
-			describe('when showKey is not 0 or 1 in routeParams', function() {
+			describe('when showKey is not 0 or 1 in stateParams', function() {
 				before(function() {
-					RouteParamsMock = { id: 6, s : 1, q : 0, k : 2 };
+					StateParamsMock = { id: 6, s : 1, q : 0, k : 2 };
 				});
 				it('should use the default value of 0', function() {
 					expect(controller.showKey).to.be.false;

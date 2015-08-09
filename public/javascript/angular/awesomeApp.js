@@ -25,7 +25,7 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 			}]
 		}
 	})
-	.state('/instructor', {
+	.state('instructor', {
 		url: '/instructor',
 		templateUrl: 'partials/instructor.html',
 		controller: 'QuizDescriptorCtrl',
@@ -35,6 +35,12 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 				return Restangular.all('qd').getList();
 			}]
 		}
+
+	})
+	.state('instructor.export', {
+		url: '/export',
+		templateUrl: 'partials/instructor.export.html'
+
 	})
 	.state('/developer', {
 		url: '/developer',

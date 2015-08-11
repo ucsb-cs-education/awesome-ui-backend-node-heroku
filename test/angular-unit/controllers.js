@@ -35,6 +35,51 @@ describe('Angular Controllers', function() {
 	  	
 	});
 
+	describe('QuestionExportCtrl', function() {
+		var QuestionTypesMock = ['questionType1', 'questionType2'];
+		var $controller, controller;
+
+		beforeEach(function() {
+			module('awesomeApp', function($provide) {
+				$provide.value('QuestionTypes', QuestionTypesMock);
+			});
+			inject(function(_$controller_) {
+				$controller = _$controller_;
+			});
+			controller = $controller('QuestionExportCtrl', { $scope: {}});
+		});
+
+		describe('questionTypes', function() {
+			it('should be initialized to the QuestionTypes dependency', function() {
+				expect(controller.questionTypes).to.equal(QuestionTypesMock);
+			});
+		});
+
+		describe('questionTypeSelection', function() {
+			it('should be initialized to the first element in QuestionType', function() {
+				expect(controller.questionTypeSelection).to.equal(QuestionTypesMock[0]);
+			});
+		});
+
+		describe('defaultCount', function() {
+			it('should be initialized to 100', function() {
+				expect(controller.defaultCount).to.equal(100);
+			});
+		});
+
+		describe('minCount', function() {
+			it('should be initialized to 1', function() {
+				expect(controller.minCount).to.equal(1);
+			});
+		});
+
+		describe('maxCount', function() {
+			it('should be initialized to 1000', function() {
+				expect(controller.maxCount).to.equal(1000);
+			});
+		});
+	});
+
 	describe('QuizStartCtrl', function() {
   		var QDMock = {
 			"id":1,

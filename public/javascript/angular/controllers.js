@@ -24,6 +24,17 @@ awesomeApp.controller("AuthController", ['$window', 'AuthService', function($win
     
 }]);
 
+awesomeApp.controller("QuestionExportCtrl", ['QuestionTypes', function(QuestionTypes) {
+    var vm = this;
+    vm.questionTypes = QuestionTypes;
+    vm.questionTypeSelection = QuestionTypes[0];
+    vm.defaultCount = 100;
+    vm.minCount = 1;
+    vm.maxCount = 1000;
+
+    return vm;
+}]);
+
 awesomeApp.controller("QuizCtrl", [ 'quiz', '$stateParams', function(quiz, $stateParams) {
     var vm = this;
     vm.quiz = quiz;

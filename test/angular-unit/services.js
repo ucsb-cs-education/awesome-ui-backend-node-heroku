@@ -1,4 +1,22 @@
 describe('Angular Services', function() {
+
+
+	describe('QuestionTypes', function() {
+		var QuestionTypes;
+
+		beforeEach(function() {
+			module('awesomeApp');
+		    inject(function(_QuestionTypes_) {
+		    	QuestionTypes = _QuestionTypes_;
+		    });
+		});
+
+		it('should contain changeOfBase', function() {
+			expect(QuestionTypes).to.include('changeOfBase');
+		});
+
+
+	});
 	
 	describe('AuthService', function() {
 		beforeEach(module('awesomeApp'));

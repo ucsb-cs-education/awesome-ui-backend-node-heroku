@@ -28,6 +28,12 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 	.state('instructor', {
 		url: '/instructor',
 		templateUrl: 'partials/instructor.html',
+		controller: 'QuestionExportCtrl',
+		controllerAs: 'exporter'
+	})
+	.state('instructor.quizdescriptors', {
+		url: '/quizdescriptors',
+		templateUrl: 'partials/instructor.quizdescriptors.html',
 		controller: 'QuizDescriptorCtrl',
 		controllerAs: 'quizDescriptors',
 		resolve: {

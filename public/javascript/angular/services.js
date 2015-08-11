@@ -31,7 +31,7 @@ awesomeApp.factory("AuthService",['$cookies', 'Restangular', function($cookies, 
 	return authService;
 }]);
 
-awesomeApp.value('QuestionTypes', ['changeOfBase']);
+awesomeApp.value('QuestionTypes', ['changeOfBase', 'binHexOctDec']);
 
 awesomeApp.factory('SeedGenerator', [function() {
     var generator = {};

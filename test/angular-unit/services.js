@@ -15,6 +15,10 @@ describe('Angular Services', function() {
 			expect(QuestionTypes).to.include('changeOfBase');
 		});
 
+		it('should contain binHexOctDec', function() {
+			expect(QuestionTypes).to.include('binHexOctDec');
+		});
+
 
 	});
 	

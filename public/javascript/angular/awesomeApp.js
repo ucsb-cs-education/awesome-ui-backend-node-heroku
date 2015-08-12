@@ -80,7 +80,7 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		}
 	})
 	.state('quiztake', {
-		url: '/quiz/:id/:seed',
+		url: '/quiz/:id/:seed?q&k',
 		templateUrl: 'partials/quiz.html',
 		controller: 'QuizCtrl',
 		controllerAs: 'quizCtrl',

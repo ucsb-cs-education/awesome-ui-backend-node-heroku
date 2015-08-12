@@ -9,8 +9,8 @@ var testUser;
 
 
 describe('Question Exporting API', function() {
-
-    describe('GET /api/question/moodle/:questionType', function() {
+    var seed = '1234abcd';
+    describe('GET /api/question/moodle/:questionType/:seed', function() {
 
         var qd = {};
 
@@ -20,7 +20,7 @@ describe('Question Exporting API', function() {
 
                 it('should respond with a valid xml file for changeOfBase', function(done) {
                     request(app)
-                    .get('/api/question/moodle/changeOfBase')
+                    .get('/api/question/moodle/changeOfBase/' + seed)
                     .expect('Content-Type', /xml/)
                     .expect(200)
                     .end(done);
@@ -32,7 +32,7 @@ describe('Question Exporting API', function() {
 
                 it('should respond with 404 not found', function(done) {
                     request(app)
-                    .get('/api/question/moodle/questiontypeDNE')
+                    .get('/api/question/moodle/questiontypeDNE/' + seed)
                     .expect(404)
                     .end(done);
                 });
@@ -41,13 +41,22 @@ describe('Question Exporting API', function() {
 
         });
 
+        describe('invalid seed', function() {
+            it('should respond with 404 not found', function(done) {
+                request(app)
+                .get('/api/question/moodle/changeOfBase/' + '1234')
+                .expect(404)
+                .end(done);
+            });
+        });
+
         describe('count', function() {
 
             describe('when count is not specified', function() {
 
                 it('should default to 20 questions', function(done) {
                     request(app)
-                    .get('/api/question/moodle/changeOfBase')
+                    .get('/api/question/moodle/changeOfBase/' + seed)
                     .expect('Content-Type', /xml/)
                     .expect(200)
                     .end(function(err, res) {
@@ -66,7 +75,7 @@ describe('Question Exporting API', function() {
 
                 it('should get that # of questions', function(done) {
                     request(app)
-                    .get('/api/question/moodle/changeOfBase?count=100')
+                    .get('/api/question/moodle/changeOfBase/' + seed + '?count=100')
                     .expect('Content-Type', /xml/)
                     .expect(200)
                     .end(function(err, res) {
@@ -85,28 +94,28 @@ describe('Question Exporting API', function() {
 
                 it('should respond with 400 Bad Request', function(done) {
                     request(app)
-                    .get('/api/question/moodle/changeOfBase?count=a')
+                    .get('/api/question/moodle/changeOfBase/' + seed + '?count=a')
                     .expect(400)
                     .end(done);
                 });
 
                 it('should respond with 400 Bad Request', function(done) {
                     request(app)
-                    .get('/api/question/moodle/changeOfBase?count=1000')
+                    .get('/api/question/moodle/changeOfBase/' + seed + '?count=1000')
                     .expect(400)
                     .end(done);
                 });
 
                 it('should respond with 400 Bad Request', function(done) {
                     request(app)
-                    .get('/api/question/moodle/changeOfBase?count=0')
+                    .get('/api/question/moodle/changeOfBase/' + seed + '?count=0')
                     .expect(400)
                     .end(done);
                 });
 
                 it('should respond with 400 Bad Request', function(done) {
                     request(app)
-                    .get('/api/question/moodle/changeOfBase?count=-1')
+                    .get('/api/question/moodle/changeOfBase/' + seed + '?count=-1')
                     .expect(400)
                     .end(done);
                 });

@@ -6,8 +6,12 @@ function isValidId(n) {
 
 module.exports = function(app) {
 
-    app.get('/api/question/moodle/:questionType', function(req, res) {
+    app.get('/api/question/moodle/:questionType/:seed', function(req, res) {
         if (!projectAwesome.isValidQuestionType(req.params.questionType)) {
+            res.status(404).end();
+            return;
+        }
+        if (!projectAwesome.isSeedValid(req.params.seed)) {
             res.status(404).end();
             return;
         }
@@ -21,7 +25,7 @@ module.exports = function(app) {
         }
         res.set('Content-Type', 'text/xml');
         try {
-            res.send(projectAwesome.generateMoodleXML(req.params.questionType, count, req.params.questionType));
+            res.send(projectAwesome.generateMoodleXML(req.params.questionType, count, req.params.questionType, req.params.seed));
         } catch (e) {
             res.status(400).end();
         }

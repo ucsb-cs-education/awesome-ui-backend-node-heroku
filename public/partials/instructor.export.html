@@ -25,6 +25,12 @@
 					<br>
 				</div>
 
+				<div class="form-group" ng-class="{'has-error': exportForm.seed.$error.pattern}">
+					<label>Enter Quiz Seed</label>
+					<input name="seed" type="text" ng-pattern="/^[0-9a-fA-F]{8}$/" class="form-control" ng-model="exporter.seed" placeholder="Random" >
+					<span class="help-block" ng-class="{ 'invisible': !exportForm.seed.$error.pattern }">Must be an 8 digit hexidecimal.</span>
+				</div>
+
 				<div class="form-group" ng-class="{'has-error': exportForm.count.$error.number || exportForm.count.$error.max || exportForm.count.$error.min}">
 					<label>Number of question to export</label>
 					<input min="{{exporter.minCount}}" max="{{exporter.maxCount}}" name="count" type="number" ng-model="exporter.countSelection" class="form-control" placeholder="{{exporter.defaultCount}}" >
@@ -33,10 +39,8 @@
 					<span class="help-block" ng-class="{ 'invisible': !exportForm.count.$error.min }">Must be at least 1.</span>
 				</div>
 				<div>
-					<a download="{{exporter.questionTypeSelection}}Moodle.xml" target="_blank" href="/api/question/moodle/{{ exporter.questionTypeSelection }}?count={{ exporter.countSelection ? exporter.countSelection : exporter.defaultCount }}"  class="btn btn-success btn-lg" ng-class="{'collapse': (exportForm.count.$error.number || exportForm.count.$error.max || exportForm.count.$error.min) }">Get File</a>
-					<a href="#" class="btn btn-success btn-lg" ng-class="{'collapse': !(exportForm.count.$error.number || exportForm.count.$error.max || exportForm.count.$error.min) }">Get File</a>
+					<button ng-disabled="exportForm.count.$error.number || exportForm.count.$error.max || exportForm.count.$error.min || exportForm.seed.$error.pattern" type="submit" class="btn btn-success btn-lg" ng-click="exporter.getFile()">Get File</button>
 				</div>
-		
 			</form>
 
 		</div>

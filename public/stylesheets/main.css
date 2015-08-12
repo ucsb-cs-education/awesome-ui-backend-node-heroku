@@ -40,3 +40,15 @@
 .collapse {
   visibility: collapse;
 }
+.correct-mark {
+  color:green;
+}
+.incorrect-mark {
+  color:red;
+}
+.not-graded {
+  visibility: hidden;
+}
+
+
+

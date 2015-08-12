@@ -37,11 +37,23 @@ describe('Angular Controllers', function() {
 
 	describe('QuestionExportCtrl', function() {
 		var QuestionTypesMock = ['questionType1', 'questionType2'];
+		var SeedGeneratorMock = {};
+		SeedGeneratorMock.randomSeedMockReturn = '1234abcd';
+		SeedGeneratorMock.getSeed = function() { return this.randomSeedMockReturn; }
+		var WindowMock = {};
+		WindowMock.url = '';
+		WindowMock.target = '';
+		WindowMock.open = function(url, target) {
+			WindowMock.url = url;
+			WindowMock.target = target;
+		}
 		var $controller, controller;
 
 		beforeEach(function() {
 			module('awesomeApp', function($provide) {
 				$provide.value('QuestionTypes', QuestionTypesMock);
+				$provide.value('SeedGenerator', SeedGeneratorMock);
+				$provide.value('$window', WindowMock);
 			});
 			inject(function(_$controller_) {
 				$controller = _$controller_;
@@ -77,6 +89,33 @@ describe('Angular Controllers', function() {
 			it('should be initialized to 1000', function() {
 				expect(controller.maxCount).to.equal(1000);
 			});
+		});
+
+		describe('getFile()', function() {
+
+			describe('undefined seed', function() {
+
+				it('should open window with seed param set to SeedGenerator result', function() {
+					SeedGeneratorMock.randomSeedMockReturn = '01234567';
+					controller.seed = null;
+					controller.countSelection = 5;
+					controller.getFile();
+					expect(WindowMock.url).to.equal('/api/question/moodle/'+controller.questionTypeSelection+'/01234567?count=5');
+					expect(WindowMock.target).to.equal('_blank');
+				});
+			});
+
+			describe('undefined countSelection', function() {
+
+				it('should open window with count param as defaultCount', function() {
+					controller.seed = '11112222';
+					controller.countSelection = null;
+					controller.getFile();
+					expect(WindowMock.url).to.equal('/api/question/moodle/'+controller.questionTypeSelection+'/11112222?count=' + controller.defaultCount);
+					expect(WindowMock.target).to.equal('_blank');
+				});
+			});
+
 		});
 	});
 

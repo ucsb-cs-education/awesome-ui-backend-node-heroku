@@ -24,13 +24,20 @@ awesomeApp.controller("AuthController", ['$window', 'AuthService', function($win
     
 }]);
 
-awesomeApp.controller("QuestionExportCtrl", ['QuestionTypes', function(QuestionTypes) {
+awesomeApp.controller("QuestionExportCtrl", ['QuestionTypes', 'SeedGenerator', '$window', function(QuestionTypes, SeedGenerator, $window) {
     var vm = this;
     vm.questionTypes = QuestionTypes;
     vm.questionTypeSelection = QuestionTypes[0];
     vm.defaultCount = 100;
     vm.minCount = 1;
     vm.maxCount = 1000;
+
+    vm.getFile = function() {
+        var questionType = vm.questionTypeSelection;
+        var count = vm.countSelection ? vm.countSelection : vm.defaultCount;
+        var seed = vm.seed ? vm.seed : SeedGenerator.getSeed();
+        $window.open('/api/question/moodle/' + questionType + '/' + seed + '?count=' + count, '_blank');
+    }
 
     return vm;
 }]);

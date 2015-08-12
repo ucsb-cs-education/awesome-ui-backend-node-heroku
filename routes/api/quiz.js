@@ -13,7 +13,7 @@ module.exports = function(app) {
             return;
         }
 
-    	if (!projectAwesome.isStringValidSeed(req.params.seed)) {
+    	if (!projectAwesome.isSeedValid(req.params.seed)) {
     		res.status(404).end();
     		return;
     	}

@@ -10,11 +10,11 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 	});
 	$urlRouterProvider.otherwise("/");
 	$stateProvider
-	.state('/', {
+	.state('home', {
 		url: '/',
 		templateUrl: 'partials/index.html'
 	})
-	.state('/student', {
+	.state('student', {
 		url: '/student',
 		templateUrl: 'partials/student.html',
 		controller: 'QuizDescriptorCtrl',
@@ -28,8 +28,8 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 	.state('instructor', {
 		url: '/instructor',
 		templateUrl: 'partials/instructor.html',
-		controller: 'QuestionExportCtrl',
-		controllerAs: 'exporter'
+		controller: 'InstructorCtrl',
+		controllerAs: 'instructorCtrl'
 	})
 	.state('instructor.quizdescriptors', {
 		url: '/quizdescriptors',
@@ -45,28 +45,30 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 	})
 	.state('instructor.export', {
 		url: '/export',
-		templateUrl: 'partials/instructor.export.html'
+		templateUrl: 'partials/instructor.export.html',
+		controller: 'QuestionExportCtrl',
+		controllerAs: 'exporter'
 
 	})
-	.state('/developer', {
+	.state('developer', {
 		url: '/developer',
 		templateUrl: 'partials/developer.html'
 	})
-	.state('/author', {
+	.state('author', {
 		url: '/author',
 		templateUrl: 'partials/author.html'
 	})
-	.state('/login', {
+	.state('login', {
 		url: '/login',
 		templateUrl: 'partials/login.html'
 	})
-	.state('/usersettings', {
+	.state('usersettings', {
 		url: '/usersettings',
 		templateUrl: 'partials/usersettings.html',
 		controller: 'UserPrefCtrl',
 		controllerAs: 'preferences'
 	})
-	.state('/quiz/:id', {
+	.state('quizoptions', {
 		url: '/quiz/:id',
 		templateUrl: 'partials/quizdescriptor.html',
 		controller: 'QuizStartCtrl',
@@ -77,7 +79,7 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 			}]
 		}
 	})
-	.state('/quiz/:id/:seed', {
+	.state('quiztake', {
 		url: '/quiz/:id/:seed',
 		templateUrl: 'partials/quiz.html',
 		controller: 'QuizCtrl',
@@ -96,23 +98,29 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		}
 	})
 }])
-.run(['AuthService', '$rootScope', '$location', function(AuthService, $rootScope, $location) {
-	$rootScope.$on( "$stateChangeStart", function(event, next, current) {
-		if (!AuthService.isAuthenticated()) {
-
+.run(['AuthService', '$rootScope', '$state', function(AuthService, $rootScope, $state) {
+	$rootScope.$on( "$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+		var requiresAuth = ['instructor.quizdescriptors', 'usersettings'];
+		var requiresUnauth = ['login'];
+		var authenticated = AuthService.isAuthenticated();
+		//console.log(toState);
+		if (!authenticated) {
 			// redirect user to login page if they try to access user settings page
-			if (next.templateUrl === "partials/usersettings.html") {
-				$location.path("/login");
+			if (requiresAuth.indexOf(toState.name) != -1) {
+				event.preventDefault();
+				$state.go("login");
 			}
 
 		} else {
 
 			// redirect user to preferred page if they try to access login page
-			if (next.templateUrl === "partials/login.html") {
-				$location.path("/" + AuthService.getRole());
+			if (requiresUnauth.indexOf(toState.name) != -1) {
+				event.preventDefault();
+				$state.go(AuthService.getRole());
 			}
  
 		}
+
 	});
 }]);
 

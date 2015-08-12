@@ -129,7 +129,7 @@ describe('Angular Controllers', function() {
 			isValidSeed: function(s) { return false; },
 			getSeed: function() { return ''; }
 		};
-		var LocationMock = {};
+		var StateMock = {};
 		var $controller, controller;
 					
 		beforeEach(function() {
@@ -137,29 +137,17 @@ describe('Angular Controllers', function() {
 				$provide.value('qd', QDMock);
 				$provide.value('$stateParams', StateParamsMock);
 				$provide.value('SeedGenerator', SeedGeneratorMock);
-				$provide.value('$location', LocationMock);
+				$provide.value('$state', StateMock);
 			});
 			inject(function(_$controller_) {
 				$controller = _$controller_;
 			});
 
-			LocationMock.currentPath = "/quiz/1";
-			LocationMock.currentSearch = {};
-			LocationMock.path = function(path) { 
-				if (path) {
-					this.currentPath = path;
-					return this;
-				} else {
-					return this.currentPath;
-				}
-			}
-			LocationMock.search = function(query) { 
-				if (query) {
-					this.currentSearch = query;
-					return this;
-				} else {
-					return this.currentSearch;
-				}
+			StateMock.currentState = "quizoptions";
+			StateMock.currentParams = {};
+			StateMock.go = function(state, params) { 
+				this.currentState = state;
+				this.currentParams = params;
 			}
 			controller = $controller('QuizStartCtrl', { $scope: {}});
 		});
@@ -185,8 +173,8 @@ describe('Angular Controllers', function() {
 		describe('startQuiz', function() {
 
 			beforeEach(function() {
-				LocationMock.currentPath = "/quiz/1";
-				LocationMock.currentSearch = {};
+				StateMock.currentState = "quizoptions";
+				StateMock.currentParams = {};
 			});
 
 			describe('empty seed input', function() {
@@ -198,7 +186,9 @@ describe('Angular Controllers', function() {
 				});
 				it('should navigate to quiz page with the :seed set by SeedGenerator', function() {
 					controller.startQuiz();
-					expect(LocationMock.path()).to.include('/quiz/' + StateParamsMock.id + '/aaaabbbb');
+					expect(StateMock.currentState).to.equal('quiztake');
+					expect(StateMock.currentParams.seed).to.equal('aaaabbbb');
+					expect(StateMock.currentParams.id).to.equal(StateParamsMock.id);
 				});
 			});
 
@@ -212,7 +202,9 @@ describe('Angular Controllers', function() {
 				it('should navigate to quiz page without the s param set as the given seed', function() {
 					controller.seed = 'abcd1234';
 					controller.startQuiz();
-					expect(LocationMock.path()).to.include('/quiz/' + StateParamsMock.id + '/abcd1234');
+					expect(StateMock.currentState).to.equal('quiztake');
+					expect(StateMock.currentParams.seed).to.equal('abcd1234');
+					expect(StateMock.currentParams.id).to.equal(StateParamsMock.id);
 				});
 			});
 
@@ -226,7 +218,7 @@ describe('Angular Controllers', function() {
 				it('should not navigate to quiz page', function() {
 					controller.seed = 'notvalidseed';
 					controller.startQuiz();
-					expect(LocationMock.path()).to.equal('/quiz/1');
+					expect(StateMock.currentState).to.equal('quizoptions');
 				});
 			});
 
@@ -234,8 +226,8 @@ describe('Angular Controllers', function() {
 				it('should navigate to quiz page with the params q = 1 and k = 0', function() {
 					controller.displayOption = "questions";
 					controller.startQuiz();
-					expect(LocationMock.search().q).to.equal(1);
-					expect(LocationMock.search().k).to.equal(0);
+					expect(StateMock.currentParams.q).to.equal(1);
+					expect(StateMock.currentParams.k).to.equal(0);
 				});
 			});
 			
@@ -243,8 +235,8 @@ describe('Angular Controllers', function() {
 				it('should navigate to quiz page with the params q = 1 and k = 1', function() {
 					controller.displayOption = "questions_answers";
 					controller.startQuiz();
-					expect(LocationMock.search().q).to.equal(1);
-					expect(LocationMock.search().k).to.equal(1);
+					expect(StateMock.currentParams.q).to.equal(1);
+					expect(StateMock.currentParams.k).to.equal(1);
 				});
 			});
 			
@@ -252,8 +244,8 @@ describe('Angular Controllers', function() {
 				it('should navigate to quiz page with the params q = 0 and k = 1', function() {
 					controller.displayOption = "answers";
 					controller.startQuiz();
-					expect(LocationMock.search().q).to.equal(0);
-					expect(LocationMock.search().k).to.equal(1);
+					expect(StateMock.currentParams.q).to.equal(0);
+					expect(StateMock.currentParams.k).to.equal(1);
 				});
 			});
 		});

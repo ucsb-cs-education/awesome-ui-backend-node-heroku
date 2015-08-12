@@ -24,7 +24,18 @@ awesomeApp.controller("AuthController", ['$window', 'AuthService', function($win
     
 }]);
 
-awesomeApp.controller("QuestionExportCtrl", ['QuestionTypes', 'SeedGenerator', '$window', function(QuestionTypes, SeedGenerator, $window) {
+awesomeApp.controller('InstructorCtrl', ['AuthService', function(AuthService) {
+    var vm = this;
+    vm.navigationTabs = [
+        { label: "Instructor", state: "instructor", loginRequired: false},
+        { label: "Quiz Descriptors", state: "instructor.quizdescriptors", loginRequired: true, tooltip: "You must be signed in to create quiz descriptors"},
+        { label: "Export Questions", state: "instructor.export", loginRequired: false},
+    ];
+    vm.authenticated = AuthService.isAuthenticated();
+    return vm;
+}]);
+
+awesomeApp.controller('QuestionExportCtrl', ['QuestionTypes', 'SeedGenerator', '$window', function(QuestionTypes, SeedGenerator, $window) {
     var vm = this;
     vm.questionTypes = QuestionTypes;
     vm.questionTypeSelection = QuestionTypes[0];
@@ -42,7 +53,7 @@ awesomeApp.controller("QuestionExportCtrl", ['QuestionTypes', 'SeedGenerator', '
     return vm;
 }]);
 
-awesomeApp.controller("QuizCtrl", [ 'quiz', '$stateParams', function(quiz, $stateParams) {
+awesomeApp.controller('QuizCtrl', [ 'quiz', '$stateParams', function(quiz, $stateParams) {
     var vm = this;
     vm.quiz = quiz;
     vm.seed = $stateParams.seed;
@@ -68,7 +79,7 @@ awesomeApp.controller("QuizCtrl", [ 'quiz', '$stateParams', function(quiz, $stat
     return vm;
 }]);
 
-awesomeApp.controller("QuizStartCtrl", [ 'qd', 'SeedGenerator', '$stateParams', '$location', function(qd, SeedGenerator, $stateParams, $location) {
+awesomeApp.controller('QuizStartCtrl', [ 'qd', 'SeedGenerator', '$stateParams', '$state', function(qd, SeedGenerator, $stateParams, $state) {
     var vm = this;
     
     vm.qd = qd;
@@ -84,13 +95,15 @@ awesomeApp.controller("QuizStartCtrl", [ 'qd', 'SeedGenerator', '$stateParams', 
             seed = SeedGenerator.getSeed();
         query.q = (vm.displayOption !== "answers") ? 1 : 0;
         query.k = (vm.displayOption !== "questions") ? 1 : 0;
-        $location.path('/quiz/' + $stateParams.id + '/' + seed).search(query);
+        query.id = $stateParams.id;
+        query.seed = seed;
+        $state.go('quiztake', query);
     }
     
     return vm;
 }]);
 
-awesomeApp.controller("QuizDescriptorCtrl", [ 'qds', 'AuthService', 'Flash', 'Restangular', function(qds, AuthService, Flash, Restangular) {
+awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'AuthService', 'Flash', 'Restangular', function(qds, AuthService, Flash, Restangular) {
     var vm = this;
     vm.quizzes = qds;
     vm.quizDescriptorText = "";
@@ -113,7 +126,7 @@ awesomeApp.controller("QuizDescriptorCtrl", [ 'qds', 'AuthService', 'Flash', 'Re
     return vm;
 }]);
 
-awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', 'Flash', function($scope, AuthService, Flash) {
+awesomeApp.controller('UserPrefCtrl', [ '$scope', 'AuthService', 'Flash', function($scope, AuthService, Flash) {
     function roleValueToJSON(roleValue) {
         return { text: roleValue.charAt(0).toUpperCase() + roleValue.slice(1), value: roleValue };
     }
@@ -133,7 +146,6 @@ awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', 'Flash', functi
     vm.updatePreferences = function() {
         AuthService.updateUser(vm.roleSelection.value)
         .then(function(user) {
-            alert(JSON.stringify(user));
             Flash.create('success', '<strong> Updated:</strong>  Your settings have been saved.');
         }, function(error) {
 

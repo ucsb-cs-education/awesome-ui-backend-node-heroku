@@ -24,7 +24,7 @@ describe('Angular Services', function() {
 	
 	describe('AuthService', function() {
 		beforeEach(module('awesomeApp'));
-  		var AuthService, Restangular, cookies;
+  		var AuthService, cookies;
 		var q, rootScope, deferred;
   		var RestangularMock = {};
   		var testUser;
@@ -34,11 +34,9 @@ describe('Angular Services', function() {
 				$provide.value('Restangular', RestangularMock);
 			});
 
-		    inject(function(_AuthService_, _$cookies_, _$q_, _$rootScope_) {
+		    inject(function(_AuthService_, _$cookies_) {
 		    	AuthService = _AuthService_;   
 		    	cookies = _$cookies_;
-		    	q = _$q_;
-		    	rootScope = _$rootScope_;
 		    });
 
 		    testUser = {
@@ -95,44 +93,20 @@ describe('Angular Services', function() {
 	    	}
 			describe('successful Restangular put request', function() {
 				before(function() {
+					one.called = false;
 					one.put = function() {
-						deferred = q.defer();
-						deferred.resolve({ role : one.role });
-						return deferred.promise;
+						one.called = true;
+						return {
+							then: function(calledback) {
+
+							}
+						}
 					}
+					AuthService.updateUser('author');
 				});
 
-				it('should update the role and set the corresponding cookie', function() {
-					var resolveValue;
-					AuthService.updateUser('developer')
-					.then(function(user) {
-						resolveValue = user;
-					});
-					rootScope.$apply();
-					expect(resolveValue.role).to.equal('developer');
-					expect(AuthService.getRole()).to.equal('developer');
-				});
-			});
-			describe('successful Restangular put request', function() {
-				before(function() {
-					one.put = function() {
-						deferred = q.defer();
-						deferred.reject('error');
-						return deferred.promise;
-					}
-				});
-				it('should update the role and set the corresponding cookie', function() {
-					var resolveValue;
-					var roleBeforeUpdate = AuthService.getRole();
-					AuthService.updateUser('developer')
-					.then(function(user) {
-						expect(false); // shouldn't get here
-					}, function(error) {
-						resolveValue = error;
-					});
-					rootScope.$apply();
-					expect(resolveValue).to.equal('error');
-					expect(AuthService.getRole()).to.equal(roleBeforeUpdate);
+				it('should expect Restangular to make an updated request', function() {
+					expect(one.called).to.be.true;
 				});
 			});
 		

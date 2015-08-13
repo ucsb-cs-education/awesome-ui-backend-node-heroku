@@ -61,7 +61,8 @@ module.exports = function(passport) {
     passport.use(new GoogleStrategy({
         clientID : process.env.GOOGLE_APP_ID,
         clientSecret : process.env.GOOGLE_APP_SECRET,
-        callbackURL : process.env.GOOGLE_CALLBACK_URL
+        callbackURL : process.env.GOOGLE_CALLBACK_URL,
+        profileFields: ["emails", "displayName"]
     },
     function(token, refreshToken, profile, done) {
         // asynchronous

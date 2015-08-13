@@ -1,4 +1,83 @@
 describe('Angular Controllers', function() {
+
+	describe('InstructorCtrl', function() {
+	    var AuthServiceMock = {};
+  		var $controller, controller;
+		beforeEach(function() {
+			module('awesomeApp', function ($provide) {
+				$provide.value('AuthService', AuthServiceMock);
+		    });
+			inject(function(_$controller_) {
+				$controller = _$controller_;
+			});
+			var $scope = {  };
+			controller = $controller('InstructorCtrl', { $scope: $scope });
+		});
+
+		describe('InstructorCtrl.authenticated', function() {
+
+			describe('unauthenticated user', function() {
+				before(function() {
+					AuthServiceMock.isAuthenticated = function() { return false; }
+				});
+				it('should inititalize authenticated as false', function() {
+					expect(controller.authenticated).to.be.false;
+				});
+			});
+
+			describe('authenticated user', function() {
+				before(function() {
+					AuthServiceMock.isAuthenticated = function() { return true; }
+				});
+				it('should inititalize authenticated as true', function() {
+					expect(controller.authenticated).to.be.true;
+				});
+			});
+
+	  	});
+
+		describe('navigationTabs', function() {
+			it('should exist', function() {
+				expect(controller.navigationTabs).to.exist;
+			});
+			it('should be an array', function() {
+				expect(controller.navigationTabs).to.be.an('array');
+			});
+
+			describe('navigationTabs[i].label', function() {
+				it('should have a label property of type string', function() {
+					for (var i = 0; controller.navigationTabs.length > i; i++)
+						expect(controller.navigationTabs[i].label).to.be.a('string');
+				});
+			});
+
+			describe('navigationTabs[i].state', function() {
+				it('should have a state property of type string', function() {
+					for (var i = 0; controller.navigationTabs.length > i; i++)
+						expect(controller.navigationTabs[i].state).to.be.a('string');
+				});
+			});
+
+			describe('navigationTabs[i].loginRequired', function() {
+				it('should have a loginRequired property of type boolean', function() {
+					for (var i = 0; controller.navigationTabs.length > i; i++)
+						expect(controller.navigationTabs[i].loginRequired).to.be.a('boolean');
+				});
+			});
+
+			describe('navigationTabs[i].tooltip', function() {
+				it('should have a tooltip property of type string iff the loginRequired property is true', function() {
+					for (var i = 0; controller.navigationTabs.length > i; i++)
+						if (controller.navigationTabs[i].loginRequired == true)
+							expect(controller.navigationTabs[i].tooltip).to.be.a('string');
+						else 
+							expect(controller.navigationTabs[i].tooltip).to.be.undefined;
+				});
+			});
+
+		});
+
+	});
 	
 	describe('UserPrefCtrl', function() {
 		

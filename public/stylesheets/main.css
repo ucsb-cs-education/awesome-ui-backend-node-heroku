@@ -49,6 +49,9 @@
 .not-graded {
   visibility: hidden;
 }
-
+.correct-answer {
+  font-weight:bold;
+  padding-left:10px;
+}
 
 

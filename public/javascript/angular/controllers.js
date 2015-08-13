@@ -112,7 +112,7 @@ awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'AuthService', 'Flash', 'Re
         window.location.href = '/showpage/' + selection.id;
     }
     vm.addQuizDescriptor = function() {
-        Restangular.all('qd').post({descriptor: vm.quizDescriptorText})
+        Restangular.all('qd').post({descriptor: JSON.parse(vm.quizDescriptorText)})
         .then(function(qd) {
             Flash.create('success', '<strong> Quiz Descriptor Saved:</strong>  id = ' + qd.id + '.', 'custom-class');
             vm.quizzes.push(qd);

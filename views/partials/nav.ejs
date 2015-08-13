@@ -1,73 +1,7 @@
-<style>
-/* icon */ .custom-navbar .fa {font-size:25px}
 
-@media (max-width:767px) { 
-  .custom-navbar .navbar-right {
-    float: right;
-    padding-right: 15px;
-  }
-  .custom-navbar .nav.navbar-nav.navbar-right li {
-    float: right;
-  }
-  .custom-navbar .nav.navbar-nav.navbar-right li > a {
-    padding:8px 5px;
-  }
-  .custom-navbar .navbar-toggle {
-    float: left
-  }
-  .custom-navbar .navbar-header {
-    float: left;
-    width: auto!important;
-  }
-  .custom-navbar {
-    clear: both;
-    float: none;
-  }
-}
-</style>
 
 <nav id="navigation-bar"class="navbar navbar-default navbar-static-top navbar-inverse custom-navbar">
   <div class="container">
-
-    <ul class="nav navbar-nav navbar-right">
-
-      <% if (user) { %>
-
-      <!-- User is logged in so... display the user's name + logout link  -->
-
-      <li class="dropdown" id="user-dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <%= user.name %>    <span class="glyphicon glyphicon-cog"></span></a>
-        <ul id="user-links" class="dropdown-menu" role="menu">
-          <li><a href="/usersettings">Settings</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="/logout">Sign Out</a></li>
-        </ul>
-      </li>
-
-      <% } else { %>
-
-      <!-- User NOT logged in so... google and facebook login buttons  -->
-      <li class="active">
-        <div>
-          <a id="facebook-login" class="btn navbar-btn btn-block btn-social btn-facebook" href="/auth/facebook">
-            <i class="fa fa-facebook"></i> Login with Facebook
-          </a>
-        </div>
-      </li>
-      <li>
-        <span style="padding-left:4px;"></span>
-      </li>
-      <li class="active">
-        <div>
-          <a id="google-login" class="btn navbar-btn btn-block btn-social btn-google" href="/auth/google">
-            <i class="fa fa-google"></i> Login with Google
-          </a>
-        </div>
-      </li>
-
-      <% } %>
-   </ul>
-
 
    <div class="navbar-left">
     <ul class="nav navbar-nav">
@@ -85,6 +19,38 @@
       </li>
     </ul>
   </div>
+    <div ng-controller="AuthController as authenticator">
+      <ul class="nav navbar-nav navbar-right" ng-hide="authenticator.isAuthenticated">
+
+        <!-- User NOT logged in so... google and facebook login buttons  -->
+        <li class="active" >
+          <div style="padding-left:2px; padding-right:2px;">
+            <a id="facebook-login" class="btn navbar-btn btn-block btn-social btn-facebook" href ng-click="authenticator.facebook()">
+              <i class="fa fa-facebook"></i> Login with Facebook
+            </a>
+          </div>
+        </li>
+        <li class="active">
+          <div style="padding-left:2px; padding-right:2px;">
+            <a id="google-login" class="btn navbar-btn btn-block btn-social btn-google" href ng-click="authenticator.google()">
+              <i class="fa fa-google"></i> Login with Google
+            </a>
+          </div>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right" ng-show="authenticator.isAuthenticated">
+        <li class="dropdown" id="user-dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ authenticator.user.name }}    <span class="glyphicon glyphicon-cog"></span></a>
+        <ul id="user-links" class="dropdown-menu" role="menu">
+          <li><a href="/usersettings">Settings</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href ng-click="authenticator.logout()">Sign Out</a></li>
+        </ul>
+      </li>
+      </ul>
+    </div>
+
+
 </div>
 
 
@@ -94,4 +60,3 @@
   <div flash-message="5000" id="flash-message-div" >
 
   </div> 
-

@@ -29,3 +29,29 @@
   margin:0px;
   padding: 0px;
 }
+
+.question {
+  padding-top:5px;
+  padding-bottom:5px;
+}
+.invisible {
+  visibility: hidden;
+}
+.collapse {
+  visibility: collapse;
+}
+.correct-mark {
+  color:green;
+}
+.incorrect-mark {
+  color:red;
+}
+.not-graded {
+  visibility: hidden;
+}
+.correct-answer {
+  font-weight:bold;
+  padding-left:10px;
+}
+
+

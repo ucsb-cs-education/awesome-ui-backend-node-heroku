@@ -8,15 +8,10 @@
     "test": "./test/runtests.sh"
   },
   "dependencies": {
-    "angular": "^1.4.3",
-    "angular-mocks": "^1.4.2",
     "body-parser": "^1.13.1",
-    "chai": "^3.0.0",
-    "chai-as-promised": "^5.1.0",
     "ejs": "^2.3.1",
     "express": "~4.9.x",
     "express-session": "^1.11.3",
-    "mocha": "^2.2.5",
     "passport": "^0.2.2",
     "passport-facebook": "^2.0.0",
     "passport-google-oauth": "^0.2.0",
@@ -26,7 +21,6 @@
     "pg-hstore": "^2.3.2",
     "request": "^2.58.0",
     "sequelize": "^3.3.2",
-    "supertest": "^1.0.1",
     "project-awesome": "git://github.com/wolfenbarger/project-awesome.git",
     "underscore": "^1.8.3"
   },
@@ -35,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pconrad/awesome-ui-backend-node-heroku.git"
+    "url": "https://github.com/wolfenbarger/awesome-ui-backend-node-heroku.git"
   },
   "keywords": [
     "node",
@@ -44,15 +38,19 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "angular": "^1.4.3",
     "angular-mocks": "^1.4.3",
-    "karma": "^0.13.0",
+    "chai": "^3.0.0",
+    "chai-as-promised": "^5.1.0",
+    "karma": "0.13.3",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.0",
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.0",
-    "karma-requirejs": "^0.2.2",
+    "mocha": "^2.2.5",
     "phantomjs": "^1.9.17",
     "protractor": "^2.1.0",
-    "requirejs": "^2.1.19"
+    "supertest": "^1.0.1",
+    "xml2js": "^0.4.10"
   }
 }

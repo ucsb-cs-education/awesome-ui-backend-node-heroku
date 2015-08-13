@@ -1,294 +1,142 @@
 var request = require('supertest');
 var expect = require("chai").expect;
 var utils = require("../../utils");
-var agent;
+
 var app = require('../../../app.js');
 var models = require('../../../models');
+
+var projectAwesome = require("project-awesome");
+
+var validDescriptor= utils.validDescriptor;
 var server;
 
+describe('Quiz API', function() {
 
-var validDescriptorJSON = {
-  "version" : "0.1",
-  "title" : "Example QuizJSON 1",
-  "quiz": [{
-    "question": "orderOfOperations",
-       "repeat": 5
-   }] 
-};
-var validDescriptorString = JSON.stringify(validDescriptorJSON);
-
-var testUser;
-
-describe('POST /api/qd', function() {
-
-  describe('Unauthenticated User', function() {
-    before(function(done) {
-        models.sequelize.sync({ force: true }).then(function () {
-            server = app.listen(app.get('port'), function() {
-                console.log('Node app is running on port', server.address().port);
-                done();
-            });
-        });
-    });
-    after(function() {
-        server.close();
-    });
-    it('should return 403 Forbidden if user is not authenticated and post is NOT formatted correctly', function(done) {
-      request(app)
-      .post('/api/qd?something=blah')
-      .expect(403)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
+  before(function(done) {
+      models.sequelize.sync({ force: true }).then(function () {
+          server = app.listen(app.get('port'), function() {
+            done();
+          });
       });
-    });
-    it('should return 403 Forbidden if user is not authenticated and post IS formatted correctly', function(done) {
-      request(app)
-      .post('/api/qd?descriptor=' + validDescriptorString)
-      .expect(403)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
-
-
   });
 
-  describe('Authenticated User', function() {
-    before(function(done) {
-        models.sequelize.sync({ force: true }).then(function () {
-            server = app.listen(app.get('port'), function() {
-                console.log('Node app is running on port', server.address().port);
-                utils.authenticateTestUser().then(function(user) {
-                  testUser = user;
-                  done();
-                });
-            });
-        });
-    });
-    after(function() {
-        utils.unauthenticateTestUser();
-        server.close();
-    });
-
-    it('should return 400 Bad Request if missing descriptor parameter', function(done) {
-      request(app)
-      .post('/api/qd')
-      .expect(400)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
-
-    it('should return 400 Bad Request if the descriptor syntax is invalid', function(done) {
-      request(app)
-      .post('/api/qd?descriptor={something}')
-      .expect(400)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
-
-    it('should give status 200 and return json { descriptor: {...} } if successful', function(done) {
-
-      request(app)
-      .post('/api/qd?descriptor=' + validDescriptorString)
-      .expect(200)
-      .end(function(err, res) {
-        if (err) return done(err);
-        expect(res.body.descriptor).to.eql(validDescriptorJSON);
-        expect(res.body.id).to.be.a('number');
-        done();
-      });
-    });
-
+  after(function(done) {
+      server.close();
+      done();
   });
 
-});
-describe('GET /api/qd/:id', function() {
 
-  describe('Unauthenticated User', function() {
+
+  describe('GET /api/quiz/:id/:seed', function() {
+    var qd = {};
     before(function(done) {
-        models.sequelize.sync({ force: true }).then(function () {
-            server = app.listen(app.get('port'), function() {
-                console.log('Node app is running on port', server.address().port);
-                done();
-            });
-        });
-    });
-    after(function() {
-        server.close();
-    });
-
-    it('should return 400 Bad Request if id is not an integer', function(done) {
-      request(app)
-      .get('/api/qd/a')
-      .expect(400)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
-
-    it('should return 404 not found if quiz does not exist', function(done) {
-      request(app)
-      .get('/api/qd/0')
-      .expect(404)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
-
-    it('should give status 200 if successful', function(done) {
-      models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
-        request(app)
-        .get('/api/qd/' + qd.id)
-        .expect(200)
-        .end(function(err, res) {
-          if (err) return done(err);
-          expect(res.body.descriptor).to.eql(validDescriptorJSON);
-          expect(res.body.id).to.be.a.number;
+      models.sequelize.sync({ force: true }).then(function () {
+        utils.insertQuizDescriptor(models, 'Sample Quiz Descriptor').then(function(newQD) {
+          qd = newQD;
           done();
         });
       });
     });
 
-
-
-  });
-
-  describe('Authenticated User', function() {
-    before(function(done) {
-        models.sequelize.sync({ force: true }).then(function () {
-            server = app.listen(app.get('port'), function() {
-                console.log('Node app is running on port', server.address().port);
-                utils.authenticateTestUser().then(function(user) {
-                  testUser = user;
-                  done();
-                });
-            });
+    describe('no seed', function() {
+        it('should respond with 404 Not Found if missing the seed param', function(done) {
+            request(app)
+            .get('/api/quiz/1')
+            .expect(404)
+            .end(done);
         });
     });
-    after(function() {
-        utils.unauthenticateTestUser();
-        server.close();
-    });
 
-    it('should return 400 Bad Request if id is not an integer', function(done) {
-      request(app)
-      .get('/api/qd/a')
-      .expect(400)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
+    describe('invalid seed', function() {
 
-    it('should return 404 not found if quiz does not exist', function(done) {
-      request(app)
-      .get('/api/qd/0')
-      .expect(404)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
+      describe('seed is not a hex', function() {
 
-    it('should give status 200 if successful', function(done) {
-      models.QuizDescriptor.create({descriptor: validDescriptorString}).then(function(qd) {
-        request(app)
-        .get('/api/qd/' + qd.id)
-        .expect(200)
-        .end(function(err, res) {
-          if (err) return done(err);
-          expect(res.body.descriptor).to.eql(validDescriptorJSON);
-          expect(res.body.id).to.be.a.number;
-          done();
+        it('should respond with 404 not found', function(done) {
+            request(app)
+            .get('/api/quiz/'+qd.id+'/1234567t')
+            .expect(404)
+            .end(done);
         });
+
       });
-    });
 
-  });
+      describe('seed is a hex, but has length > 8', function() {
 
-});
-
-
-
-describe('GET /api/qd', function() {
-
-  describe('Unauthenticated User', function() {
-    before(function(done) {
-        models.sequelize.sync({ force: true }).then(function () {
-            server = app.listen(app.get('port'), function() {
-                console.log('Node app is running on port', server.address().port);
-                done();
-            });
-        });
-    });
-    after(function() {
-        server.close();
-    });
-    it('should return 403 Forbidden if user is not authenticated', function(done) {
-      request(app)
-      .get('/api/qd')
-      .expect(403)
-      .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
-    });
-
-
-  });
-
-  describe('Authenticated User', function() {
-    before(function(done) {
-        models.sequelize.sync({ force: true }).then(function () {
-            server = app.listen(app.get('port'), function() {
-                console.log('Node app is running on port', server.address().port);
-                utils.authenticateTestUser().then(function(user) {
-                  testUser = user;
-                  done();
-                });
-            });
-        });
-    });
-    after(function() {
-        utils.unauthenticateTestUser();
-        server.close();
-    });
-
-    it('should give status 200 if successful and return all items (2 here)', function(done) {
-      request(app)
-      .post('/api/qd?descriptor=' + validDescriptorString)
-      .expect(200)
-      .end(function(err, res) {
-        request(app)
-        .post('/api/qd?descriptor=' + validDescriptorString)
-        .expect(200)
-        .end(function(err, res) {
-          if (err) return done(err);
+        it('should respond with 404 Not Found if the seed is not an 8 digit hex string', function(done) {
           request(app)
-          .get('/api/qd')
+          .get('/api/quiz/'+qd.id+'/123456f')
+          .expect(404)
+          .end(done);
+        });
+
+      });
+
+      describe('seed is a hex, but has length < 8', function() {
+
+        it('should respond with 404 Not Found if the seed is not an 8 digit hex string', function(done) {
+          request(app)
+          .get('/api/quiz/'+qd.id+'/12345678f')
+          .expect(404)
+          .end(done);
+        });
+
+      });
+
+    });
+
+    describe('valid seed, valid id', function() {
+
+      it('should respond with 200 and a valid json quiz with seed set correctly', function(done) {
+          request(app)
+          .get('/api/quiz/'+qd.id+'/1234abcd')
           .expect(200)
           .end(function(err, res) {
             if (err) return done(err);
-            expect(res.body.length).to.equal(2);
+            expect(res.body.seed).to.equal('1234abcd');
+            expect(projectAwesome.QuizValidator.isValid(res.body)).to.be.true;
             done();
           });
-
-        });
-
       });
+
     });
 
-  });
+    describe('valid seed, but no quiz with the given id exists', function() {
+      before(function(done) {
+        models.sequelize.sync({ force: true }).then(function () {
+          done();
+        });
+      });
 
+      it('should response with 404 not found', function(done) {
+        request(app)
+        .get('/api/quiz/'+qd.id+'/1234abcd')
+        .expect(404)
+        .end(done);
+      });
+
+    });
+    
+
+
+  });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

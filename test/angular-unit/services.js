@@ -1,131 +1,80 @@
-
 describe('Angular Services', function() {
-	
-	describe('API', function() {
 
-		var httpBackend;
-  		var API;
+
+	describe('QuestionTypes', function() {
+		var QuestionTypes;
+
 		beforeEach(function() {
-
 			module('awesomeApp');
-		    inject(function($httpBackend, _API_) {
-		    	API = _API_;      
-		    	httpBackend = $httpBackend;
+		    inject(function(_QuestionTypes_) {
+		    	QuestionTypes = _QuestionTypes_;
 		    });
 		});
 
-		describe('API.quiz', function() {
-			it('should exist', function() {
-				expect(API.quiz).to.exist;
-			});
-
-			describe('API.quiz.read()', function() {
-				it('should return the http promise result', function() {
-					var returnData = { "version" : "0.1", "title" : "Example QuizJSON 1", "quiz": [{ "question": "orderOfOperations", "repeat": 5 }] };
-					httpBackend.expectGET('/api/qd').respond(returnData);
-					var returnedPromise = API.quiz.read();
-					var result;
-					returnedPromise.then(function(response) {
-						result = response;
-					});
-					// flush the backend to "execute" the request to do the expectedGET assertion.
-					httpBackend.flush();
-					expect(result.status).to.equal(200);
-					expect(result.data).to.eql(returnData);
-				});
-			});
-
-			describe('API.quiz.create(descriptor)', function() {
-				it('should return the http promise result', function() {
-					var quizDescriptor = { "version" : "0.1", "title" : "Example QuizJSON 1", "quiz": [{ "question": "orderOfOperations", "repeat": 5 }] };
-					var postData = JSON.stringify(quizDescriptor);
-					httpBackend.expectPOST('/api/qd?descriptor=' + postData).respond(quizDescriptor);
-					var returnedPromise = API.quiz.create(postData);
-					var result;
-					returnedPromise.then(function(response) {
-						result = response;
-					});
-					// flush the backend to "execute" the request to do the expectedGET assertion.
-					httpBackend.flush();
-					expect(result.status).to.equal(200);
-					expect(result.data).to.eql(quizDescriptor);
-				});
-			});
+		it('should contain changeOfBase', function() {
+			expect(QuestionTypes).to.include('changeOfBase');
 		});
 
-		describe('API.user', function() {
-			it('should exist', function() {
-				expect(API.user).to.exist;
-			});
-
-			describe('API.user.update(awesome_id, role)', function() {
-				it('should return the http promise result', function() {
-					var awesome_id = 1;
-					var role = 'student';
-					httpBackend.expectPUT('/api/user/' + awesome_id + "?role=" + role).respond({});
-					var returnedPromise = API.user.update(awesome_id, role);
-					var result;
-					returnedPromise.then(function(response) {
-						result = response;
-					});
-					// flush the backend to "execute" the request to do the expectedGET assertion.
-					httpBackend.flush();
-					expect(result.status).to.equal(200);
-				});
-			});
+		it('should contain binHexOctDec', function() {
+			expect(QuestionTypes).to.include('binHexOctDec');
 		});
+
 
 	});
-
-
-
-
-
 	
 	describe('AuthService', function() {
+		beforeEach(module('awesomeApp'));
+  		var AuthService, cookies;
+		var q, rootScope, deferred;
+  		var RestangularMock = {};
+  		var testUser;
 
-		var httpBackend;
-  		var AuthService;
-  		var cookies;
 		beforeEach(function() {
+			module('awesomeApp', function($provide) {
+				$provide.value('Restangular', RestangularMock);
+			});
 
-			module('awesomeApp');
-		    inject(function($httpBackend, _AuthService_, _$cookies_) {
-		    	AuthService = _AuthService_;      
-		    	httpBackend = $httpBackend;
+		    inject(function(_AuthService_, _$cookies_) {
+		    	AuthService = _AuthService_;   
 		    	cookies = _$cookies_;
 		    });
 
-    		cookies.put('awesome_id','1234');
-    		cookies.put('email', 'test@email.com');
-    		cookies.put('name', 'Test Name');
-    		cookies.put('role', 'student');
-		});
+		    testUser = {
+	  			awesome_id: "1234",
+	  			email: "test@email.com",
+	  			name: "Test Name",
+	  			role: "student"
+	  		}
 
+    		cookies.put('awesome_id',testUser.awesome_id);
+    		cookies.put('email', testUser.email);
+    		cookies.put('name', testUser.name);
+    		cookies.put('role', testUser.role);
+		});
+		
 		describe('getAwesomeId()', function() {
 			it('should return the awesome_id cookie', function() {
-				expect(AuthService.getAwesomeId()).to.equal('1234');
+				expect(AuthService.getAwesomeId()).to.equal(testUser.awesome_id);
 			});
 		});
 
 		describe('getEmail()', function() {
 			it('should return the email cookie', function() {
-				expect(AuthService.getEmail()).to.equal('test@email.com');
+				expect(AuthService.getEmail()).to.equal(testUser.email);
 			});
 		});
 
 		describe('getName()', function() {
 			it('should return the name cookie', function() {
-				expect(AuthService.getName()).to.equal('Test Name');
+				expect(AuthService.getName()).to.equal(testUser.name);
 			});
 		});
 
 		describe('getRole()', function() {
 			it('should return the role cookie', function() {
-				expect(AuthService.getRole()).to.equal('student');
+				expect(AuthService.getRole()).to.equal(testUser.role);
 			});
 		});
-
 		describe('isAuthenticated()', function() {
 			it('should return true when awesome_id is defined', function() {
 				expect(AuthService.isAuthenticated()).to.equal(true);
@@ -137,34 +86,92 @@ describe('Angular Services', function() {
 		});
 
 		describe('updateUser()', function() {
+			var one = {};
+	    	RestangularMock.one = function(path, awesome_id) {
+				one.role = '';
+				return one;
+	    	}
+			describe('successful Restangular put request', function() {
+				before(function() {
+					one.called = false;
+					one.put = function() {
+						one.called = true;
+						return {
+							then: function(calledback) {
 
-			afterEach(function() {
-			    httpBackend.verifyNoOutstandingExpectation();
-				httpBackend.verifyNoOutstandingRequest();
-			});
-
-			it('should send put request to server and return the data and update the cookie', function (){
-				var returnData = { data: { data: true } };
-				httpBackend.expectPUT('/api/user/1234?role=developer').respond({});
-				var returnedPromise = AuthService.updateUser({ value:'developer', text:'Developer' });
-				var result;
-				returnedPromise.then(function(response) {
-					result = response;
+							}
+						}
+					}
+					AuthService.updateUser('author');
 				});
-				// flush the backend to "execute" the request to do the expectedGET assertion.
-				httpBackend.flush();
-				expect(result.status).to.equal(200);
-				expect(cookies.get('role')).to.equal('developer');
-				
+
+				it('should expect Restangular to make an updated request', function() {
+					expect(one.called).to.be.true;
+				});
 			});
+		
+		});
+	
+	});
+
+	describe('SeedGenerator', function() {
+		beforeEach(module('awesomeApp'));
+  		var SeedGenerator;
+
+		beforeEach(function() {
+			module('awesomeApp');
+		    inject(function(_SeedGenerator_) {
+		    	SeedGenerator = _SeedGenerator_; 
+		    });
+		});
+		
+		describe('getSeed()', function() {
+
+			it('should return a string', function() {
+				expect(SeedGenerator.getSeed()).to.be.a('string');
+			});
+
+			it('should return a string of length 8', function() {
+				expect(SeedGenerator.getSeed().length).to.equal(8);
+			});
+
+			it('should return a parsable hex string', function() {
+				expect(parseInt(SeedGenerator.getSeed(), 16)).to.be.a('number');
+			});
+
 		});
 
+		describe('isValidSeed(seed)', function() {
 
+			it('should return false if the seed is not a string', function() {
+				expect(SeedGenerator.isValidSeed(parseInt('1234abcd', 16))).to.be.false;
+			});
+
+			it('should return false if the seed has length > 8', function() {
+				expect(SeedGenerator.isValidSeed('1234abcde')).to.be.false;
+			});
+
+			it('should return false if the seed has length < 8', function() {
+				expect(SeedGenerator.isValidSeed('1234abc')).to.be.false;
+			});
+
+			it('should return false if the seed includes non hex characters', function() {
+				expect(SeedGenerator.isValidSeed('1234abch')).to.be.false;
+			});
+
+			it('should return true if the seed is a valid 8 digit hex string', function() {
+				expect(SeedGenerator.isValidSeed('1234abcd')).to.be.true;
+			});
+
+			it('should return true if the seed is a valid 8 digit hex string with uppercase characters', function() {
+				expect(SeedGenerator.isValidSeed('1234ABCD')).to.be.true;
+			});
+
+		});
+	
 	});
     
 });
-
-
 
 
 

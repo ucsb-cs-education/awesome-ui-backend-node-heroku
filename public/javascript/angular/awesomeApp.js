@@ -1,132 +1,137 @@
 'use strict';
 
-
-
-var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.bootstrap', 'flash']);
-
-
-awesomeApp.factory("AuthService",['$cookies', '$http', function($cookies, $http) {
-    var authService = {};
-
-	authService.isAuthenticated = function() {
-		return (typeof $cookies.get('awesome_id') !== 'undefined');
-	}
-    authService.getAwesomeId = function() {
-        return $cookies.get('awesome_id');
-    }
-    authService.getEmail = function() {
-        return $cookies.get('email');
-    }
-    authService.getName = function() {
-        return $cookies.get('name');
-    }
-    authService.getRole = function() {
-        return $cookies.get('role');
-    }
-
-    authService.updateUser = function (role) {
-        return $http.put('/api/user/' + authService.getAwesomeId() + '?role=' + role.value)
-        .success(function(data, status, headers, config) {
-            $cookies.put('role', role.value);
-            return data;
-        }).
-        error(function(data, status, headers, config) {
-            return false;
-        });
-    }
-
-	return authService;
-}]);
-
-awesomeApp.factory("API",['$http', function($http) {
-    var API = {};
-    API.user = {};
-    API.quiz = {};
-
-
-
-    API.quiz.create = function(descriptor) {
-        return $http.post('/api/qd?descriptor='+descriptor);
-    }
-    API.quiz.read = function() {
-        return $http.get('/api/qd');
-    }
-
-
-    API.user.update = function(awesome_id, role) {
-        return $http.put('/api/user/' + awesome_id + '?role=' + role);
-    }
-
-    return API;
-}]);
-
-awesomeApp.controller("QuizDescriptorCtrl", [ 'AuthService', 'API', 'Flash', function(AuthService, API, Flash) {
-    var vm = this;
-
-    vm.clickedDescriptor = function(selection) {
-        window.location.href = '/showpage/' + selection.id;
-    }
-
-    vm.addQuizDescriptor = function() {
-        API.quiz.create(vm.quizDescriptorText)
-        .success(function(data) {
-            Flash.create('success', '<strong> Quiz Descriptor Saved:</strong>  id = ' + data.id + '.', 'custom-class');
-            vm.quizzes.push(data);
-        })
-        .error(function(data) {
-            Flash.create('warning', '<strong> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
-            return false;
-        });
-        vm.quizDescriptorText = "";
-    }
-
-    vm.quizzes = [];
-    vm.quizDescriptorText = "";
-
-    if (AuthService.isAuthenticated()) {
-        API.quiz.read()
-        .success(function(data) {
-            vm.quizzes = data;
-        })
-        .error(function(data) {
-            alert('Some Error - fix');
-        });
-    }
-
-    return vm;
-}]);
-
-awesomeApp.controller("UserPrefCtrl", [ '$scope', 'AuthService', function($scope, AuthService) {
-
-    function roleValueToJSON(roleValue) {
-        return { text: roleValue.charAt(0).toUpperCase() + roleValue.slice(1), value: roleValue };
-    }
+var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.router', 'ui.bootstrap', 'flash', 'restangular']);
+awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'RestangularProvider', function($stateProvider, $urlRouterProvider, $locationProvider, RestangularProvider) {
     
-    var vm = this;
+    RestangularProvider.setBaseUrl('/api');
 
-    vm.roles = [
-        { text: 'Student', value: 'student' },
-        { text: 'Instructor', value: 'instructor' },
-        { text: 'Author', value: 'author' },
-        { text: 'Developer', value: 'developer'}
-    ];
-    vm.roleSelection = roleValueToJSON(AuthService.getRole());
+	$locationProvider.html5Mode({
+		enabled: true
+	});
+	$urlRouterProvider.otherwise("/");
+	$stateProvider
+	.state('home', {
+		url: '/',
+		templateUrl: 'partials/index.html'
+	})
+	.state('student', {
+		url: '/student',
+		templateUrl: 'partials/student.html',
+		controller: 'QuizDescriptorCtrl',
+		controllerAs: 'quizDescriptors',
+		resolve: {
+			qds: ['Restangular', function(Restangular) {
+				return Restangular.all('qd').getList();
+			}]
+		}
+	})
+	.state('instructor', {
+		url: '/instructor',
+		templateUrl: 'partials/instructor.html',
+		controller: 'InstructorCtrl',
+		controllerAs: 'instructorCtrl'
+	})
+	.state('instructor.quizdescriptors', {
+		url: '/quizdescriptors',
+		templateUrl: 'partials/instructor.quizdescriptors.html',
+		controller: 'QuizDescriptorCtrl',
+		controllerAs: 'quizDescriptors',
+		resolve: {
+			qds: ['Restangular', function(Restangular) {
+				return Restangular.all('qd').getList();
+			}]
+		}
 
-    vm.selectRole = function(role) {
-        vm.roleSelection = role;
-    }
+	})
+	.state('instructor.export', {
+		url: '/export',
+		templateUrl: 'partials/instructor.export.html',
+		controller: 'QuestionExportCtrl',
+		controllerAs: 'exporter'
 
-    vm.updatePreferences = function() {
-        AuthService.updateUser(vm.roleSelection)
-        .then(function(data) {
-            window.location.reload();
-        });
-    }
+	})
+	.state('developer', {
+		url: '/developer',
+		templateUrl: 'partials/developer.html'
+	})
+	.state('author', {
+		url: '/author',
+		templateUrl: 'partials/author.html'
+	})
+	.state('login', {
+		url: '/login',
+		templateUrl: 'partials/login.html'
+	})
+	.state('usersettings', {
+		url: '/usersettings',
+		templateUrl: 'partials/usersettings.html',
+		controller: 'UserPrefCtrl',
+		controllerAs: 'preferences'
+	})
+	.state('quizoptions', {
+		url: '/quiz/:id',
+		templateUrl: 'partials/quizdescriptor.html',
+		controller: 'QuizStartCtrl',
+		controllerAs: 'quizStarter',
+		resolve: {
+			qd: ['Restangular', '$stateParams', function(Restangular, $stateParams) {
+				return Restangular.one('qd', $stateParams.id).get();
+			}]
+		}
+	})
+	.state('quiztake', {
+		url: '/quiz/:id/:seed?q&k',
+		templateUrl: 'partials/quiz.html',
+		controller: 'QuizCtrl',
+		controllerAs: 'quizCtrl',
+		resolve: {
+			quiz: ['Restangular', 'SeedGenerator', '$stateParams', function(Restangular, SeedGenerator, $stateParams) {
+				var error = {};
+				if (!SeedGenerator.isValidSeed($stateParams.seed))
+					return { error: { invalidSeed: true } };
+				return Restangular.one('quiz', $stateParams.id).customGET($stateParams.seed).then(function(quiz) {
+					return quiz;
+				}, function(error) {
+					return { error: { notFound: true } };
+				});
+			}]
+		}
+	})
+}])
+.run(['AuthService', '$rootScope', '$state', function(AuthService, $rootScope, $state) {
+	$rootScope.$on( "$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+		var requiresAuth = ['instructor.quizdescriptors', 'usersettings'];
+		var requiresUnauth = ['login'];
+		var authenticated = AuthService.isAuthenticated();
+		//console.log(toState);
+		if (!authenticated) {
+			// redirect user to login page if they try to access user settings page
+			if (requiresAuth.indexOf(toState.name) != -1) {
+				event.preventDefault();
+				$state.go("login");
+			}
 
+		} else {
 
-    return vm;
+			// redirect user to preferred page if they try to access login page
+			if (requiresUnauth.indexOf(toState.name) != -1) {
+				event.preventDefault();
+				$state.go(AuthService.getRole());
+			}
+ 
+		}
 
+	});
 }]);
+
+
+
+
+
+
+
+
+
 
 
 

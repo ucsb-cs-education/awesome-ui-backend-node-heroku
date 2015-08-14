@@ -68,12 +68,31 @@ You should see test cases passing.  If you don't, something is wrong.
 
 In addition to the stuff that is on the heroku web page for setting up a new app, you also need to:
 
- heroku config
- 
+```
+ heroku addons:create heroku-postgresql:hobby-dev
+```
+
+Sample output: 
+ ``` 
+shell-prompt$ heroku addons:create heroku-postgresql:hobby-dev
+Creating cooling-gladly-9335... done, (free)
+Adding cooling-gladly-9335 to project-awesome-phill-dev... done
+Setting DATABASE_URL and restarting project-awesome-phill-dev... done, v4
+Database has been created and is available
+ ! This database is empty. If upgrading, you can transfer
+ ! data from another database with pgbackups:restore
+Use `heroku addons:docs heroku-postgresql` to view documentation.
+shell-prompt$
+```
+
+Then do:  heroku config
+
 You will get back some output such as this:
 
+```
  DATABASE_URL: postgres://sdlfiwneofiwe:RHGBmTuDFwfwefwNsy1C_eVzPPOBd5NE@ec2-54-163-228-0.compute-1.amazonaws.com:5432/wefoiwefoie324234wf
- 
+```
+
 You need to set up that environment variable in the Heroku app settings.
  
 You then need to set up Facebook and Google logins

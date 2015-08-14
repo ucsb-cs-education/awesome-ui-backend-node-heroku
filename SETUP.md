@@ -64,3 +64,15 @@ npm test
 You should see test cases passing.  If you don't, something is wrong.
 
 
+# Heroku Setup
+
+In addition to the stuff that is on the heroku web page for setting up a new app, you also need to:
+
+ heroku config
+ 
+You will get back some output such as this:
+
+ DATABASE_URL: postgres://sdlfiwneofiwe:RHGBmTuDFwfwefwNsy1C_eVzPPOBd5NE@ec2-54-163-228-0.compute-1.amazonaws.com:5432/wefoiwefoie324234wf
+ 
+You need to set up that environment variable in the Heroku app settings.
+ 

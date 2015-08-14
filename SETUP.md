@@ -118,6 +118,9 @@ Node Modules Cache indicates whether we want to cache the node modules.    Since
  
  
 ``` 
-NODE_MODULES_CACHE
-SESSION_SECRET
+NODE_MODULES_CACHE  To be determined TODO TODO TODO
+SESSION_SECRET  anyRandomStringOfLettersNumbersDigits
+NODE_ENV production
 ```
+
+ONLY set NODE_ENV for production. If unset, it is considered a development/test environment.

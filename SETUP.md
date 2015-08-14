@@ -76,3 +76,25 @@ You will get back some output such as this:
  
 You need to set up that environment variable in the Heroku app settings.
  
+You then need to set up Facebook and Google logins
+
+## Facebook
+
+https://developers.facebook.com/apps/
+
+Create a new app.
+
+You'll get back an App Id.   FACEBOOK_APP_ID  is the env var that needs to point to that.
+
+ FACEBOOK_APP_ID   set to what's on the https://developers.facebook.com/apps/ page
+ FACEBOOK_APP_SECRET   set to what's on the https://developers.facebook.com/apps/ page
+ FACEBOOK_CALLBACK_URL https://project-awesome-us.herokuapp.com/auth/facebook/callback
+ 
+You'll then do something similar for Google:
+
+ GOOGLE_APP_ID
+ GOOGLE_APP_SECRET
+ GOOGLE_CALLBACK_URL
+ 
+ GOOGLE_APP_ID
+ GOOGLE_APP_SECRET

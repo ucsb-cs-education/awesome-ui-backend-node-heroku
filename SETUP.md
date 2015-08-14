@@ -86,15 +86,21 @@ Create a new app.
 
 You'll get back an App Id.   FACEBOOK_APP_ID  is the env var that needs to point to that.
 
+```
  FACEBOOK_APP_ID   set to what's on the https://developers.facebook.com/apps/ page
  FACEBOOK_APP_SECRET   set to what's on the https://developers.facebook.com/apps/ page
  FACEBOOK_CALLBACK_URL https://project-awesome-us.herokuapp.com/auth/facebook/callback
- 
-You'll then do something similar for Google:
+```
 
+You'll then do something similar for Google at https://console.developers.google.com/project?authuser=0
+
+```
  GOOGLE_APP_ID
  GOOGLE_APP_SECRET
  GOOGLE_CALLBACK_URL
+ ```
  
- GOOGLE_APP_ID
- GOOGLE_APP_SECRET
+``` 
+NODE_MODULES_CACHE
+SESSION_SECRET
+```

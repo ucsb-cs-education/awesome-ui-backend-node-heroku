@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "./test/runtests.sh"
+    "test": "./test/runtests.sh",
+    "test-e2e": "protractor test/e2e/config.js",
+    "test-browser": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "dependencies": {
     "body-parser": "^1.13.1",

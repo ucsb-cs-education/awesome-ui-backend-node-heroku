@@ -24,8 +24,12 @@ describe('Navigation Bar', function() {
 
     describe('Navigation Dropdown Menu', function () {
 
-        beforeEach(function(done) {
+        before(function(done) {
             browser.get('/');
+            done();
+        });
+
+        beforeEach(function(done) {
             browser.findElement(by.id('navigation-dropdown')).click().then(function() {
                 done();
             });

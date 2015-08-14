@@ -112,7 +112,10 @@ Under Callback URL, use: https://project-awesome-us.herokuapp.com/auth/google/ca
  GOOGLE_APP_ID
  GOOGLE_APP_SECRET
  GOOGLE_CALLBACK_URL
- ```
+```
+
+Node Modules Cache indicates whether we want to cache the node modules.    Since we are using project awesome as a module, right now we don't want that cached.  Or do we?   TODO: Figure this out.  Maybe do proper versioning on the project-awesome NPM module. 
+ 
  
 ``` 
 NODE_MODULES_CACHE

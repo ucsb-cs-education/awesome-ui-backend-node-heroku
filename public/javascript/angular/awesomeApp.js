@@ -1,6 +1,6 @@
 'use strict';
 
-var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.router', 'ui.bootstrap', 'flash', 'restangular']);
+var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.router', 'ui.bootstrap', 'flash', 'restangular', 'ngAnimate']);
 awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'RestangularProvider', function($stateProvider, $urlRouterProvider, $locationProvider, RestangularProvider) {
     
     RestangularProvider.setBaseUrl('/api');
@@ -8,7 +8,6 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 	$locationProvider.html5Mode({
 		enabled: true
 	});
-	$urlRouterProvider.otherwise("/");
 	$stateProvider
 	.state('home', {
 		url: '/',
@@ -80,26 +79,38 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		}
 	})
 	.state('quiztake', {
-		url: '/quiz/:id/:seed?q&k',
+		url: '/quiz/:id/{seed:[0-9a-fA-F]{8}}?q&k',
 		templateUrl: 'partials/quiz.html',
 		controller: 'QuizCtrl',
 		controllerAs: 'quizCtrl',
 		resolve: {
 			quiz: ['Restangular', 'SeedGenerator', '$stateParams', function(Restangular, SeedGenerator, $stateParams) {
-				var error = {};
-				if (!SeedGenerator.isValidSeed($stateParams.seed))
-					return { error: { invalidSeed: true } };
-				return Restangular.one('quiz', $stateParams.id).customGET($stateParams.seed).then(function(quiz) {
-					return quiz;
-				}, function(error) {
-					return { error: { notFound: true } };
-				});
+				return Restangular.one('quiz', $stateParams.id).customGET($stateParams.seed);
 			}]
 		}
 	})
+	.state('404', {
+		templateUrl: 'partials/404.html',
+	});
+
+
+	$urlRouterProvider.otherwise(function($injector, $location){
+		var state = $injector.get('$state');
+		state.go('404');
+		return $location.path();
+	});
 }])
-.run(['AuthService', '$rootScope', '$state', function(AuthService, $rootScope, $state) {
+.run(['AuthService', 'Flash', '$rootScope', '$state', function(AuthService, Flash, $rootScope, $state) {
+
+	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+		if (error.status == 404) {
+			event.preventDefault();
+			$state.go('404');
+		}
+	});
+
 	$rootScope.$on( "$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+		Flash.dismiss();
 		var requiresAuth = ['instructor.quizdescriptors', 'usersettings'];
 		var requiresUnauth = ['login'];
 		var authenticated = AuthService.isAuthenticated();

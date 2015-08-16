@@ -1,6 +1,6 @@
 'use strict';
 
-var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.router', 'ui.bootstrap', 'flash', 'restangular']);
+var awesomeApp = angular.module('awesomeApp', ['ngCookies', 'ui.router', 'ui.bootstrap', 'flash', 'restangular', 'ngAnimate']);
 awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'RestangularProvider', function($stateProvider, $urlRouterProvider, $locationProvider, RestangularProvider) {
     
     RestangularProvider.setBaseUrl('/api');
@@ -100,7 +100,7 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		return $location.path();
 	});
 }])
-.run(['AuthService', '$rootScope', '$state', function(AuthService, $rootScope, $state) {
+.run(['AuthService', 'Flash', '$rootScope', '$state', function(AuthService, Flash, $rootScope, $state) {
 
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		if (error.status == 404) {
@@ -110,6 +110,7 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 	});
 
 	$rootScope.$on( "$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+		Flash.dismiss();
 		var requiresAuth = ['instructor.quizdescriptors', 'usersettings'];
 		var requiresUnauth = ['login'];
 		var authenticated = AuthService.isAuthenticated();

@@ -8,7 +8,6 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 	$locationProvider.html5Mode({
 		enabled: true
 	});
-	$urlRouterProvider.otherwise("/");
 	$stateProvider
 	.state('home', {
 		url: '/',
@@ -80,25 +79,35 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		}
 	})
 	.state('quiztake', {
-		url: '/quiz/:id/:seed?q&k',
+		url: '/quiz/:id/{seed:[0-9a-fA-F]{8}}?q&k',
 		templateUrl: 'partials/quiz.html',
 		controller: 'QuizCtrl',
 		controllerAs: 'quizCtrl',
 		resolve: {
 			quiz: ['Restangular', 'SeedGenerator', '$stateParams', function(Restangular, SeedGenerator, $stateParams) {
-				var error = {};
-				if (!SeedGenerator.isValidSeed($stateParams.seed))
-					return { error: { invalidSeed: true } };
-				return Restangular.one('quiz', $stateParams.id).customGET($stateParams.seed).then(function(quiz) {
-					return quiz;
-				}, function(error) {
-					return { error: { notFound: true } };
-				});
+				return Restangular.one('quiz', $stateParams.id).customGET($stateParams.seed);
 			}]
 		}
 	})
+	.state('404', {
+		templateUrl: 'partials/404.html',
+	});
+
+
+	$urlRouterProvider.otherwise(function($injector, $location){
+		var state = $injector.get('$state');
+		state.go('404');
+		return $location.path();
+	});
 }])
-.run(['AuthService', '$rootScope', '$state', function(AuthService, $rootScope, $state) {
+.run(['AuthService', '$rootScope', '$state', '$location', function(AuthService, $rootScope, $state, $location) {
+
+	$rootScope.$on('$stateChangeError', function(event) {
+		event.preventDefault();
+		$state.go('404');
+		return $location.path();
+	});
+
 	$rootScope.$on( "$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
 		var requiresAuth = ['instructor.quizdescriptors', 'usersettings'];
 		var requiresUnauth = ['login'];

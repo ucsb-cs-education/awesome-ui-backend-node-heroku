@@ -103,7 +103,7 @@ awesomeApp.controller('QuizStartCtrl', [ 'qd', 'SeedGenerator', '$stateParams', 
     return vm;
 }]);
 
-awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'AuthService', 'Flash', 'Restangular', function(qds, AuthService, Flash, Restangular) {
+awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'Flash', 'Restangular', function(qds, Flash, Restangular) {
     var vm = this;
     vm.quizzes = qds;
     vm.quizDescriptorText = "";
@@ -112,7 +112,14 @@ awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'AuthService', 'Flash', 'Re
         window.location.href = '/showpage/' + selection.id;
     }
     vm.addQuizDescriptor = function() {
-        Restangular.all('qd').post({descriptor: JSON.parse(vm.quizDescriptorText)})
+        var qdJSON;
+        try {
+            qdJSON = JSON.parse(vm.quizDescriptorText);
+        } catch (e) {
+            Flash.create('warning', '<strong> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
+            return;
+        }
+        Restangular.all('qd').post({descriptor: qdJSON})
         .then(function(qd) {
             Flash.create('success', '<strong> Quiz Descriptor Saved:</strong>  id = ' + qd.id + '.', 'custom-class');
             vm.quizzes.push(qd);

@@ -100,7 +100,7 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		return $location.path();
 	});
 }])
-.run(['AuthService', '$rootScope', '$state', '$location', function(AuthService, $rootScope, $state, $location) {
+.run(['AuthService', '$rootScope', '$state', function(AuthService, $rootScope, $state) {
 
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		if (error.status == 404) {

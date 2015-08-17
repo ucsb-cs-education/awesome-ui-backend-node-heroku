@@ -64,3 +64,88 @@ npm test
 You should see test cases passing.  If you don't, something is wrong.
 
 
+# Heroku Setup
+
+In addition to the stuff that is on the heroku web page for setting up a new app, you also need to:
+
+```
+ heroku addons:create heroku-postgresql:hobby-dev
+```
+
+Sample output: 
+ ``` 
+shell-prompt$ heroku addons:create heroku-postgresql:hobby-dev
+Creating cooling-gladly-9335... done, (free)
+Adding cooling-gladly-9335 to project-awesome-phill-dev... done
+Setting DATABASE_URL and restarting project-awesome-phill-dev... done, v4
+Database has been created and is available
+ ! This database is empty. If upgrading, you can transfer
+ ! data from another database with pgbackups:restore
+Use `heroku addons:docs heroku-postgresql` to view documentation.
+shell-prompt$
+```
+
+Then do:  heroku config
+
+You will get back some output such as this:
+
+```
+ DATABASE_URL: postgres://sdlfiwneofiwe:RHGBmTuDFwfwefwNsy1C_eVzPPOBd5NE@ec2-54-163-228-0.compute-1.amazonaws.com:5432/wefoiwefoie324234wf
+```
+
+You need to set up that environment variable in the Heroku app settings.
+ 
+You then need to set up Facebook and Google logins
+
+## Facebook
+
+https://developers.facebook.com/apps/
+
+Create a new app.
+
+You'll get back an App Id.   FACEBOOK_APP_ID  is the env var that needs to point to that.
+
+Also go to "Settings" / "Advanced" and scroll to "Client OAuth Settings".  Enter the URL for the Facebook Oauth Callback (i.e. https://project-awesome-us.herokuapp.com/auth/facebook/callback )
+
+Under settings, add a contact email.
+
+Under Status and Review, either set to public--or don't, depending on whether this is a production instance or a test/dev instance.
+
+```
+ FACEBOOK_APP_ID   set to what's on the https://developers.facebook.com/apps/ page
+ FACEBOOK_APP_SECRET   set to what's on the https://developers.facebook.com/apps/ page
+ FACEBOOK_CALLBACK_URL https://project-awesome-us.herokuapp.com/auth/facebook/callback
+```
+
+You'll then do something similar for Google at https://console.developers.google.com/project?authuser=0
+
+Create the app, then navigate to APIs.   Navigate to the Google+ API.  Click "Enable API".
+
+Then go to Credentials.
+
+Under OAuth, go to "create a new client id".
+
+Create a new application/web application.
+
+Under authorized JavaScript origins, use: https://project-awesome-us.herokuapp.com
+
+Under Callback URL, use: https://project-awesome-us.herokuapp.com/auth/google/callback
+
+
+
+```
+ GOOGLE_APP_ID
+ GOOGLE_APP_SECRET
+ GOOGLE_CALLBACK_URL
+```
+
+Node Modules Cache indicates whether we want to cache the node modules.    Since we are using project awesome as a module, right now we don't want that cached.  Or do we?   TODO: Figure this out.  Maybe do proper versioning on the project-awesome NPM module. 
+ 
+ 
+``` 
+NODE_MODULES_CACHE  To be determined TODO TODO TODO
+SESSION_SECRET  anyRandomStringOfLettersNumbersDigits
+NODE_ENV production
+```
+
+ONLY set NODE_ENV for production. If unset, it is considered a development/test environment.

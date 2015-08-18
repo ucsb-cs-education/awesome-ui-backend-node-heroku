@@ -122,7 +122,7 @@ awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'Flash', 'Restangular', fun
         try {
             qdJSON = JSON.parse(vm.quizDescriptorText);
         } catch (e) {
-            Flash.create('warning', '<strong> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
+            Flash.create('warning', '<strong id="flash-strong"> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
             return;
         }
         Restangular.all('qd').post({descriptor: qdJSON})

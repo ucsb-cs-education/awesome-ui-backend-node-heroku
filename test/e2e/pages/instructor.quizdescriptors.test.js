@@ -59,7 +59,7 @@ describe('/instructor/quizdescriptors', function() {
             it('should not add the qd to the list', function(done) {
                 textArea.sendKeys('{"ayyyy":"lmao"}}');
                 addNew.click();
-                expect(element(by.id('flash-message-div')).getText()).to.eventually.include('Not Saved: Invalid Syntax.');
+                expect(element(by.id('flash-message-div')).isPresent()).to.eventually.be.true;
                 expect(element.all(by.repeater('quiz in quizDescriptors.quizzes')).count()).to.eventually.equal(1);
                 done();
             });
@@ -71,7 +71,7 @@ describe('/instructor/quizdescriptors', function() {
                 var sampleQD = utils.getSampleQuizDescriptor('testQD1');
                 textArea.sendKeys(JSON.stringify(sampleQD));
                 addNew.click();
-                expect(element(by.id('flash-message-div')).getText()).to.eventually.include('Quiz Descriptor Saved');
+                expect(element(by.id('flash-message-div')).isPresent()).to.eventually.be.true;
                 expect(element.all(by.repeater('quiz in quizDescriptors.quizzes')).count()).to.eventually.equal(2);
                 done();
             });

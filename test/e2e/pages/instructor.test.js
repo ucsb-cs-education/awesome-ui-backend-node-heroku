@@ -7,12 +7,6 @@ var models = require('../../../models');
 var utils = require('../../utils');
 var server;
 
-var hasClass = function (element, cls) {
-    return element.getAttribute('class').then(function (classes) {
-        return classes.split(' ').indexOf(cls) !== -1;
-    });
-};
-
 describe('/instructor', function() {
     before(function(done) {
         models.sequelize.sync({ force: true }).then(function () {

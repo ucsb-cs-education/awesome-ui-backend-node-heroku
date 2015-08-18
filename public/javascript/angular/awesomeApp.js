@@ -89,6 +89,17 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 			}]
 		}
 	})
+	.state('showpage', {
+		url: '/showpage/:id',
+		templateUrl: 'partials/showpage.html',
+		controller: 'ShowDescriptorCtrl',
+		controllerAs: 'qdCtrl',
+		resolve: {
+			qd: ['Restangular', '$stateParams', function(Restangular, $stateParams) {
+				return Restangular.one('qd', $stateParams.id).get();
+			}]
+		}
+	})
 	.state('404', {
 		templateUrl: 'partials/404.html',
 	});

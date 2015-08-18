@@ -1,5 +1,11 @@
 'use strict';
 
+awesomeApp.controller("ShowDescriptorCtrl", ['qd', function(qd) {
+    var vm = this;
+    vm.qd = qd;
+    return vm;
+}]);
+
 awesomeApp.controller("AuthController", ['$window', 'AuthService', function($window, AuthService) {
     var vm = this;
     vm.isAuthenticated = AuthService.isAuthenticated();
@@ -116,7 +122,7 @@ awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'Flash', 'Restangular', fun
         try {
             qdJSON = JSON.parse(vm.quizDescriptorText);
         } catch (e) {
-            Flash.create('warning', '<strong> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
+            Flash.create('warning', '<strong id="flash-strong"> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
             return;
         }
         Restangular.all('qd').post({descriptor: qdJSON})

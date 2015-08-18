@@ -129,10 +129,10 @@ awesomeApp.controller('QuizDescriptorCtrl', [ 'qds', 'Flash', 'Restangular', fun
         .then(function(qd) {
             Flash.create('success', '<strong> Quiz Descriptor Saved:</strong>  id = ' + qd.id + '.', 'custom-class');
             vm.quizzes.push(qd);
+            vm.quizDescriptorText = "";
         }, function(error) {
             Flash.create('warning', '<strong> Not Saved:</strong>  Invalid Syntax.', 'custom-class');
         });
-        vm.quizDescriptorText = "";
     }
 
     

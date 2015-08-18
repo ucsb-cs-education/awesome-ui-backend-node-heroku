@@ -1,5 +1,11 @@
 'use strict';
 
+awesomeApp.controller("ShowDescriptorCtrl", ['qd', function(qd) {
+    var vm = this;
+    vm.qd = qd;
+    return vm;
+}]);
+
 awesomeApp.controller("AuthController", ['$window', 'AuthService', function($window, AuthService) {
     var vm = this;
     vm.isAuthenticated = AuthService.isAuthenticated();

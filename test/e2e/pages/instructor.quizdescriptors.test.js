@@ -57,10 +57,11 @@ describe('/instructor/quizdescriptors', function() {
 
         describe('invalid quiz descriptor', function() {
             it('should not add the qd to the list', function(done) {
-                textArea.sendKeys('{"ayyyy":"lmao"}}');
+                textArea.sendKeys('{"ayyyy":"lmao"}');
                 addNew.click();
                 expect(element(by.id('flash-message-div')).isPresent()).to.eventually.be.true;
                 expect(element.all(by.repeater('quiz in quizDescriptors.quizzes')).count()).to.eventually.equal(1);
+                expect(textArea.getAttribute('value')).to.eventually.equal('{"ayyyy":"lmao"}');
                 done();
             });
         });
@@ -74,6 +75,7 @@ describe('/instructor/quizdescriptors', function() {
                 addNew.click();
                 expect(element(by.id('flash-message-div')).isPresent()).to.eventually.be.true;
                 expect(element.all(by.repeater('quiz in quizDescriptors.quizzes')).count()).to.eventually.equal(2);
+                expect(textArea.getAttribute('value')).to.eventually.equal("");
                 done();
             });
         });

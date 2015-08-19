@@ -111,7 +111,7 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
 		return $location.path();
 	});
 }])
-.run(['AuthService', 'Flash', '$rootScope', '$state', function(AuthService, Flash, $rootScope, $state) {
+.run(['AuthService', 'Flash', '$rootScope', '$state', '$window', function(AuthService, Flash, $rootScope, $state, $window) {
 
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		if (error.status == 404) {
@@ -143,6 +143,10 @@ awesomeApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 
  
 		}
 
+	});
+
+	$rootScope.$on("$stateChangeSuccess", function(event) {
+		$window.ga('send', 'pageview', { page: $state.current.url });
 	});
 }]);
 
